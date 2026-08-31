@@ -1,9 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+
+const TIME_SLOTS = [
+    '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
+    '12:00', '12:30', '13:00', '13:30', '14:00', '14:30',
+    '15:00', '15:30', '16:00', '16:30', '17:00', '17:30',
+    '18:00', '18:30', '19:00', '19:30', '20:00', '20:30',
+    '21:00', '21:30', '22:00', '22:30', '23:00', '23:30', '00:00'
+];
 
 export default function BookingBottomSheet({ isOpen, onClose }) {
     const [rendered, setRendered] = useState(false);
     const [active, setActive] = useState(false);
+    const [isTimeDropdownOpen, setIsTimeDropdownOpen] = useState(false);
+    const timeDropdownRef = useRef(null);
+
     const [formData, setFormData] = useState({
         customer_name: '',
         pax: '2',
@@ -25,6 +36,17 @@ export default function BookingBottomSheet({ isOpen, onClose }) {
         }
     }, [isOpen]);
 
+    // Close custom dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (timeDropdownRef.current && !timeDropdownRef.current.contains(e.target)) {
+                setIsTimeDropdownOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
     if (!rendered) return null;
 
     const resetForm = () => {
@@ -35,6 +57,7 @@ export default function BookingBottomSheet({ isOpen, onClose }) {
             reservation_time: '',
             special_notes: '',
         });
+        setIsTimeDropdownOpen(false);
     };
 
     const handleClose = () => {
@@ -48,8 +71,19 @@ export default function BookingBottomSheet({ isOpen, onClose }) {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+    const handleSelectTime = (slot) => {
+        setFormData({ ...formData, reservation_time: slot });
+        setIsTimeDropdownOpen(false);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!formData.reservation_time) {
+            alert('Silakan pilih Jam Reservasi terlebih dahulu.');
+            return;
+        }
+
         setLoading(true);
 
         const waNumber = '6281285698689';
@@ -64,7 +98,7 @@ export default function BookingBottomSheet({ isOpen, onClose }) {
 *Nama:* ${formData.customer_name}
 *Jumlah Tamu:* ${formData.pax} orang
 *Tanggal:* ${formData.reservation_date}
-*Jam:* ${formData.reservation_time}
+*Jam:* ${formData.reservation_time} WIB
 *Catatan:* ${formData.special_notes || '-'}`;
 
             window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(messageText)}`, '_blank');
@@ -80,7 +114,7 @@ export default function BookingBottomSheet({ isOpen, onClose }) {
 *Nama:* ${formData.customer_name}
 *Jumlah Tamu:* ${formData.pax} orang
 *Tanggal:* ${formData.reservation_date}
-*Jam:* ${formData.reservation_time}
+*Jam:* ${formData.reservation_time} WIB
 *Catatan:* ${formData.special_notes || '-'}`;
 
             window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(messageText)}`, '_blank');
@@ -92,175 +126,174 @@ export default function BookingBottomSheet({ isOpen, onClose }) {
     };
 
     return (
-        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
-            {/* Backdrop with Blur & Fade Transition */}
+        <div className="fixed inset-0 z-50 overflow-hidden flex flex-col justify-end sm:justify-center items-center">
+            {/* Backdrop */}
             <div
-                className={`absolute inset-0 bg-black/80 backdrop-blur-md transition-opacity duration-300 ease-out ${
+                onClick={handleClose}
+                className={`fixed inset-0 bg-black/80 backdrop-blur-md transition-opacity duration-300 ${
                     active ? 'opacity-100' : 'opacity-0'
                 }`}
-                onClick={handleClose}
             />
 
-            {/* Bottom Sheet Container */}
+            {/* Bottom Sheet Card */}
             <div
-                className={`bg-[#181818] w-full max-w-lg rounded-t-3xl sm:rounded-3xl shadow-2xl relative z-10 overflow-hidden border border-white/10 border-t-4 border-t-[#FF6B00] transition-all duration-300 ease-out transform ${
-                    active
-                        ? 'translate-y-0 opacity-100 sm:scale-100'
-                        : 'translate-y-full opacity-0 sm:scale-95'
+                className={`relative w-full max-w-lg bg-[#181818] border-t sm:border border-white/10 rounded-t-3xl sm:rounded-3xl shadow-2xl p-6 sm:p-8 transform transition-transform duration-300 ease-out z-10 ${
+                    active ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
                 }`}
             >
-                {/* Grab Handle */}
-                <div className="w-full flex justify-center pt-3 pb-1 sm:hidden cursor-pointer" onClick={handleClose}>
-                    <div className="w-12 h-1.5 bg-white/20 rounded-full" />
+                {/* Drag Handle Bar (Mobile) */}
+                <div className="w-12 h-1.5 bg-white/20 rounded-full mx-auto mb-6 sm:hidden" />
+
+                {/* Header */}
+                <div className="flex justify-between items-start mb-6">
+                    <div>
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#FF6B00]">
+                            Table Reservation
+                        </span>
+                        <h3 className="font-display text-2xl uppercase tracking-wider text-white">
+                            Reservasi Meja
+                        </h3>
+                    </div>
+                    <button
+                        onClick={handleClose}
+                        className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-white/70 hover:text-white transition-colors"
+                    >
+                        <span className="material-symbols-outlined text-sm">close</span>
+                    </button>
                 </div>
 
-                <div className="p-6 sm:p-8">
-                    <div className="flex justify-between items-center mb-6">
-                        <div className="flex items-center gap-3">
-                            <img
-                                src="/images/logo.png"
-                                alt="Pintu Dua Logo"
-                                className="h-10 w-auto object-contain rounded-lg glow-orange-sm"
-                            />
-                            <div>
-                                <span className="text-[10px] font-black uppercase tracking-widest text-[#FF6B00]">
-                                    Reservation System
-                                </span>
-                                <h2 className="font-display text-2xl sm:text-3xl uppercase text-white leading-none">
-                                    Book a Table
-                                </h2>
-                            </div>
-                        </div>
-                        <button
-                            onClick={handleClose}
-                            className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#E0E0E0]/70 hover:text-white hover:bg-white/10 transition-colors duration-300"
-                        >
-                            <span className="material-symbols-outlined text-lg">close</span>
-                        </button>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div>
+                        <label className="block font-bold text-xs text-[#E0E0E0]/80 mb-1.5 uppercase tracking-wider">
+                            Full Name
+                        </label>
+                        <input
+                            type="text"
+                            name="customer_name"
+                            required
+                            value={formData.customer_name}
+                            onChange={handleChange}
+                            placeholder="Masukkan nama Anda"
+                            className="w-full bg-[#121212] border border-white/10 rounded-xl p-3 text-sm text-white focus:border-[#FF6B00] focus:ring-1 focus:ring-[#FF6B00] outline-none transition-colors duration-300"
+                        />
                     </div>
 
-                    <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="grid grid-cols-2 gap-3">
+                        {/* Date Picker */}
                         <div>
                             <label className="block font-bold text-xs text-[#E0E0E0]/80 mb-1.5 uppercase tracking-wider">
-                                Full Name
+                                Date
                             </label>
                             <input
-                                type="text"
-                                name="customer_name"
+                                type="date"
+                                name="reservation_date"
                                 required
-                                value={formData.customer_name}
+                                min={new Date().toISOString().split('T')[0]}
+                                value={formData.reservation_date}
                                 onChange={handleChange}
-                                placeholder="Masukkan nama Anda"
                                 className="w-full bg-[#121212] border border-white/10 rounded-xl p-3 text-sm text-white focus:border-[#FF6B00] focus:ring-1 focus:ring-[#FF6B00] outline-none transition-colors duration-300"
                             />
                         </div>
 
-                        <div className="grid grid-cols-2 gap-3">
-                            <div>
-                                <label className="block font-bold text-xs text-[#E0E0E0]/80 mb-1.5 uppercase tracking-wider">
-                                    Date
-                                </label>
-                                <input
-                                    type="date"
-                                    name="reservation_date"
-                                    required
-                                    min={new Date().toISOString().split('T')[0]}
-                                    value={formData.reservation_date}
-                                    onChange={handleChange}
-                                    className="w-full bg-[#121212] border border-white/10 rounded-xl p-3 text-sm text-white focus:border-[#FF6B00] focus:ring-1 focus:ring-[#FF6B00] outline-none transition-colors duration-300"
-                                />
-                            </div>
-                            <div>
-                                <label className="block font-bold text-xs text-[#E0E0E0]/80 mb-1.5 uppercase tracking-wider">
-                                    Time (Jam 24:00)
-                                </label>
-                                <select
-                                    name="reservation_time"
-                                    required
-                                    value={formData.reservation_time}
-                                    onChange={handleChange}
-                                    className="w-full bg-[#121212] border border-white/10 rounded-xl p-3 text-sm text-white focus:border-[#FF6B00] focus:ring-1 focus:ring-[#FF6B00] outline-none transition-colors duration-300"
-                                >
-                                    <option value="" disabled>Pilih Jam (24-Jam)...</option>
-                                    <option value="09:00">09:00 WIB</option>
-                                    <option value="09:30">09:30 WIB</option>
-                                    <option value="10:00">10:00 WIB</option>
-                                    <option value="10:30">10:30 WIB</option>
-                                    <option value="11:00">11:00 WIB</option>
-                                    <option value="11:30">11:30 WIB</option>
-                                    <option value="12:00">12:00 WIB</option>
-                                    <option value="12:30">12:30 WIB</option>
-                                    <option value="13:00">13:00 WIB</option>
-                                    <option value="13:30">13:30 WIB</option>
-                                    <option value="14:00">14:00 WIB</option>
-                                    <option value="14:30">14:30 WIB</option>
-                                    <option value="15:00">15:00 WIB</option>
-                                    <option value="15:30">15:30 WIB</option>
-                                    <option value="16:00">16:00 WIB</option>
-                                    <option value="16:30">16:30 WIB</option>
-                                    <option value="17:00">17:00 WIB</option>
-                                    <option value="17:30">17:30 WIB</option>
-                                    <option value="18:00">18:00 WIB</option>
-                                    <option value="18:30">18:30 WIB</option>
-                                    <option value="19:00">19:00 WIB</option>
-                                    <option value="19:30">19:30 WIB</option>
-                                    <option value="20:00">20:00 WIB</option>
-                                    <option value="20:30">20:30 WIB</option>
-                                    <option value="21:00">21:00 WIB</option>
-                                    <option value="21:30">21:30 WIB</option>
-                                    <option value="22:00">22:00 WIB</option>
-                                    <option value="22:30">22:30 WIB</option>
-                                    <option value="23:00">23:00 WIB</option>
-                                    <option value="23:30">23:30 WIB</option>
-                                    <option value="00:00">00:00 WIB</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div>
+                        {/* Custom Sleek 24-Hour Time Dropdown */}
+                        <div ref={timeDropdownRef} className="relative">
                             <label className="block font-bold text-xs text-[#E0E0E0]/80 mb-1.5 uppercase tracking-wider">
-                                Number of Guests (Pax)
+                                Time (24 Jam)
                             </label>
-                            <select
-                                name="pax"
-                                value={formData.pax}
-                                onChange={handleChange}
-                                className="w-full bg-[#121212] border border-white/10 rounded-xl p-3 text-sm text-white focus:border-[#FF6B00] focus:ring-1 focus:ring-[#FF6B00] outline-none transition-colors duration-300"
-                            >
-                                <option value="1">1 Person</option>
-                                <option value="2">2 Persons</option>
-                                <option value="3-4">3 - 4 Persons</option>
-                                <option value="5-6">5 - 6 Persons</option>
-                                <option value="7+">7+ Persons (Group)</option>
-                            </select>
-                        </div>
 
-                        <div>
-                            <label className="block font-bold text-xs text-[#E0E0E0]/80 mb-1.5 uppercase tracking-wider">
-                                Special Notes (Optional)
-                            </label>
-                            <textarea
-                                name="special_notes"
-                                rows="2"
-                                value={formData.special_notes}
-                                onChange={handleChange}
-                                placeholder="e.g.: indoor, indoor smoking, working space, rooftop..."
-                                className="w-full bg-[#121212] border border-white/10 rounded-xl p-3 text-sm text-white focus:border-[#FF6B00] focus:ring-1 focus:ring-[#FF6B00] outline-none transition-colors duration-300"
-                            />
-                        </div>
-
-                        <div className="pt-3">
                             <button
-                                type="submit"
-                                disabled={loading}
-                                className="btn-pd-wa w-full"
+                                type="button"
+                                onClick={() => setIsTimeDropdownOpen(!isTimeDropdownOpen)}
+                                className={`w-full bg-[#121212] border rounded-xl p-3 text-sm flex items-center justify-between transition-colors duration-200 ${
+                                    isTimeDropdownOpen ? 'border-[#FF6B00] text-white ring-1 ring-[#FF6B00]' : 'border-white/10 text-white/90 hover:border-white/20'
+                                }`}
                             >
-                                <span className="material-symbols-outlined text-xl">chat</span>
-                                {loading ? 'continue to whatsapp...' : 'Continue to WhatsApp'}
+                                <span className={formData.reservation_time ? 'font-bold text-white' : 'text-white/40'}>
+                                    {formData.reservation_time ? `${formData.reservation_time} WIB` : 'Pilih Jam...'}
+                                </span>
+                                <span className={`material-symbols-outlined text-sm text-white/50 transition-transform duration-200 ${isTimeDropdownOpen ? 'rotate-180 text-[#FF6B00]' : ''}`}>
+                                    expand_more
+                                </span>
                             </button>
+
+                            {/* Scrollable Popup Menu (Max 4.5 items visible ~160px height) */}
+                            {isTimeDropdownOpen && (
+                                <div className="absolute left-0 right-0 top-full mt-1.5 bg-[#141414] border border-white/15 rounded-2xl shadow-2xl z-50 p-1.5 max-h-44 overflow-y-auto no-scrollbar grid grid-cols-2 gap-1 backdrop-blur-xl">
+                                    {TIME_SLOTS.map((slot) => {
+                                        const isSelected = formData.reservation_time === slot;
+                                        return (
+                                            <button
+                                                key={slot}
+                                                type="button"
+                                                onClick={() => handleSelectTime(slot)}
+                                                className={`px-3 py-2 rounded-xl text-xs font-bold text-left transition-all flex items-center justify-between ${
+                                                    isSelected
+                                                        ? 'bg-[#FF6B00] text-[#121212] font-black glow-orange-sm'
+                                                        : 'text-white/80 hover:bg-white/10 hover:text-white'
+                                                }`}
+                                            >
+                                                <span>{slot} WIB</span>
+                                                {isSelected && (
+                                                    <span className="material-symbols-outlined text-xs">check</span>
+                                                )}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                            )}
                         </div>
-                    </form>
-                </div>
+                    </div>
+
+                    <div>
+                        <label className="block font-bold text-xs text-[#E0E0E0]/80 mb-1.5 uppercase tracking-wider">
+                            Number of Guests (Pax)
+                        </label>
+                        <select
+                            name="pax"
+                            value={formData.pax}
+                            onChange={handleChange}
+                            className="w-full bg-[#121212] border border-white/10 rounded-xl p-3 text-sm text-white focus:border-[#FF6B00] focus:ring-1 focus:ring-[#FF6B00] outline-none transition-colors duration-300"
+                        >
+                            <option value="1">1 Orang</option>
+                            <option value="2">2 Orang</option>
+                            <option value="3">3 Orang</option>
+                            <option value="4">4 Orang</option>
+                            <option value="5">5 Orang</option>
+                            <option value="6">6 Orang</option>
+                            <option value="8">8 Orang (Grup)</option>
+                            <option value="10">10+ Orang (Acara/Grup Besar)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label className="block font-bold text-xs text-[#E0E0E0]/80 mb-1.5 uppercase tracking-wider">
+                            Special Request (Optional)
+                        </label>
+                        <textarea
+                            name="special_notes"
+                            rows="2"
+                            value={formData.special_notes}
+                            onChange={handleChange}
+                            placeholder="Misal: Meja area outdoor / rooftop, high chair, dll."
+                            className="w-full bg-[#121212] border border-white/10 rounded-xl p-3 text-sm text-white focus:border-[#FF6B00] focus:ring-1 focus:ring-[#FF6B00] outline-none transition-colors duration-300"
+                        />
+                    </div>
+
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="w-full py-4 rounded-xl bg-[#FF6B00] hover:bg-[#ff7b1a] text-[#121212] font-black text-sm uppercase tracking-wider transition-all duration-300 glow-orange transform hover:-translate-y-0.5 flex items-center justify-center gap-2 mt-2 disabled:opacity-50"
+                    >
+                        {loading ? (
+                            <span>Memproses...</span>
+                        ) : (
+                            <>
+                                <span>Lanjutkan ke WhatsApp</span>
+                                <span className="material-symbols-outlined text-base">arrow_forward</span>
+                            </>
+                        )}
+                    </button>
+                </form>
             </div>
         </div>
     );
