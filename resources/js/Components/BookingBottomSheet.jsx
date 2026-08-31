@@ -172,16 +172,48 @@ export default function BookingBottomSheet({ isOpen, onClose }) {
                             </div>
                             <div>
                                 <label className="block font-bold text-xs text-[#E0E0E0]/80 mb-1.5 uppercase tracking-wider">
-                                    Time
+                                    Time (Jam 24:00)
                                 </label>
-                                <input
-                                    type="time"
+                                <select
                                     name="reservation_time"
                                     required
                                     value={formData.reservation_time}
                                     onChange={handleChange}
                                     className="w-full bg-[#121212] border border-white/10 rounded-xl p-3 text-sm text-white focus:border-[#FF6B00] focus:ring-1 focus:ring-[#FF6B00] outline-none transition-colors duration-300"
-                                />
+                                >
+                                    <option value="" disabled>Pilih Jam (24-Jam)...</option>
+                                    <option value="09:00">09:00 WIB</option>
+                                    <option value="09:30">09:30 WIB</option>
+                                    <option value="10:00">10:00 WIB</option>
+                                    <option value="10:30">10:30 WIB</option>
+                                    <option value="11:00">11:00 WIB</option>
+                                    <option value="11:30">11:30 WIB</option>
+                                    <option value="12:00">12:00 WIB</option>
+                                    <option value="12:30">12:30 WIB</option>
+                                    <option value="13:00">13:00 WIB</option>
+                                    <option value="13:30">13:30 WIB</option>
+                                    <option value="14:00">14:00 WIB</option>
+                                    <option value="14:30">14:30 WIB</option>
+                                    <option value="15:00">15:00 WIB</option>
+                                    <option value="15:30">15:30 WIB</option>
+                                    <option value="16:00">16:00 WIB</option>
+                                    <option value="16:30">16:30 WIB</option>
+                                    <option value="17:00">17:00 WIB</option>
+                                    <option value="17:30">17:30 WIB</option>
+                                    <option value="18:00">18:00 WIB</option>
+                                    <option value="18:30">18:30 WIB</option>
+                                    <option value="19:00">19:00 WIB</option>
+                                    <option value="19:30">19:30 WIB</option>
+                                    <option value="20:00">20:00 WIB</option>
+                                    <option value="20:30">20:30 WIB</option>
+                                    <option value="21:00">21:00 WIB</option>
+                                    <option value="21:30">21:30 WIB</option>
+                                    <option value="22:00">22:00 WIB</option>
+                                    <option value="22:30">22:30 WIB</option>
+                                    <option value="23:00">23:00 WIB</option>
+                                    <option value="23:30">23:30 WIB</option>
+                                    <option value="00:00">00:00 WIB</option>
+                                </select>
                             </div>
                         </div>
 
