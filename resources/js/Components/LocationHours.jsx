@@ -5,7 +5,7 @@ export default function LocationHours({ onOpenBooking }) {
     const booking = useBooking();
     const handleBooking = onOpenBooking || booking.onOpenBooking;
 
-    const mapsUrl = "https://maps.google.com/?q=Jl.+Manunggal+XVII+No.2,+Lubang+Buaya,+Cipayung,+Jakarta+Timur";
+    const mapsUrl = "https://maps.app.goo.gl/affmVDezm9E46XVm8";
 
     const handleOpenMaps = () => {
         window.open(mapsUrl, '_blank', 'noopener,noreferrer');

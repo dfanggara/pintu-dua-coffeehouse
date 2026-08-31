@@ -151,7 +151,7 @@ export default function BookingBottomSheet({ isOpen, onClose }) {
                             Table Reservation
                         </span>
                         <h3 className="font-display text-2xl uppercase tracking-wider text-white">
-                            Reservasi Meja
+                            Reservation System
                         </h3>
                     </div>
                     <button
@@ -173,7 +173,7 @@ export default function BookingBottomSheet({ isOpen, onClose }) {
                             required
                             value={formData.customer_name}
                             onChange={handleChange}
-                            placeholder="Masukkan nama Anda"
+                            placeholder="Your Full Name"
                             className="w-full bg-[#121212] border border-white/10 rounded-xl p-3 text-sm text-white focus:border-[#FF6B00] focus:ring-1 focus:ring-[#FF6B00] outline-none transition-colors duration-300"
                         />
                     </div>
@@ -198,7 +198,7 @@ export default function BookingBottomSheet({ isOpen, onClose }) {
                         {/* Custom Sleek 24-Hour Time Dropdown */}
                         <div ref={timeDropdownRef} className="relative">
                             <label className="block font-bold text-xs text-[#E0E0E0]/80 mb-1.5 uppercase tracking-wider">
-                                Time (24 Jam)
+                                Time
                             </label>
 
                             <button
@@ -209,7 +209,7 @@ export default function BookingBottomSheet({ isOpen, onClose }) {
                                 }`}
                             >
                                 <span className={formData.reservation_time ? 'font-bold text-white' : 'text-white/40'}>
-                                    {formData.reservation_time ? `${formData.reservation_time} WIB` : 'Pilih Jam...'}
+                                    {formData.reservation_time ? `${formData.reservation_time} WIB` : 'Select Time...'}
                                 </span>
                                 <span className={`material-symbols-outlined text-sm text-white/50 transition-transform duration-200 ${isTimeDropdownOpen ? 'rotate-180 text-[#FF6B00]' : ''}`}>
                                     expand_more
@@ -254,14 +254,14 @@ export default function BookingBottomSheet({ isOpen, onClose }) {
                             onChange={handleChange}
                             className="w-full bg-[#121212] border border-white/10 rounded-xl p-3 text-sm text-white focus:border-[#FF6B00] focus:ring-1 focus:ring-[#FF6B00] outline-none transition-colors duration-300"
                         >
-                            <option value="1">1 Orang</option>
-                            <option value="2">2 Orang</option>
-                            <option value="3">3 Orang</option>
-                            <option value="4">4 Orang</option>
-                            <option value="5">5 Orang</option>
-                            <option value="6">6 Orang</option>
-                            <option value="8">8 Orang (Grup)</option>
-                            <option value="10">10+ Orang (Acara/Grup Besar)</option>
+                            <option value="1">1 Person</option>
+                            <option value="2">2 Persons</option>
+                            <option value="3">3 Persons</option>
+                            <option value="4">4 Persons</option>
+                            <option value="5">5 Persons</option>
+                            <option value="6">6 Persons</option>
+                            <option value="8">8 Persons (Group)</option>
+                            <option value="10">10+ Persons (Event/Big Group)</option>
                         </select>
                     </div>
 
@@ -274,7 +274,7 @@ export default function BookingBottomSheet({ isOpen, onClose }) {
                             rows="2"
                             value={formData.special_notes}
                             onChange={handleChange}
-                            placeholder="Misal: Meja area outdoor / rooftop, high chair, dll."
+                            placeholder="e.g. indoor, smoking indoor, working space, rooftop..."
                             className="w-full bg-[#121212] border border-white/10 rounded-xl p-3 text-sm text-white focus:border-[#FF6B00] focus:ring-1 focus:ring-[#FF6B00] outline-none transition-colors duration-300"
                         />
                     </div>

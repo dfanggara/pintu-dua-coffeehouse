@@ -60,10 +60,15 @@ export default function Footer() {
                         <h4 className="font-bold text-xs uppercase tracking-wider text-[#FF6B00] mb-3">
                             Customer Center
                         </h4>
-                        <div className="flex items-start gap-2.5 text-xs text-[#E0E0E0]/80">
-                            <span className="material-symbols-outlined text-base text-[#FF6B00] shrink-0 mt-0.5">location_on</span>
-                            <span>Jl. Manunggal XVII No.2, RT.4/RW.11, Lubang Buaya, Kec. Cipayung, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13810</span>
-                        </div>
+                        <a
+                            href="https://maps.app.goo.gl/affmVDezm9E46XVm8"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-start gap-2.5 text-xs text-[#E0E0E0]/80 hover:text-white transition-colors group"
+                        >
+                            <span className="material-symbols-outlined text-base text-[#FF6B00] shrink-0 mt-0.5 group-hover:scale-110 transition-transform">location_on</span>
+                            <span className="group-hover:underline">Jl. Manunggal XVII No.2, RT.4/RW.11, Lubang Buaya, Kec. Cipayung, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13810</span>
+                        </a>
                         <div className="flex items-center gap-2.5 text-xs text-[#E0E0E0]/80">
                             <span className="material-symbols-outlined text-base text-[#FF6B00] shrink-0">call</span>
                             <span className="font-semibold text-white">0812-8569-8689</span>
