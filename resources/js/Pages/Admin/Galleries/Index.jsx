@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Head, Link, useForm, router } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import ConfirmDeleteModal from '@/Components/ConfirmDeleteModal';
 
 export default function GalleriesIndex({ galleries = {}, filters = {} }) {
     const galleryItems = Array.isArray(galleries) ? galleries : (galleries?.data || []);
@@ -8,8 +9,10 @@ export default function GalleriesIndex({ galleries = {}, filters = {} }) {
     const totalItems = galleries?.total ?? galleryItems.length;
 
     const [searchTerm, setSearchTerm] = useState(filters.search || '');
+    const [selectedCategory, setSelectedCategory] = useState(filters.category || '');
     const [editingGallery, setEditingGallery] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
+    const [deleteTarget, setDeleteTarget] = useState(null);
     const fileInputRef = useRef(null);
 
     const { data, setData, reset, errors, processing } = useForm({
@@ -24,8 +27,19 @@ export default function GalleriesIndex({ galleries = {}, filters = {} }) {
     });
 
     const handleSearch = (e) => {
-        e.preventDefault();
-        router.get(route('admin.galleries.index'), { search: searchTerm }, { preserveState: true });
+        if (e) e.preventDefault();
+        router.get(route('admin.galleries.index'), {
+            search: searchTerm,
+            category: selectedCategory,
+        }, { preserveState: true });
+    };
+
+    const handleCategoryFilterChange = (catSlug) => {
+        setSelectedCategory(catSlug);
+        router.get(route('admin.galleries.index'), {
+            search: searchTerm,
+            category: catSlug,
+        }, { preserveState: true });
     };
 
     const handleImageChange = (e) => {
@@ -97,9 +111,7 @@ export default function GalleriesIndex({ galleries = {}, filters = {} }) {
     };
 
     const handleDelete = (code) => {
-        if (confirm('Yakin ingin menghapus Foto Galeri ini?')) {
-            router.delete(route('admin.galleries.destroy', code));
-        }
+        setDeleteTarget(code);
     };
 
     return (
@@ -240,9 +252,19 @@ export default function GalleriesIndex({ galleries = {}, filters = {} }) {
 
                         {/* Right Column: Gallery List Table */}
                         <div className="lg:col-span-7 bg-[#181818] rounded-2xl border border-white/10 overflow-hidden shadow-2xl space-y-4">
-                            {/* Search Form */}
+                            {/* Search & Category Filter Form */}
                             <div className="p-4 border-b border-white/10">
-                                <form onSubmit={handleSearch} className="flex gap-2">
+                                <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-2">
+                                    <select
+                                        value={selectedCategory}
+                                        onChange={(e) => handleCategoryFilterChange(e.target.value)}
+                                        className="bg-[#121212] border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:border-[#FF6B00] focus:ring-1 focus:ring-[#FF6B00] font-medium"
+                                    >
+                                        <option value="">Semua Kategori Galeri</option>
+                                        <option value="vibe">Cafe Vibe & Suasana</option>
+                                        <option value="community">Community & Kebersamaan</option>
+                                    </select>
+
                                     <input
                                         type="text"
                                         placeholder="Cari foto galeri..."
@@ -250,7 +272,22 @@ export default function GalleriesIndex({ galleries = {}, filters = {} }) {
                                         onChange={(e) => setSearchTerm(e.target.value)}
                                         className="flex-1 bg-[#121212] border border-white/10 rounded-xl px-3.5 py-2 text-xs text-white placeholder-[#E0E0E0]/40 focus:border-[#FF6B00] focus:ring-1 focus:ring-[#FF6B00]"
                                     />
-                                    <button type="submit" className="px-3.5 py-2 bg-[#FF6B00] text-[#121212] rounded-xl font-bold text-xs">Cari</button>
+                                    <button type="submit" className="px-4 py-2 bg-[#FF6B00] text-[#121212] rounded-xl font-bold text-xs hover:bg-[#ff7b1a] transition-colors">
+                                        Cari
+                                    </button>
+                                    {(searchTerm || selectedCategory) && (
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                setSearchTerm('');
+                                                setSelectedCategory('');
+                                                router.get(route('admin.galleries.index'), {}, { preserveState: true });
+                                            }}
+                                            className="px-3 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl font-bold text-xs transition-colors"
+                                        >
+                                            Reset Filter
+                                        </button>
+                                    )}
                                 </form>
                             </div>
 
@@ -338,29 +375,47 @@ export default function GalleriesIndex({ galleries = {}, filters = {} }) {
                                 </table>
                             </div>
 
-                            {/* Pagination Links */}
+                            {/* Pagination Links (Limited to 8 Items per Page) */}
                             {paginationLinks.length > 3 && (
-                                <div className="p-4 border-t border-white/10 flex justify-center items-center gap-1.5">
-                                    {paginationLinks.map((link, idx) => (
-                                        <Link
-                                            key={idx}
-                                            href={link.url || '#'}
-                                            dangerouslySetInnerHTML={{ __html: link.label }}
-                                            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${
-                                                link.active
-                                                    ? 'bg-[#FF6B00] text-[#121212]'
-                                                    : link.url
-                                                        ? 'bg-white/5 text-white hover:bg-white/10'
-                                                        : 'text-white/30 cursor-not-allowed'
-                                            }`}
-                                        />
-                                    ))}
+                                <div className="p-4 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-3">
+                                    <div className="text-xs text-[#E0E0E0]/60">
+                                        Menampilkan <span className="font-bold text-white">{galleries.from || 0}</span> - <span className="font-bold text-white">{galleries.to || 0}</span> dari <span className="font-bold text-[#FF6B00]">{galleries.total || 0}</span> foto
+                                    </div>
+                                    <div className="flex items-center gap-1.5 flex-wrap">
+                                        {paginationLinks.map((link, idx) => (
+                                            <Link
+                                                key={idx}
+                                                href={link.url || '#'}
+                                                dangerouslySetInnerHTML={{ __html: link.label }}
+                                                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                                                    link.active
+                                                        ? 'bg-[#FF6B00] text-[#121212] shadow-[0_0_10px_rgba(255,107,0,0.4)]'
+                                                        : link.url
+                                                            ? 'bg-white/5 text-white hover:bg-white/15'
+                                                            : 'text-white/30 cursor-not-allowed bg-white/5'
+                                                }`}
+                                            />
+                                        ))}
+                                    </div>
                                 </div>
                             )}
                         </div>
                     </div>
                 </div>
             </div>
+
+            {/* Custom Confirm Delete Modal */}
+            <ConfirmDeleteModal
+                isOpen={Boolean(deleteTarget)}
+                title="Hapus Foto Galeri"
+                message={`Apakah Anda yakin ingin menghapus foto galeri (${deleteTarget}) ini secara permanen dari database?`}
+                onConfirm={() => {
+                    if (deleteTarget) {
+                        router.delete(route('admin.galleries.destroy', deleteTarget));
+                    }
+                }}
+                onClose={() => setDeleteTarget(null)}
+            />
         </AuthenticatedLayout>
     );
 }

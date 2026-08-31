@@ -93,7 +93,7 @@ export default function LocationHours({ onOpenBooking }) {
                     {/* Real Embedded Google Maps Iframe */}
                     <iframe
                         title="Pintu Dua Coffeehouse Location Map"
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.7336773956637!2d106.9038888!3d-6.2986111!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f33b1e7c5b6b%3A0x6b4f7e2d9b6a123!2sJl.%20Manunggal%20XVII%20No.2%2C%20RT.4%2FRW.11%2C%20Lubang%20Buaya%2C%20Kec.%20Cipayung%2C%20Kota%20Jakarta%20Timur%2C%20Daerah%20Khusus%20Ibukota%20Jakarta%2013810!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid"
+                        src="https://maps.google.com/maps?q=Pintu+Dua+Coffeehouse+Jl.+Manunggal+XVII+No.2+Lubang+Buaya+Cipayung+Jakarta+Timur&t=&z=16&ie=UTF8&iwloc=&output=embed"
                         width="100%"
                         height="100%"
                         style={{ border: 0, filter: 'invert(90%) hue-rotate(180deg) contrast(1.2)' }}

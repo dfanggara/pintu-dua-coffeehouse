@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Head, Link, useForm, router } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import ConfirmDeleteModal from '@/Components/ConfirmDeleteModal';
 
 export default function HeroBannersIndex({ heroBanners = {}, banners = {}, filters = {} }) {
     const rawData = heroBanners?.data ? heroBanners : (banners?.data ? banners : (Array.isArray(heroBanners) ? heroBanners : (Array.isArray(banners) ? banners : {})));
@@ -11,6 +12,7 @@ export default function HeroBannersIndex({ heroBanners = {}, banners = {}, filte
     const [searchTerm, setSearchTerm] = useState(filters.search || '');
     const [editingBanner, setEditingBanner] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
+    const [deleteTarget, setDeleteTarget] = useState(null);
     const fileInputRef = useRef(null);
 
     const { data, setData, reset, errors, processing } = useForm({
@@ -104,9 +106,7 @@ export default function HeroBannersIndex({ heroBanners = {}, banners = {}, filte
     };
 
     const handleDelete = (code) => {
-        if (confirm('Yakin ingin menghapus Hero Banner ini?')) {
-            router.delete(route('admin.hero-banners.destroy', code));
-        }
+        setDeleteTarget(code);
     };
 
     return (
@@ -358,6 +358,19 @@ export default function HeroBannersIndex({ heroBanners = {}, banners = {}, filte
                     </div>
                 </div>
             </div>
+
+            {/* Custom Confirm Delete Modal */}
+            <ConfirmDeleteModal
+                isOpen={Boolean(deleteTarget)}
+                title="Hapus Hero Banner"
+                message={`Apakah Anda yakin ingin menghapus Hero Banner (${deleteTarget}) ini secara permanen dari database?`}
+                onConfirm={() => {
+                    if (deleteTarget) {
+                        router.delete(route('admin.hero-banners.destroy', deleteTarget));
+                    }
+                }}
+                onClose={() => setDeleteTarget(null)}
+            />
         </AuthenticatedLayout>
     );
 }

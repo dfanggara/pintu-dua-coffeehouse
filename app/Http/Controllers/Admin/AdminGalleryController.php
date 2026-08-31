@@ -16,22 +16,29 @@ class AdminGalleryController extends Controller
     public function index(Request $request)
     {
         $search = $request->query('search');
+        $category = $request->query('category');
 
         $galleries = Gallery::query()
             ->when($search, function ($query, $search) {
-                $query->where('title', 'like', "%{$search}%")
-                    ->orWhere('category', 'like', "%{$search}%")
-                    ->orWhere('description', 'like', "%{$search}%");
+                $query->where(function ($q) use ($search) {
+                    $q->where('title', 'like', "%{$search}%")
+                        ->orWhere('category', 'like', "%{$search}%")
+                        ->orWhere('description', 'like', "%{$search}%");
+                });
+            })
+            ->when($category, function ($query, $category) {
+                $query->where('category', $category);
             })
             ->orderBy('sort_order', 'asc')
             ->latest()
-            ->paginate(15)
+            ->paginate(8)
             ->withQueryString();
 
         return Inertia::render('Admin/Galleries/Index', [
             'galleries' => $galleries,
             'filters' => [
                 'search' => $search ?? '',
+                'category' => $category ?? '',
             ],
         ]);
     }

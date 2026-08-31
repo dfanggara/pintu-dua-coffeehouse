@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Head, Link, router } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import ConfirmDeleteModal from '@/Components/ConfirmDeleteModal';
 
 export default function ReservationsIndex({ reservations = {}, filters = {} }) {
     const items = Array.isArray(reservations) ? reservations : (reservations?.data || []);
@@ -8,10 +9,42 @@ export default function ReservationsIndex({ reservations = {}, filters = {} }) {
     const totalItems = reservations?.total ?? items.length;
 
     const [searchTerm, setSearchTerm] = useState(filters.search || '');
+    const [selectedStatus, setSelectedStatus] = useState(filters.status || '');
+    const [selectedMonth, setSelectedMonth] = useState(filters.month || '');
+    const [deleteTarget, setDeleteTarget] = useState(null);
 
-    const handleSearch = (e) => {
-        e.preventDefault();
-        router.get(route('admin.reservations.index'), { search: searchTerm }, { preserveState: true });
+    const handleFilterSubmit = (e) => {
+        if (e) e.preventDefault();
+        router.get(route('admin.reservations.index'), {
+            search: searchTerm,
+            status: selectedStatus,
+            month: selectedMonth,
+        }, { preserveState: true });
+    };
+
+    const handleStatusFilterChange = (status) => {
+        setSelectedStatus(status);
+        router.get(route('admin.reservations.index'), {
+            search: searchTerm,
+            status: status,
+            month: selectedMonth,
+        }, { preserveState: true });
+    };
+
+    const handleMonthFilterChange = (month) => {
+        setSelectedMonth(month);
+        router.get(route('admin.reservations.index'), {
+            search: searchTerm,
+            status: selectedStatus,
+            month: month,
+        }, { preserveState: true });
+    };
+
+    const resetFilters = () => {
+        setSearchTerm('');
+        setSelectedStatus('');
+        setSelectedMonth('');
+        router.get(route('admin.reservations.index'), {}, { preserveState: true });
     };
 
     const handleStatusChange = (bookingCode, newStatus) => {
@@ -21,9 +54,7 @@ export default function ReservationsIndex({ reservations = {}, filters = {} }) {
     };
 
     const handleDeleteReservation = (bookingCode) => {
-        if (confirm(`Apakah Anda yakin ingin menghapus reservasi ${bookingCode}?`)) {
-            router.delete(route('admin.reservations.destroy', bookingCode));
-        }
+        setDeleteTarget(bookingCode);
     };
 
     return (
@@ -35,7 +66,7 @@ export default function ReservationsIndex({ reservations = {}, filters = {} }) {
                             Reservations Management
                         </h2>
                         <p className="text-xs text-[#E0E0E0]/60">
-                            Kelola daftar pemesanan meja pelanggan Pintu Dua Coffeehouse
+                            Kelola daftar pemesanan meja (Maksimal 6 data terbaru per halaman)
                         </p>
                     </div>
 
@@ -52,55 +83,75 @@ export default function ReservationsIndex({ reservations = {}, filters = {} }) {
 
             <div className="py-8">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-                    {/* Search & Counter Summary */}
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-center">
-                        <form onSubmit={handleSearch} className="lg:col-span-6 flex gap-2">
-                            <div className="relative flex-1">
-                                <span className="material-symbols-outlined absolute left-3.5 top-2.5 text-[#E0E0E0]/50 text-xl">search</span>
+                    {/* Search & Filter Controls */}
+                    <div className="bg-[#181818] p-4 rounded-2xl border border-white/10 shadow-xl space-y-3">
+                        <form onSubmit={handleFilterSubmit} className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
+                            {/* Text Search Input */}
+                            <div className="sm:col-span-4 relative">
+                                <span className="material-symbols-outlined absolute left-3.5 top-2.5 text-[#E0E0E0]/50 text-base">search</span>
                                 <input
                                     type="text"
-                                    placeholder="Cari berdasarkan nama, kode booking, atau tanggal..."
+                                    placeholder="Cari nama, kode, tanggal..."
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
-                                    className="w-full bg-[#181818] border border-white/10 rounded-xl pl-11 pr-4 py-2.5 text-xs text-white placeholder-[#E0E0E0]/40 focus:border-[#FF6B00] focus:ring-1 focus:ring-[#FF6B00]"
+                                    className="w-full bg-[#121212] border border-white/10 rounded-xl pl-10 pr-3 py-2 text-xs text-white placeholder-[#E0E0E0]/40 focus:border-[#FF6B00] focus:ring-1 focus:ring-[#FF6B00]"
                                 />
                             </div>
-                            <button
-                                type="submit"
-                                className="px-4 py-2.5 bg-[#FF6B00] text-[#121212] rounded-xl font-bold text-xs uppercase tracking-wider hover:opacity-90 transition-opacity"
-                            >
-                                Cari
-                            </button>
-                        </form>
 
-                        <div className="lg:col-span-6 grid grid-cols-3 gap-3">
-                            <div className="bg-[#181818] p-3 rounded-xl border border-white/10 text-center">
-                                <p className="text-[10px] font-semibold text-[#E0E0E0]/60 uppercase">Total Data</p>
-                                <p className="text-xl font-black text-white">{totalItems}</p>
+                            {/* Status Filter */}
+                            <div className="sm:col-span-3">
+                                <select
+                                    value={selectedStatus}
+                                    onChange={(e) => handleStatusFilterChange(e.target.value)}
+                                    className="w-full bg-[#121212] border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:border-[#FF6B00] focus:ring-1 focus:ring-[#FF6B00] font-medium"
+                                >
+                                    <option value="">Semua Status</option>
+                                    <option value="pending">Pending (Menunggu)</option>
+                                    <option value="confirmed">Confirmed (Disetujui)</option>
+                                    <option value="cancelled">Cancelled (Batal)</option>
+                                </select>
                             </div>
-                            <div className="bg-[#181818] p-3 rounded-xl border border-white/10 text-center">
-                                <p className="text-[10px] font-semibold text-yellow-400 uppercase">Pending</p>
-                                <p className="text-xl font-black text-yellow-400">
-                                    {items.filter(r => r.status === 'pending').length}
-                                </p>
+
+                            {/* Month Filter Input */}
+                            <div className="sm:col-span-3">
+                                <input
+                                    type="month"
+                                    value={selectedMonth}
+                                    onChange={(e) => handleMonthFilterChange(e.target.value)}
+                                    className="w-full bg-[#121212] border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:border-[#FF6B00] focus:ring-1 focus:ring-[#FF6B00]"
+                                />
                             </div>
-                            <div className="bg-[#181818] p-3 rounded-xl border border-white/10 text-center">
-                                <p className="text-[10px] font-semibold text-emerald-400 uppercase">Confirmed</p>
-                                <p className="text-xl font-black text-emerald-400">
-                                    {items.filter(r => r.status === 'confirmed').length}
-                                </p>
+
+                            {/* Filter Buttons */}
+                            <div className="sm:col-span-2 flex gap-1.5">
+                                <button
+                                    type="submit"
+                                    className="flex-1 py-2 bg-[#FF6B00] text-[#121212] rounded-xl font-bold text-xs uppercase tracking-wider hover:opacity-90 transition-opacity"
+                                >
+                                    Filter
+                                </button>
+                                {(searchTerm || selectedStatus || selectedMonth) && (
+                                    <button
+                                        type="button"
+                                        onClick={resetFilters}
+                                        className="px-3 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl font-bold text-xs transition-colors"
+                                        title="Reset Filter"
+                                    >
+                                        Reset
+                                    </button>
+                                )}
                             </div>
-                        </div>
+                        </form>
                     </div>
 
                     {/* Reservations Data Table */}
                     <div className="bg-[#181818] rounded-2xl border border-white/10 overflow-hidden shadow-2xl">
-                        <div className="p-5 border-b border-white/10 flex justify-between items-center">
+                        <div className="p-5 border-b border-white/10 flex justify-between items-center bg-[#141414]">
                             <h3 className="font-bold text-sm text-white uppercase tracking-wider">
-                                Daftar Masuk Reservasi
+                                Daftar Masuk Reservasi (Terbaru)
                             </h3>
                             <span className="text-xs text-[#E0E0E0]/60">
-                                Menampilkan {items.length} dari total {totalItems} data
+                                Total {totalItems} data reservasi
                             </span>
                         </div>
 
@@ -121,7 +172,7 @@ export default function ReservationsIndex({ reservations = {}, filters = {} }) {
                                     {items.length === 0 ? (
                                         <tr>
                                             <td colSpan="7" className="p-8 text-center text-[#E0E0E0]/50 italic">
-                                                Belum ada data reservasi yang sesuai.
+                                                Belum ada data reservasi yang sesuai filter.
                                             </td>
                                         </tr>
                                     ) : (
@@ -135,12 +186,12 @@ export default function ReservationsIndex({ reservations = {}, filters = {} }) {
                                                 <td className="p-4 font-bold text-white">
                                                     {res.customer_name}
                                                 </td>
-                                                <td className="p-4">
+                                                <td className="p-4 font-semibold text-white">
                                                     {res.pax} orang
                                                 </td>
                                                 <td className="p-4">
-                                                    <div>{res.reservation_date}</div>
-                                                    <div className="text-[#FF6B00] font-semibold">{res.reservation_time}</div>
+                                                    <div className="font-bold text-white">{res.reservation_date}</div>
+                                                    <div className="text-[#FF6B00] font-semibold">{res.reservation_time} WIB</div>
                                                 </td>
                                                 <td className="p-4 max-w-xs truncate text-[#E0E0E0]/70">
                                                     {res.special_notes || '-'}
@@ -192,28 +243,46 @@ export default function ReservationsIndex({ reservations = {}, filters = {} }) {
                             </table>
                         </div>
 
-                        {/* Pagination Bar */}
+                        {/* Pagination Links (Limited to 6 Items per Page) */}
                         {paginationLinks.length > 3 && (
-                            <div className="p-4 border-t border-white/10 flex justify-center items-center gap-1.5">
-                                {paginationLinks.map((link, idx) => (
-                                    <Link
-                                        key={idx}
-                                        href={link.url || '#'}
-                                        dangerouslySetInnerHTML={{ __html: link.label }}
-                                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${
-                                            link.active
-                                                ? 'bg-[#FF6B00] text-[#121212]'
-                                                : link.url
-                                                    ? 'bg-white/5 text-white hover:bg-white/10'
-                                                    : 'text-white/30 cursor-not-allowed'
-                                        }`}
-                                    />
-                                ))}
+                            <div className="p-4 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-3 bg-[#141414]">
+                                <div className="text-xs text-[#E0E0E0]/60">
+                                    Menampilkan <span className="font-bold text-white">{reservations.from || 0}</span> - <span className="font-bold text-white">{reservations.to || 0}</span> dari <span className="font-bold text-[#FF6B00]">{reservations.total || 0}</span> reservasi
+                                </div>
+                                <div className="flex items-center gap-1.5 flex-wrap">
+                                    {paginationLinks.map((link, idx) => (
+                                        <Link
+                                            key={idx}
+                                            href={link.url || '#'}
+                                            dangerouslySetInnerHTML={{ __html: link.label }}
+                                            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                                                link.active
+                                                    ? 'bg-[#FF6B00] text-[#121212] shadow-[0_0_10px_rgba(255,107,0,0.4)]'
+                                                    : link.url
+                                                        ? 'bg-white/5 text-white hover:bg-white/15'
+                                                        : 'text-white/30 cursor-not-allowed bg-white/5'
+                                            }`}
+                                        />
+                                    ))}
+                                </div>
                             </div>
                         )}
                     </div>
                 </div>
             </div>
+
+            {/* Custom Confirm Delete Modal */}
+            <ConfirmDeleteModal
+                isOpen={Boolean(deleteTarget)}
+                title="Hapus Data Reservasi"
+                message={`Apakah Anda yakin ingin menghapus data reservasi (${deleteTarget}) ini secara permanen dari database?`}
+                onConfirm={() => {
+                    if (deleteTarget) {
+                        router.delete(route('admin.reservations.destroy', deleteTarget));
+                    }
+                }}
+                onClose={() => setDeleteTarget(null)}
+            />
         </AuthenticatedLayout>
     );
 }

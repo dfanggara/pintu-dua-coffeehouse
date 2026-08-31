@@ -20,7 +20,11 @@ class ImageService
     public static function compressAndStore(UploadedFile $file, string $directory = 'uploads', int $maxWidth = 1920, int $quality = 85): string
     {
         $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-        $filename = Str::slug($filename) . '-' . time() . '.webp';
+        $slugName = Str::slug($filename);
+        if (empty($slugName)) {
+            $slugName = 'img';
+        }
+        $filename = $slugName . '-' . time() . '-' . Str::random(4) . '.webp';
         $relativeStoragePath = $directory . '/' . $filename;
         $fullDestinationPath = storage_path('app/public/' . $relativeStoragePath);
 

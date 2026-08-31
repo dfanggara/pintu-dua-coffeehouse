@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Head, Link, useForm, router } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import ConfirmDeleteModal from '@/Components/ConfirmDeleteModal';
 
 export default function MenusIndex({ menus = {}, categories = [], filters = {} }) {
     const menuItems = Array.isArray(menus) ? menus : (menus?.data || []);
@@ -8,16 +9,31 @@ export default function MenusIndex({ menus = {}, categories = [], filters = {} }
     const totalItems = menus?.total ?? menuItems.length;
 
     const [searchTerm, setSearchTerm] = useState(filters.search || '');
+    const [selectedCategory, setSelectedCategory] = useState(filters.category || '');
     const [activeTab, setActiveTab] = useState('menus'); // 'menus' or 'categories'
     const [editingMenu, setEditingMenu] = useState(null);
     const [editingCategory, setEditingCategory] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
 
+    const [deleteMenuTarget, setDeleteMenuTarget] = useState(null);
+    const [deleteCatTarget, setDeleteCatTarget] = useState(null);
+
     const fileInputRef = useRef(null);
 
     const handleSearch = (e) => {
-        e.preventDefault();
-        router.get(route('admin.menus.index'), { search: searchTerm }, { preserveState: true });
+        if (e) e.preventDefault();
+        router.get(route('admin.menus.index'), {
+            search: searchTerm,
+            category: selectedCategory,
+        }, { preserveState: true });
+    };
+
+    const handleCategoryFilterChange = (catSlug) => {
+        setSelectedCategory(catSlug);
+        router.get(route('admin.menus.index'), {
+            search: searchTerm,
+            category: catSlug,
+        }, { preserveState: true });
     };
 
     // Helper to generate SKU preview on frontend based on category slug & menu count
@@ -121,8 +137,7 @@ export default function MenusIndex({ menus = {}, categories = [], filters = {} }
                 });
             }
         } else {
-            // ADDING NEW MENU
-            payload.sku = menuData.sku || generateSkuPreview(menuData.category_slug);
+            // ADDING NEW MENU (Omit SKU so backend generateAutoSku creates guaranteed unique SKU)
             if (menuData.image instanceof File) {
                 payload.image = menuData.image;
             }
@@ -156,9 +171,7 @@ export default function MenusIndex({ menus = {}, categories = [], filters = {} }
     const handleEditMenuClick = handleMenuEdit;
 
     const handleMenuDelete = (sku) => {
-        if (confirm('Yakin ingin menghapus menu ini dari database?')) {
-            router.delete(route('admin.menus.destroy', sku));
-        }
+        setDeleteMenuTarget(sku);
     };
 
     // Category CRUD Handlers
@@ -191,9 +204,7 @@ export default function MenusIndex({ menus = {}, categories = [], filters = {} }
     };
 
     const handleCategoryDelete = (slug) => {
-        if (confirm('Yakin ingin menghapus kategori ini beserta menu di dalamnya?')) {
-            router.delete(route('admin.categories.destroy', slug));
-        }
+        setDeleteCatTarget(slug);
     };
 
     const cancelCategoryEdit = () => {
@@ -270,6 +281,16 @@ export default function MenusIndex({ menus = {}, categories = [], filters = {} }
                                 </div>
 
                                 <form onSubmit={handleMenuSubmit} className="space-y-3 text-xs">
+                                    {Object.keys(menuErrors).length > 0 && (
+                                        <div className="p-3 bg-rose-500/10 border border-rose-500/30 rounded-xl text-rose-400 text-xs">
+                                            <p className="font-bold">Gagal menyimpan menu:</p>
+                                            <ul className="list-disc list-inside mt-1 space-y-0.5 text-[11px]">
+                                                {Object.entries(menuErrors).map(([key, msg]) => (
+                                                    <li key={key}>{msg}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
                                     {/* Auto-Generated SKU Preview Field */}
                                     <div>
                                         <div className="flex justify-between items-center mb-1">
@@ -401,9 +422,25 @@ export default function MenusIndex({ menus = {}, categories = [], filters = {} }
 
                             {/* Right Column: Menu List Table */}
                             <div className="lg:col-span-7 bg-[#181818] rounded-2xl border border-white/10 overflow-hidden shadow-2xl space-y-4">
-                                {/* Search Form */}
+                                {/* Search & Category Filter Form */}
                                 <div className="p-4 border-b border-white/10">
-                                    <form onSubmit={handleSearch} className="flex gap-2">
+                                    <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-2">
+                                        <select
+                                            value={selectedCategory}
+                                            onChange={(e) => handleCategoryFilterChange(e.target.value)}
+                                            className="bg-[#121212] border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:border-[#FF6B00] focus:ring-1 focus:ring-[#FF6B00] font-medium"
+                                        >
+                                            <option value="">Semua Kategori</option>
+                                            <option value="signature" className="font-bold text-[#FF6B00]">
+                                                ⭐ Signature (Highlight Menu)
+                                            </option>
+                                            {categories.map((cat) => (
+                                                <option key={cat.slug} value={cat.slug}>
+                                                    {cat.name} ({cat.type === 'food' ? 'Food' : 'Drink'})
+                                                </option>
+                                            ))}
+                                        </select>
+
                                         <input
                                             type="text"
                                             placeholder="Cari berdasarkan nama atau SKU menu..."
@@ -411,7 +448,22 @@ export default function MenusIndex({ menus = {}, categories = [], filters = {} }
                                             onChange={(e) => setSearchTerm(e.target.value)}
                                             className="flex-1 bg-[#121212] border border-white/10 rounded-xl px-3.5 py-2 text-xs text-white placeholder-[#E0E0E0]/40 focus:border-[#FF6B00] focus:ring-1 focus:ring-[#FF6B00]"
                                         />
-                                        <button type="submit" className="px-3.5 py-2 bg-[#FF6B00] text-[#121212] rounded-xl font-bold text-xs">Cari</button>
+                                        <button type="submit" className="px-4 py-2 bg-[#FF6B00] text-[#121212] rounded-xl font-bold text-xs hover:bg-[#ff7b1a] transition-colors">
+                                            Cari
+                                        </button>
+                                        {(searchTerm || selectedCategory) && (
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    setSearchTerm('');
+                                                    setSelectedCategory('');
+                                                    router.get(route('admin.menus.index'), {}, { preserveState: true });
+                                                }}
+                                                className="px-3 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl font-bold text-xs transition-colors"
+                                            >
+                                                Reset Filter
+                                            </button>
+                                        )}
                                     </form>
                                 </div>
 
@@ -502,23 +554,28 @@ export default function MenusIndex({ menus = {}, categories = [], filters = {} }
                                     </table>
                                 </div>
 
-                                {/* Pagination Links */}
+                                {/* Pagination Links (Limited to 8 Items per Page) */}
                                 {paginationLinks.length > 3 && (
-                                    <div className="p-4 border-t border-white/10 flex justify-center items-center gap-1.5">
-                                        {paginationLinks.map((link, idx) => (
-                                            <Link
-                                                key={idx}
-                                                href={link.url || '#'}
-                                                dangerouslySetInnerHTML={{ __html: link.label }}
-                                                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${
-                                                    link.active
-                                                        ? 'bg-[#FF6B00] text-[#121212]'
-                                                        : link.url
-                                                            ? 'bg-white/5 text-white hover:bg-white/10'
-                                                            : 'text-white/30 cursor-not-allowed'
-                                                }`}
-                                            />
-                                        ))}
+                                    <div className="p-4 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-3">
+                                        <div className="text-xs text-[#E0E0E0]/60">
+                                            Menampilkan <span className="font-bold text-white">{menus.from || 0}</span> - <span className="font-bold text-white">{menus.to || 0}</span> dari <span className="font-bold text-[#FF6B00]">{menus.total || 0}</span> menu
+                                        </div>
+                                        <div className="flex items-center gap-1.5 flex-wrap">
+                                            {paginationLinks.map((link, idx) => (
+                                                <Link
+                                                    key={idx}
+                                                    href={link.url || '#'}
+                                                    dangerouslySetInnerHTML={{ __html: link.label }}
+                                                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                                                        link.active
+                                                            ? 'bg-[#FF6B00] text-[#121212] shadow-[0_0_10px_rgba(255,107,0,0.4)]'
+                                                            : link.url
+                                                                ? 'bg-white/5 text-white hover:bg-white/15'
+                                                                : 'text-white/30 cursor-not-allowed bg-white/5'
+                                                    }`}
+                                                />
+                                            ))}
+                                        </div>
                                     </div>
                                 )}
                             </div>
@@ -568,7 +625,7 @@ export default function MenusIndex({ menus = {}, categories = [], filters = {} }
                                             </select>
                                         </div>
                                         <div>
-                                            <label className="block font-bold text-[#E0E0E0]/80 mb-1 uppercase">Slug (Primary Key)</label>
+                                            <label className="block font-bold text-[#E0E0E0]/80 mb-1 uppercase">Auto Slug </label>
                                             <input
                                                 type="text"
                                                 disabled={Boolean(editingCategory)}
@@ -579,17 +636,6 @@ export default function MenusIndex({ menus = {}, categories = [], filters = {} }
                                             />
                                             {catErrors.slug && <p className="text-rose-400 text-[10px] mt-1">{catErrors.slug}</p>}
                                         </div>
-                                    </div>
-
-                                    <div>
-                                        <label className="block font-bold text-[#E0E0E0]/80 mb-1 uppercase">Deskripsi Kategori</label>
-                                        <textarea
-                                            rows="2"
-                                            value={catData.description}
-                                            onChange={e => setCatData('description', e.target.value)}
-                                            placeholder="Deskripsi singkat mengenai kategori"
-                                            className="w-full bg-[#121212] border border-white/10 rounded-xl p-2.5 text-white focus:border-[#FF6B00] outline-none"
-                                        />
                                     </div>
 
                                     <div className="pt-3">
@@ -681,6 +727,32 @@ export default function MenusIndex({ menus = {}, categories = [], filters = {} }
                     )}
                 </div>
             </div>
+
+            {/* Custom Confirm Delete Modal for Menu */}
+            <ConfirmDeleteModal
+                isOpen={Boolean(deleteMenuTarget)}
+                title="Hapus Item Menu"
+                message={`Apakah Anda yakin ingin menghapus item menu (${deleteMenuTarget}) ini secara permanen dari database?`}
+                onConfirm={() => {
+                    if (deleteMenuTarget) {
+                        router.delete(route('admin.menus.destroy', deleteMenuTarget));
+                    }
+                }}
+                onClose={() => setDeleteMenuTarget(null)}
+            />
+
+            {/* Custom Confirm Delete Modal for Category */}
+            <ConfirmDeleteModal
+                isOpen={Boolean(deleteCatTarget)}
+                title="Hapus Kategori Menu"
+                message={`Apakah Anda yakin ingin menghapus kategori (${deleteCatTarget}) ini beserta seluruh menu di dalamnya?`}
+                onConfirm={() => {
+                    if (deleteCatTarget) {
+                        router.delete(route('admin.categories.destroy', deleteCatTarget));
+                    }
+                }}
+                onClose={() => setDeleteCatTarget(null)}
+            />
         </AuthenticatedLayout>
     );
 }

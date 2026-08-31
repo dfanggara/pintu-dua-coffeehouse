@@ -20,6 +20,16 @@ export default function CommunityGallery({ items = [] }) {
         desc: i.description || '',
     }));
 
+    const handleScroll = (ref, setIndex, itemsLength) => {
+        if (!ref.current || itemsLength === 0) return;
+        const container = ref.current;
+        const scrollLeft = container.scrollLeft;
+        const cardWidth = container.firstElementChild?.clientWidth || 300;
+        const gap = 20; // gap-5 is 20px
+        const newIndex = Math.round(scrollLeft / (cardWidth + gap));
+        setIndex(Math.max(0, Math.min(itemsLength - 1, newIndex)));
+    };
+
     const scrollContainer = (ref, direction, itemsLength, setIndex) => {
         if (!ref.current) return;
         const container = ref.current;
@@ -27,19 +37,20 @@ export default function CommunityGallery({ items = [] }) {
         const scrollAmount = direction === 'next' ? cardWidth + 20 : -(cardWidth + 20);
 
         container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-
-        setTimeout(() => {
-            const newIndex = Math.round(container.scrollLeft / (cardWidth + 20));
-            setIndex(Math.max(0, Math.min(itemsLength - 1, newIndex)));
-        }, 300);
     };
 
     const scrollToIndex = (ref, index, setIndex) => {
         if (!ref.current) return;
         const container = ref.current;
-        const cardWidth = container.firstElementChild?.clientWidth || 300;
-        container.scrollTo({ left: index * (cardWidth + 20), behavior: 'smooth' });
-        setIndex(index);
+        const targetChild = container.children[index];
+        if (targetChild) {
+            targetChild.scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest',
+                inline: 'center',
+            });
+            setIndex(index);
+        }
     };
 
     return (
@@ -87,6 +98,7 @@ export default function CommunityGallery({ items = [] }) {
                     <>
                         <div
                             ref={vibeScrollRef}
+                            onScroll={() => handleScroll(vibeScrollRef, setVibeIndex, vibePhotos.length)}
                             className="flex gap-5 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-3 pt-1"
                         >
                             {vibePhotos.map((img, index) => (
@@ -181,6 +193,7 @@ export default function CommunityGallery({ items = [] }) {
                     <>
                         <div
                             ref={communityScrollRef}
+                            onScroll={() => handleScroll(communityScrollRef, setCommunityIndex, communityPhotos.length)}
                             className="flex gap-5 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-3 pt-1"
                         >
                             {communityPhotos.map((img, index) => (

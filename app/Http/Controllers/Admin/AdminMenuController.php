@@ -17,15 +17,25 @@ class AdminMenuController extends Controller
     public function index(Request $request)
     {
         $search = $request->query('search');
+        $category = $request->query('category');
 
         $menus = Menu::with('category')
             ->when($search, function ($query, $search) {
-                $query->where('name', 'like', "%{$search}%")
-                    ->orWhere('sku', 'like', "%{$search}%")
-                    ->orWhere('description', 'like', "%{$search}%");
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                        ->orWhere('sku', 'like', "%{$search}%")
+                        ->orWhere('description', 'like', "%{$search}%");
+                });
+            })
+            ->when($category, function ($query, $category) {
+                if ($category === 'signature' || $category === 'highlight') {
+                    $query->where('is_highlight', true);
+                } else {
+                    $query->where('category_slug', $category);
+                }
             })
             ->latest()
-            ->paginate(15)
+            ->paginate(8)
             ->withQueryString();
 
         $categories = Category::withCount('menus')->get();
@@ -35,6 +45,7 @@ class AdminMenuController extends Controller
             'categories' => $categories,
             'filters' => [
                 'search' => $search ?? '',
+                'category' => $category ?? '',
             ],
         ]);
     }
@@ -63,7 +74,7 @@ class AdminMenuController extends Controller
     {
         $validated = $request->validated();
 
-        if (empty($validated['sku']) && !empty($validated['category_slug'])) {
+        if (empty($validated['sku']) || Menu::where('sku', $validated['sku'])->exists()) {
             $validated['sku'] = $this->generateAutoSku($validated['category_slug']);
         }
 

@@ -14,25 +14,15 @@ use Illuminate\Support\Str;
 
 class AdminInstagramPostController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $search = $request->query('search');
-
         $posts = InstagramPost::query()
-            ->when($search, function ($query, $search) {
-                $query->where('code', 'like', "%{$search}%")
-                    ->orWhere('caption', 'like', "%{$search}%");
-            })
             ->orderBy('sort_order', 'asc')
             ->latest()
-            ->paginate(15)
-            ->withQueryString();
+            ->paginate(9);
 
         return Inertia::render('Admin/InstagramPosts/Index', [
             'posts' => $posts,
-            'filters' => [
-                'search' => $search ?? '',
-            ],
         ]);
     }
 

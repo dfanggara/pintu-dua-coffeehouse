@@ -1,15 +1,16 @@
 import React, { useState, useRef } from 'react';
 import { Head, Link, useForm, router } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import ConfirmDeleteModal from '@/Components/ConfirmDeleteModal';
 
-export default function InstagramPostsIndex({ posts = {}, filters = {} }) {
+export default function InstagramPostsIndex({ posts = {} }) {
     const postItems = Array.isArray(posts) ? posts : (posts?.data || []);
     const paginationLinks = posts?.links || [];
     const totalItems = posts?.total ?? postItems.length;
 
-    const [searchTerm, setSearchTerm] = useState(filters.search || '');
     const [editingPost, setEditingPost] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
+    const [deleteTarget, setDeleteTarget] = useState(null);
     const fileInputRef = useRef(null);
 
     const { data, setData, reset, errors, processing } = useForm({
@@ -22,11 +23,6 @@ export default function InstagramPostsIndex({ posts = {}, filters = {} }) {
         sort_order: 0,
         is_active: true,
     });
-
-    const handleSearch = (e) => {
-        e.preventDefault();
-        router.get(route('admin.instagram-posts.index'), { search: searchTerm }, { preserveState: true });
-    };
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -103,9 +99,7 @@ export default function InstagramPostsIndex({ posts = {}, filters = {} }) {
     };
 
     const handleDelete = (code) => {
-        if (confirm('Yakin ingin menghapus postingan Instagram ini dari database?')) {
-            router.delete(route('admin.instagram-posts.destroy', code));
-        }
+        setDeleteTarget(code);
     };
 
     return (
@@ -117,29 +111,9 @@ export default function InstagramPostsIndex({ posts = {}, filters = {} }) {
                             Manajemen Instagram Feed
                         </h2>
                         <p className="text-xs text-[#E0E0E0]/60">
-                            Kelola 9 postingan Instagram teratas yang tampil di halaman utama Home
+                            Kelola postingan Instagram yang tampil di halaman utama Home (Maksimal 9 per halaman)
                         </p>
                     </div>
-
-                    {/* Search Bar */}
-                    <form onSubmit={handleSearch} className="flex items-center gap-2">
-                        <div className="relative">
-                            <span className="material-symbols-outlined absolute left-3 top-2.5 text-white/40 text-sm">search</span>
-                            <input
-                                type="text"
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                placeholder="Cari caption / code..."
-                                className="bg-[#121212] border border-white/10 rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-white/40 focus:border-[#FF6B00] outline-none"
-                            />
-                        </div>
-                        <button
-                            type="submit"
-                            className="px-3 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-bold uppercase transition-colors"
-                        >
-                            Cari
-                        </button>
-                    </form>
                 </div>
             }
         >
@@ -408,6 +382,19 @@ export default function InstagramPostsIndex({ posts = {}, filters = {} }) {
                     </div>
                 </div>
             </div>
+
+            {/* Custom Confirm Delete Modal */}
+            <ConfirmDeleteModal
+                isOpen={Boolean(deleteTarget)}
+                title="Hapus Postingan Instagram"
+                message={`Apakah Anda yakin ingin menghapus postingan Instagram (${deleteTarget}) ini secara permanen dari database?`}
+                onConfirm={() => {
+                    if (deleteTarget) {
+                        router.delete(route('admin.instagram-posts.destroy', deleteTarget));
+                    }
+                }}
+                onClose={() => setDeleteTarget(null)}
+            />
         </AuthenticatedLayout>
     );
 }

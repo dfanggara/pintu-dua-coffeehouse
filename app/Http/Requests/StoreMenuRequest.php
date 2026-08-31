@@ -22,7 +22,7 @@ class StoreMenuRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'sku' => 'nullable|string|unique:menus,sku',
+            'sku' => 'nullable|string',
             'category_slug' => 'required|exists:categories,slug',
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',

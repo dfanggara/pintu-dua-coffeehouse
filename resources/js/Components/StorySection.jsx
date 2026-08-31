@@ -29,7 +29,7 @@ export default function StorySection() {
                 <div className="lg:col-span-5">
                     <div className="relative group pd-card rounded-tl-[60px] rounded-br-[60px] sm:rounded-tl-[80px] sm:rounded-br-[80px] rounded-tr-2xl rounded-bl-2xl overflow-hidden border border-white/10 shadow-2xl h-[340px] sm:h-[420px]">
                         <img
-                            src="/images/community-group.jpg"
+                            src="/images/ourstory.png"
                             alt="Pintu Dua Community & Friends"
                             className="pd-card-img object-cover w-full h-full object-center"
                         />
