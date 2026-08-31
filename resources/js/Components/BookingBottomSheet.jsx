@@ -164,6 +164,7 @@ export default function BookingBottomSheet({ isOpen, onClose }) {
                                     type="date"
                                     name="reservation_date"
                                     required
+                                    min={new Date().toISOString().split('T')[0]}
                                     value={formData.reservation_date}
                                     onChange={handleChange}
                                     className="w-full bg-[#121212] border border-white/10 rounded-xl p-3 text-sm text-white focus:border-[#FF6B00] focus:ring-1 focus:ring-[#FF6B00] outline-none transition-colors duration-300"
