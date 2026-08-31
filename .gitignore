@@ -25,3 +25,9 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Internal Planning Docs
+TASK.md
+NEWTASK.md
+AGENTS.md
+CLAUDE.md
