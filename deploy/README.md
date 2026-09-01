@@ -132,6 +132,29 @@ bash /var/www/pintu-dua-coffeehouse/deploy/ec2/deploy.sh
 
 Ubuntu default repos may not include PHP 8.3 (common on Ubuntu 24.04+). The setup script auto-detects PHP 8.3+ from default repos, or falls back to [packages.sury.org](https://packages.sury.org/php/).
 
+**`NO_PUBKEY B188E2B695BD4743` / packages.sury.org not signed**
+
+On Ubuntu 26.04, prefer the default PHP 8.5 from Ubuntu repos (no third-party repo needed):
+
+```bash
+sudo rm -f /etc/apt/sources.list.d/php-sury.list /etc/apt/sources.list.d/php.list
+sudo apt-get install -y software-properties-common
+sudo add-apt-repository -y universe
+sudo apt-get update
+cd /var/www/pintu-dua-coffeehouse
+sudo PHP_VERSION=8.5 bash deploy/ec2/setup-server.sh
+```
+
+If you still need packages.sury.org, use the official installer:
+
+```bash
+sudo rm -f /etc/apt/sources.list.d/php-sury.list /etc/apt/sources.list.d/php.list
+curl -sSL https://packages.sury.org/php/README.txt | sudo bash -x
+sudo apt-get update
+cd /var/www/pintu-dua-coffeehouse
+sudo bash deploy/ec2/setup-server.sh
+```
+
 **`ondrej/php PPA does not have a Release file` (Ubuntu 26.04 / resolute)**
 
 The Launchpad PPA is not supported on Ubuntu 26.04+. Remove it and use packages.sury.org instead:

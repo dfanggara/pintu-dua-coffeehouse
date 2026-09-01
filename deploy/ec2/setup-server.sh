@@ -30,11 +30,39 @@ require_root() {
   fi
 }
 
+ensure_universe_repository() {
+  if grep -rq 'universe' /etc/apt/sources.list /etc/apt/sources.list.d/ 2>/dev/null; then
+    return
+  fi
+
+  log "Enabling Ubuntu universe repository..."
+  apt-get install -y -qq software-properties-common
+  add-apt-repository -y universe
+  apt-get update -qq
+}
+
+get_php_candidates() {
+  local codename
+  codename="$(lsb_release -sc 2>/dev/null || echo unknown)"
+
+  case "${codename}" in
+    resolute)
+      # Ubuntu 26.04 ships PHP 8.5 in default repos.
+      echo "${PHP_VERSION} 8.5 8.4 8.3"
+      ;;
+    *)
+      echo "${PHP_VERSION} 8.5 8.4 8.3"
+      ;;
+  esac
+}
+
 install_php_repository() {
-  local candidates=("${PHP_VERSION}" 8.5 8.4 8.3)
+  local candidates=()
   local unique_candidates=()
   local seen=""
   local version
+
+  read -r -a candidates <<< "$(get_php_candidates)"
 
   for version in "${candidates[@]}"; do
     [[ " ${seen} " == *" ${version} "* ]] && continue
@@ -66,11 +94,28 @@ install_php_repository() {
 
 install_sury_php_repository() {
   log "Adding packages.sury.org PHP repository..."
-  apt-get install -y -qq lsb-release ca-certificates curl
+  apt-get install -y -qq lsb-release ca-certificates curl gnupg
+
+  rm -f /etc/apt/sources.list.d/php-sury.list /etc/apt/sources.list.d/php.list
+
   curl -fsSL -o /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb
-  dpkg -i /tmp/debsuryorg-archive-keyring.deb
-  echo "deb [signed-by=/usr/share/keyrings/debsuryorg-archive-keyring.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" \
+  dpkg -i /tmp/debsuryorg-archive-keyring.deb || apt-get install -f -y -qq
+
+  local signed_by="/usr/share/keyrings/debsuryorg-archive-keyring.gpg"
+  if [[ ! -f "${signed_by}" && -f /usr/share/keyrings/deb.sury.org-php.gpg ]]; then
+    signed_by="/usr/share/keyrings/deb.sury.org-php.gpg"
+  fi
+
+  if [[ ! -f "${signed_by}" ]]; then
+    log "Installing GPG key directly from packages.sury.org..."
+    curl -fsSL https://packages.sury.org/php/apt.gpg | gpg --dearmor -o "${signed_by}"
+  fi
+
+  chmod 644 "${signed_by}"
+
+  echo "deb [signed-by=${signed_by}] https://packages.sury.org/php/ $(lsb_release -sc) main" \
     > /etc/apt/sources.list.d/php-sury.list
+
   apt-get update -qq
 }
 
@@ -92,6 +137,8 @@ log "Updating system packages..."
 export DEBIAN_FRONTEND=noninteractive
 apt-get update -qq
 apt-get upgrade -y -qq
+
+ensure_universe_repository
 
 install_php_repository
 
