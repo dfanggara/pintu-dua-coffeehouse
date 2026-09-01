@@ -128,6 +128,17 @@ bash /var/www/pintu-dua-coffeehouse/deploy/ec2/deploy.sh
 
 ## Troubleshooting
 
+**`Unable to locate package php8.3-fpm`**
+
+Ubuntu default repos may not include PHP 8.3 (common on Ubuntu 24.04). The setup script adds the `ondrej/php` PPA automatically. If you hit this on an older copy of the script, run manually then re-run setup:
+
+```bash
+sudo apt-get install -y software-properties-common
+sudo add-apt-repository -y ppa:ondrej/php
+sudo apt-get update
+sudo bash deploy/ec2/setup-server.sh
+```
+
 **Deploy fails on `composer install`**
 ```bash
 cd /var/www/pintu-dua-coffeehouse

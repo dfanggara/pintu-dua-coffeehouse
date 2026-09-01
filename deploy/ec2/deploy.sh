@@ -46,7 +46,11 @@ sudo chown -R "${USER}:www-data" storage bootstrap/cache
 sudo chmod -R 775 storage bootstrap/cache
 
 log "Reloading PHP-FPM and Nginx..."
-sudo systemctl reload "php${PHP_VERSION}-fpm"
+PHP_FPM_SERVICE="$(systemctl list-units --type=service --all --no-legend 'php*-fpm.service' | awk '{print $1}' | head -n1)"
+if [[ -z "${PHP_FPM_SERVICE}" ]]; then
+  PHP_FPM_SERVICE="php${PHP_VERSION}-fpm"
+fi
+sudo systemctl reload "${PHP_FPM_SERVICE}"
 sudo systemctl reload nginx
 
 log "Deploy complete — $(git rev-parse --short HEAD) ($(git log -1 --pretty=format:'%s'))"

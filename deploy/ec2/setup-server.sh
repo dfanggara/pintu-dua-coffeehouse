@@ -30,12 +30,42 @@ require_root() {
   fi
 }
 
+install_php_repository() {
+  if apt-cache show "php${PHP_VERSION}-fpm" &>/dev/null; then
+    log "PHP ${PHP_VERSION} found in APT repositories."
+    return
+  fi
+
+  log "PHP ${PHP_VERSION} not in default repos; adding ondrej/php PPA..."
+  apt-get install -y -qq software-properties-common ca-certificates apt-transport-https lsb-release gnupg
+  add-apt-repository -y ppa:ondrej/php
+  apt-get update -qq
+
+  if apt-cache show "php${PHP_VERSION}-fpm" &>/dev/null; then
+    return
+  fi
+
+  log "PHP ${PHP_VERSION} unavailable after adding PPA; checking fallbacks..."
+  for version in 8.4 8.3 8.2; do
+    if apt-cache show "php${version}-fpm" &>/dev/null; then
+      PHP_VERSION="${version}"
+      log "Using PHP ${PHP_VERSION} instead."
+      return
+    fi
+  done
+
+  echo "No suitable PHP version found (need >= 8.3). Check 'apt-cache search php-fpm'." >&2
+  exit 1
+}
+
 require_root
 
 log "Updating system packages..."
 export DEBIAN_FRONTEND=noninteractive
 apt-get update -qq
 apt-get upgrade -y -qq
+
+install_php_repository
 
 log "Installing Nginx, MySQL, PHP ${PHP_VERSION}, and utilities..."
 apt-get install -y -qq \
@@ -123,7 +153,7 @@ sudo -u "${APP_USER}" bash -lc "cd '${APP_DIR}' && php artisan storage:link --fo
 sudo -u "${APP_USER}" bash -lc "cd '${APP_DIR}' && php artisan config:cache && php artisan route:cache && php artisan view:cache"
 
 log "Configuring Nginx..."
-sed "s|__APP_DIR__|${APP_DIR}|g; s|__DOMAIN__|${DOMAIN}|g; s|php8.3-fpm.sock|php${PHP_VERSION}-fpm.sock|g" \
+sed "s|__APP_DIR__|${APP_DIR}|g; s|__DOMAIN__|${DOMAIN}|g; s|__PHP_VERSION__|${PHP_VERSION}|g" \
   "${APP_DIR}/deploy/nginx/pintu-dua-coffeehouse.conf" \
   > "/etc/nginx/sites-available/${APP_NAME}"
 ln -sf "/etc/nginx/sites-available/${APP_NAME}" "/etc/nginx/sites-enabled/${APP_NAME}"
