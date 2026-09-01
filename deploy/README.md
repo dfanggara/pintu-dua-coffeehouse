@@ -130,12 +130,22 @@ bash /var/www/pintu-dua-coffeehouse/deploy/ec2/deploy.sh
 
 **`Unable to locate package php8.3-fpm`**
 
-Ubuntu default repos may not include PHP 8.3 (common on Ubuntu 24.04). The setup script adds the `ondrej/php` PPA automatically. If you hit this on an older copy of the script, run manually then re-run setup:
+Ubuntu default repos may not include PHP 8.3 (common on Ubuntu 24.04+). The setup script auto-detects PHP 8.3+ from default repos, or falls back to [packages.sury.org](https://packages.sury.org/php/).
+
+**`ondrej/php PPA does not have a Release file` (Ubuntu 26.04 / resolute)**
+
+The Launchpad PPA is not supported on Ubuntu 26.04+. Remove it and use packages.sury.org instead:
 
 ```bash
-sudo apt-get install -y software-properties-common
-sudo add-apt-repository -y ppa:ondrej/php
+sudo add-apt-repository -y --remove ppa:ondrej/php 2>/dev/null || true
+sudo rm -f /etc/apt/sources.list.d/ondrej-ubuntu-php-*.list
+
+sudo apt-get install -y lsb-release ca-certificates curl
+sudo curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb
+sudo dpkg -i /tmp/debsuryorg-archive-keyring.deb
+sudo sh -c 'echo "deb [signed-by=/usr/share/keyrings/debsuryorg-archive-keyring.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
 sudo apt-get update
+cd /var/www/pintu-dua-coffeehouse
 sudo bash deploy/ec2/setup-server.sh
 ```
 

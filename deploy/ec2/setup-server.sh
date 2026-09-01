@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # One-time EC2 server provisioning for Pintu Dua Coffeehouse.
-# Run on a fresh Ubuntu 22.04/24.04 instance as a user with sudo access:
+# Run on a fresh Ubuntu 22.04/24.04/26.04 instance as a user with sudo access:
 #   curl -fsSL <raw-url>/deploy/ec2/setup-server.sh | bash
 # Or after cloning:
 #   sudo bash deploy/ec2/setup-server.sh
@@ -31,25 +31,31 @@ require_root() {
 }
 
 install_php_repository() {
-  if apt-cache show "php${PHP_VERSION}-fpm" &>/dev/null; then
-    log "PHP ${PHP_VERSION} found in APT repositories."
-    return
-  fi
+  local candidates=("${PHP_VERSION}" 8.5 8.4 8.3)
+  local unique_candidates=()
+  local seen=""
+  local version
 
-  log "PHP ${PHP_VERSION} not in default repos; adding ondrej/php PPA..."
-  apt-get install -y -qq software-properties-common ca-certificates apt-transport-https lsb-release gnupg
-  add-apt-repository -y ppa:ondrej/php
-  apt-get update -qq
+  for version in "${candidates[@]}"; do
+    [[ " ${seen} " == *" ${version} "* ]] && continue
+    seen="${seen} ${version}"
+    unique_candidates+=("${version}")
+  done
 
-  if apt-cache show "php${PHP_VERSION}-fpm" &>/dev/null; then
-    return
-  fi
-
-  log "PHP ${PHP_VERSION} unavailable after adding PPA; checking fallbacks..."
-  for version in 8.4 8.3 8.2; do
+  for version in "${unique_candidates[@]}"; do
     if apt-cache show "php${version}-fpm" &>/dev/null; then
       PHP_VERSION="${version}"
-      log "Using PHP ${PHP_VERSION} instead."
+      log "PHP ${PHP_VERSION} found in APT repositories."
+      return
+    fi
+  done
+
+  install_sury_php_repository
+
+  for version in "${unique_candidates[@]}"; do
+    if apt-cache show "php${version}-fpm" &>/dev/null; then
+      PHP_VERSION="${version}"
+      log "PHP ${PHP_VERSION} found via packages.sury.org."
       return
     fi
   done
@@ -58,7 +64,29 @@ install_php_repository() {
   exit 1
 }
 
+install_sury_php_repository() {
+  log "Adding packages.sury.org PHP repository..."
+  apt-get install -y -qq lsb-release ca-certificates curl
+  curl -fsSL -o /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb
+  dpkg -i /tmp/debsuryorg-archive-keyring.deb
+  echo "deb [signed-by=/usr/share/keyrings/debsuryorg-archive-keyring.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" \
+    > /etc/apt/sources.list.d/php-sury.list
+  apt-get update -qq
+}
+
+remove_legacy_ondrej_php_ppa() {
+  if grep -rq 'ondrej/php\|launchpadcontent.net/ondrej/php' /etc/apt/ 2>/dev/null; then
+    log "Removing legacy ondrej/php Launchpad PPA (not supported on Ubuntu 26.04+)..."
+    apt-get install -y -qq software-properties-common 2>/dev/null || true
+    add-apt-repository -y --remove ppa:ondrej/php 2>/dev/null || true
+    rm -f /etc/apt/sources.list.d/ondrej-ubuntu-php-*.list \
+          /etc/apt/sources.list.d/ondrej-ubuntu-php-*.sources 2>/dev/null || true
+  fi
+}
+
 require_root
+
+remove_legacy_ondrej_php_ppa
 
 log "Updating system packages..."
 export DEBIAN_FRONTEND=noninteractive
