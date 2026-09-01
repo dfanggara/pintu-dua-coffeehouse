@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Admin Pintu Dua',
                 'password' => Hash::make('password123'),
+                'is_admin' => true,
                 'email_verified_at' => now(),
             ]
         );
