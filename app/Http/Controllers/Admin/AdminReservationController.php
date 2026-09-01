@@ -16,27 +16,48 @@ class AdminReservationController extends Controller
     {
         $search = $request->query('search');
         $status = $request->query('status');
-        $month = $request->query('month');
+        $period = $request->query('period');
+        $sort = $request->query('sort', 'latest');
 
         $reservations = Reservation::query()
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('customer_name', 'like', "%{$search}%")
                         ->orWhere('booking_code', 'like', "%{$search}%")
+                        ->orWhere('special_notes', 'like', "%{$search}%")
                         ->orWhere('reservation_date', 'like', "%{$search}%");
                 });
             })
             ->when($status, function ($query, $status) {
                 $query->where('status', $status);
             })
-            ->when($month, function ($query, $month) {
-                if (strlen($month) === 7) { // format YYYY-MM
-                    $query->where('reservation_date', 'like', "{$month}%");
-                } elseif (is_numeric($month)) {
-                    $query->whereMonth('reservation_date', sprintf('%02d', $month));
+            ->when($period, function ($query, $period) {
+                if ($period === 'today') {
+                    $query->whereDate('reservation_date', now()->toDateString());
+                } elseif ($period === 'tomorrow') {
+                    $query->whereDate('reservation_date', now()->addDay()->toDateString());
+                } elseif ($period === 'this_month') {
+                    $query->whereMonth('reservation_date', now()->month)
+                        ->whereYear('reservation_date', now()->year);
+                } elseif ($period === 'last_month') {
+                    $lastMonth = now()->subMonth();
+                    $query->whereMonth('reservation_date', $lastMonth->month)
+                        ->whereYear('reservation_date', $lastMonth->year);
+                } elseif (strlen($period) === 7) { // YYYY-MM
+                    $query->where('reservation_date', 'like', "{$period}%");
+                } elseif (strlen($period) === 10) { // YYYY-MM-DD
+                    $query->whereDate('reservation_date', $period);
                 }
             })
-            ->latest()
+            ->when(true, function ($query) use ($sort) {
+                match ($sort) {
+                    'oldest' => $query->orderBy('reservation_date', 'asc')->orderBy('reservation_time', 'asc'),
+                    'pax_desc' => $query->orderByRaw('CAST(pax AS UNSIGNED) DESC'),
+                    'pax_asc' => $query->orderByRaw('CAST(pax AS UNSIGNED) ASC'),
+                    'name_asc' => $query->orderBy('customer_name', 'asc'),
+                    default => $query->orderBy('reservation_date', 'desc')->orderBy('reservation_time', 'desc'),
+                };
+            })
             ->paginate(6)
             ->withQueryString();
 
@@ -45,7 +66,8 @@ class AdminReservationController extends Controller
             'filters' => [
                 'search' => $search ?? '',
                 'status' => $status ?? '',
-                'month' => $month ?? '',
+                'period' => $period ?? '',
+                'sort' => $sort ?? 'latest',
             ],
         ]);
     }

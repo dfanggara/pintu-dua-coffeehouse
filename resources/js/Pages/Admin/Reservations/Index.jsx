@@ -10,40 +10,44 @@ export default function ReservationsIndex({ reservations = {}, filters = {} }) {
 
     const [searchTerm, setSearchTerm] = useState(filters.search || '');
     const [selectedStatus, setSelectedStatus] = useState(filters.status || '');
-    const [selectedMonth, setSelectedMonth] = useState(filters.month || '');
+    const [selectedPeriod, setSelectedPeriod] = useState(filters.period || '');
+    const [selectedSort, setSelectedSort] = useState(filters.sort || 'latest');
     const [deleteTarget, setDeleteTarget] = useState(null);
+
+    const applyFilters = (overrides = {}) => {
+        router.get(route('admin.reservations.index'), {
+            search: overrides.search !== undefined ? overrides.search : searchTerm,
+            status: overrides.status !== undefined ? overrides.status : selectedStatus,
+            period: overrides.period !== undefined ? overrides.period : selectedPeriod,
+            sort: overrides.sort !== undefined ? overrides.sort : selectedSort,
+        }, { preserveState: true });
+    };
 
     const handleFilterSubmit = (e) => {
         if (e) e.preventDefault();
-        router.get(route('admin.reservations.index'), {
-            search: searchTerm,
-            status: selectedStatus,
-            month: selectedMonth,
-        }, { preserveState: true });
+        applyFilters();
     };
 
     const handleStatusFilterChange = (status) => {
         setSelectedStatus(status);
-        router.get(route('admin.reservations.index'), {
-            search: searchTerm,
-            status: status,
-            month: selectedMonth,
-        }, { preserveState: true });
+        applyFilters({ status });
     };
 
-    const handleMonthFilterChange = (month) => {
-        setSelectedMonth(month);
-        router.get(route('admin.reservations.index'), {
-            search: searchTerm,
-            status: selectedStatus,
-            month: month,
-        }, { preserveState: true });
+    const handlePeriodFilterChange = (period) => {
+        setSelectedPeriod(period);
+        applyFilters({ period });
+    };
+
+    const handleSortChange = (sort) => {
+        setSelectedSort(sort);
+        applyFilters({ sort });
     };
 
     const resetFilters = () => {
         setSearchTerm('');
         setSelectedStatus('');
-        setSelectedMonth('');
+        setSelectedPeriod('');
+        setSelectedSort('latest');
         router.get(route('admin.reservations.index'), {}, { preserveState: true });
     };
 
@@ -84,14 +88,14 @@ export default function ReservationsIndex({ reservations = {}, filters = {} }) {
             <div className="py-8">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
                     {/* Search & Filter Controls */}
-                    <div className="bg-[#181818] p-4 rounded-2xl border border-white/10 shadow-xl space-y-3">
+                    <div className="bg-[#181818] p-4 sm:p-5 rounded-2xl border border-white/10 shadow-xl space-y-3">
                         <form onSubmit={handleFilterSubmit} className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
                             {/* Text Search Input */}
-                            <div className="sm:col-span-4 relative">
+                            <div className="sm:col-span-3 relative">
                                 <span className="material-symbols-outlined absolute left-3.5 top-2.5 text-[#E0E0E0]/50 text-base">search</span>
                                 <input
                                     type="text"
-                                    placeholder="Cari nama, kode, tanggal..."
+                                    placeholder="Cari nama, kode, catatan..."
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                     className="w-full bg-[#121212] border border-white/10 rounded-xl pl-10 pr-3 py-2 text-xs text-white placeholder-[#E0E0E0]/40 focus:border-[#FF6B00] focus:ring-1 focus:ring-[#FF6B00]"
@@ -99,43 +103,63 @@ export default function ReservationsIndex({ reservations = {}, filters = {} }) {
                             </div>
 
                             {/* Status Filter */}
-                            <div className="sm:col-span-3">
+                            <div className="sm:col-span-2">
                                 <select
                                     value={selectedStatus}
                                     onChange={(e) => handleStatusFilterChange(e.target.value)}
                                     className="w-full bg-[#121212] border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:border-[#FF6B00] focus:ring-1 focus:ring-[#FF6B00] font-medium"
                                 >
                                     <option value="">Semua Status</option>
-                                    <option value="pending">Pending (Menunggu)</option>
-                                    <option value="confirmed">Confirmed (Disetujui)</option>
-                                    <option value="cancelled">Cancelled (Batal)</option>
+                                    <option value="pending">🟡 Pending (Menunggu)</option>
+                                    <option value="confirmed">🟢 Confirmed (Disetujui)</option>
+                                    <option value="cancelled">🔴 Cancelled (Batal)</option>
                                 </select>
                             </div>
 
-                            {/* Month Filter Input */}
+                            {/* Period Filter Dropdown */}
                             <div className="sm:col-span-3">
-                                <input
-                                    type="month"
-                                    value={selectedMonth}
-                                    onChange={(e) => handleMonthFilterChange(e.target.value)}
-                                    className="w-full bg-[#121212] border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:border-[#FF6B00] focus:ring-1 focus:ring-[#FF6B00]"
-                                />
+                                <select
+                                    value={selectedPeriod}
+                                    onChange={(e) => handlePeriodFilterChange(e.target.value)}
+                                    className="w-full bg-[#121212] border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:border-[#FF6B00] focus:ring-1 focus:ring-[#FF6B00] font-medium"
+                                >
+                                    <option value="">📅 Semua Periode Tanggal</option>
+                                    <option value="today">⚡ Reservasi Hari Ini</option>
+                                    <option value="tomorrow">⏭️ Reservasi Besok</option>
+                                    <option value="this_month">🗓️ Bulan Ini</option>
+                                    <option value="last_month">⏪ Bulan Lalu</option>
+                                </select>
                             </div>
 
-                            {/* Filter Buttons */}
+                            {/* Sorting Order Dropdown */}
+                            <div className="sm:col-span-2">
+                                <select
+                                    value={selectedSort}
+                                    onChange={(e) => handleSortChange(e.target.value)}
+                                    className="w-full bg-[#121212] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#FF6B00] font-bold focus:border-[#FF6B00] focus:ring-1 focus:ring-[#FF6B00]"
+                                >
+                                    <option value="latest">🕒 Terbaru (Default)</option>
+                                    <option value="oldest">⏳ Terlama</option>
+                                    <option value="pax_desc">👥 Pax Terbanyak</option>
+                                    <option value="pax_asc">👥 Pax Tersedikit</option>
+                                    <option value="name_asc">👤 Nama A-Z</option>
+                                </select>
+                            </div>
+
+                            {/* Filter Actions */}
                             <div className="sm:col-span-2 flex gap-1.5">
                                 <button
                                     type="submit"
-                                    className="flex-1 py-2 bg-[#FF6B00] text-[#121212] rounded-xl font-bold text-xs uppercase tracking-wider hover:opacity-90 transition-opacity"
+                                    className="flex-1 py-2 bg-[#FF6B00] text-[#121212] rounded-xl font-black text-xs uppercase tracking-wider hover:opacity-90 transition-opacity shadow-[0_0_10px_rgba(255,107,0,0.25)]"
                                 >
                                     Filter
                                 </button>
-                                {(searchTerm || selectedStatus || selectedMonth) && (
+                                {(searchTerm || selectedStatus || selectedPeriod || selectedSort !== 'latest') && (
                                     <button
                                         type="button"
                                         onClick={resetFilters}
                                         className="px-3 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl font-bold text-xs transition-colors"
-                                        title="Reset Filter"
+                                        title="Reset Semua Filter"
                                     >
                                         Reset
                                     </button>
