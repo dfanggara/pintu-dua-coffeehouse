@@ -20,7 +20,7 @@ export default function Edit({ mustVerifyEmail, status }) {
         >
             <Head title="Edit Profil Admin | Pintu Dua" />
 
-            <div className="py-8">
+            <div className="pt-6 sm:pt-8 pb-20 sm:pb-24">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
                     {/* Section 1: Information Profile */}
                     <div className="bg-[#181818] p-6 sm:p-8 rounded-2xl border border-white/10 shadow-2xl">

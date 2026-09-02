@@ -83,7 +83,7 @@ export default function MenuDetailModal({ item, isOpen, onClose }) {
                     </div>
 
                     {/* Right Column: Menu Detail Information */}
-                    <div className="md:col-span-6 p-6 sm:p-8 flex flex-col justify-between space-y-6">
+                    <div className="md:col-span-6 p-6 sm:p-8 flex flex-col justify-center space-y-4">
                         <div>
                             <span className="text-[10px] font-bold uppercase tracking-widest text-[#FF6B00] block mb-1">
                                 Menu Item Detail
@@ -97,17 +97,6 @@ export default function MenuDetailModal({ item, isOpen, onClose }) {
                             <p className="text-xs sm:text-sm text-[#E0E0E0]/80 leading-relaxed">
                                 {item.note || item.desc || item.description || 'Nikmati kelezatan racikan kopi & sajian istimewa khas Pintu Dua Coffeehouse.'}
                             </p>
-                        </div>
-
-                        {/* Order & Reservation CTA Button */}
-                        <div className="pt-2 border-t border-white/10">
-                            <button
-                                onClick={handleBookTable}
-                                className="btn-pd-primary w-full"
-                            >
-                                <span className="material-symbols-outlined text-base">event_seat</span>
-                                Book a Table for this Menu
-                            </button>
                         </div>
                     </div>
                 </div>

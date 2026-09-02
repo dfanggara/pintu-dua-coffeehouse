@@ -238,7 +238,7 @@ export default function MenusIndex({ menus = {}, categories = [], filters = {} }
         >
             <Head title="Admin Menu & Category Catalog | Pintu Dua" />
 
-            <div className="py-8">
+            <div className="pt-6 sm:pt-8 pb-20 sm:pb-24">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
                     {/* Tab Switcher: Menus Catalog vs Categories */}
                     <div className="flex items-center gap-2 bg-[#181818] p-1.5 rounded-2xl border border-white/10 w-fit">

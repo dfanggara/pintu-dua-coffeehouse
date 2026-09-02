@@ -248,6 +248,27 @@ export default function AuthenticatedLayout({ header, children }) {
 
             <main>{children}</main>
 
+            {/* Clean Minimal Admin Footer */}
+            <footer className="w-full border-t border-white/10 bg-[#141414] py-6 sm:py-8 mt-12">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center space-y-2">
+                    <Link href="/" className="flex items-center gap-2.5 opacity-80 hover:opacity-100 transition-opacity">
+                        <img
+                            src="/images/logo.png"
+                            alt="Pintu Dua Coffeehouse Logo"
+                            className="h-8 sm:h-9 w-auto object-contain rounded-lg glow-orange-sm"
+                        />
+                        <div className="flex flex-col text-left">
+                            <span className="font-display text-base sm:text-lg uppercase tracking-wider text-white leading-none">
+                                PINTU DUA
+                            </span>
+                            <span className="text-[8px] font-bold uppercase text-[#FF6B00] tracking-[0.2em] leading-tight">
+                                Coffeehouse & Smokehouse
+                            </span>
+                        </div>
+                    </Link>
+                </div>
+            </footer>
+
             {/* Floating Toast Notification Popup */}
             {toast && (
                 <div className="fixed top-20 right-4 sm:right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-2xl shadow-2xl border backdrop-blur-md transition-all duration-300 animate-bounce-once font-bold text-xs uppercase tracking-wider bg-[#181818] border-white/10 text-white glow-orange-sm">
