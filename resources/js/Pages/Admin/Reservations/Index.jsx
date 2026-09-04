@@ -70,7 +70,7 @@ export default function ReservationsIndex({ reservations = {}, filters = {} }) {
                             Reservations Management
                         </h2>
                         <p className="text-xs text-[#E0E0E0]/60">
-                            Kelola daftar pemesanan meja (Maksimal 6 data terbaru per halaman)
+                            Kelola pemesanan meja pelanggan Pintu Dua Coffeehouse
                         </p>
                     </div>
 
@@ -85,8 +85,34 @@ export default function ReservationsIndex({ reservations = {}, filters = {} }) {
         >
             <Head title="Admin Reservations | Pintu Dua" />
 
-            <div className="py-8">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+            <div className="pt-6 sm:pt-8 pb-20 sm:pb-24">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5 sm:space-y-6">
+                    {/* Mobile Quick Status Filter Chips */}
+                    <div className="flex items-center gap-2 overflow-x-auto no-scrollbar sm:hidden pb-1">
+                        {[
+                            { id: '', label: 'Semua' },
+                            { id: 'pending', label: '🟡 Pending' },
+                            { id: 'confirmed', label: '🟢 Confirmed' },
+                            { id: 'cancelled', label: '🔴 Cancelled' },
+                        ].map((chip) => {
+                            const isActive = selectedStatus === chip.id;
+                            return (
+                                <button
+                                    key={chip.id}
+                                    type="button"
+                                    onClick={() => handleStatusFilterChange(chip.id)}
+                                    className={`px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap shrink-0 border transition-all ${
+                                        isActive
+                                            ? 'bg-[#FF6B00] text-[#121212] border-[#FF6B00] shadow-[0_0_10px_rgba(255,107,0,0.4)]'
+                                            : 'bg-[#181818] text-[#E0E0E0]/70 border-white/10'
+                                    }`}
+                                >
+                                    {chip.label}
+                                </button>
+                            );
+                        })}
+                    </div>
+
                     {/* Search & Filter Controls */}
                     <div className="bg-[#181818] p-4 sm:p-5 rounded-2xl border border-white/10 shadow-xl space-y-3">
                         <form onSubmit={handleFilterSubmit} className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
@@ -102,8 +128,8 @@ export default function ReservationsIndex({ reservations = {}, filters = {} }) {
                                 />
                             </div>
 
-                            {/* Status Filter */}
-                            <div className="sm:col-span-2">
+                            {/* Status Filter (Desktop Select) */}
+                            <div className="hidden sm:block sm:col-span-2">
                                 <select
                                     value={selectedStatus}
                                     onChange={(e) => handleStatusFilterChange(e.target.value)}
@@ -168,18 +194,105 @@ export default function ReservationsIndex({ reservations = {}, filters = {} }) {
                         </form>
                     </div>
 
-                    {/* Reservations Data Table */}
+                    {/* Reservations Data Table & Mobile Cards */}
                     <div className="bg-[#181818] rounded-2xl border border-white/10 overflow-hidden shadow-2xl">
-                        <div className="p-5 border-b border-white/10 flex justify-between items-center bg-[#141414]">
-                            <h3 className="font-bold text-sm text-white uppercase tracking-wider">
-                                Daftar Masuk Reservasi (Terbaru)
+                        <div className="p-4 sm:p-5 border-b border-white/10 flex justify-between items-center bg-[#141414]">
+                            <h3 className="font-bold text-xs sm:text-sm text-white uppercase tracking-wider">
+                                Daftar Pemesanan Meja
                             </h3>
                             <span className="text-xs text-[#E0E0E0]/60">
-                                Total {totalItems} data reservasi
+                                Total {totalItems} data
                             </span>
                         </div>
 
-                        <div className="overflow-x-auto">
+                        {/* MOBILE VIEW: Touch-friendly Mobile Cards (sm:hidden) */}
+                        <div className="block sm:hidden p-3.5 space-y-3.5">
+                            {items.length === 0 ? (
+                                <p className="p-6 text-center text-xs text-[#E0E0E0]/50 italic">
+                                    Belum ada data reservasi yang sesuai filter.
+                                </p>
+                            ) : (
+                                items.map((res) => (
+                                    <div
+                                        key={res.booking_code}
+                                        className="bg-[#121212] p-4 rounded-2xl border border-white/10 space-y-3 shadow-md"
+                                    >
+                                        {/* Header: Booking Code & Status Pill */}
+                                        <div className="flex justify-between items-center">
+                                            <span className="bg-[#FF6B00]/15 text-[#FF6B00] text-xs font-mono font-black px-2.5 py-1 rounded-md border border-[#FF6B00]/30">
+                                                {res.booking_code}
+                                            </span>
+
+                                            <div>
+                                                {res.status === 'confirmed' && (
+                                                    <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">
+                                                        Confirmed
+                                                    </span>
+                                                )}
+                                                {res.status === 'pending' && (
+                                                    <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase bg-yellow-500/20 text-yellow-400 border border-yellow-500/40">
+                                                        Pending
+                                                    </span>
+                                                )}
+                                                {res.status === 'cancelled' && (
+                                                    <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase bg-rose-500/20 text-rose-400 border border-rose-500/40">
+                                                        Cancelled
+                                                    </span>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        {/* Customer Details */}
+                                        <div className="grid grid-cols-2 gap-2 text-xs">
+                                            <div>
+                                                <p className="text-[10px] font-bold text-[#E0E0E0]/50 uppercase">Pemesan</p>
+                                                <p className="font-bold text-white truncate">{res.customer_name}</p>
+                                                <p className="text-[11px] text-[#FF6B00] font-bold">{res.pax} Orang</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-[10px] font-bold text-[#E0E0E0]/50 uppercase">Jadwal</p>
+                                                <p className="font-bold text-white">{res.reservation_date}</p>
+                                                <p className="text-[11px] text-[#E0E0E0]/80 font-semibold">{res.reservation_time} WIB</p>
+                                            </div>
+                                        </div>
+
+                                        {/* Notes / Special Request */}
+                                        {res.special_notes && (
+                                            <div className="bg-[#181818] p-2.5 rounded-xl border border-white/5 text-[11px] text-[#E0E0E0]/80 leading-relaxed break-words overflow-hidden">
+                                                <span className="text-[#FF6B00] font-bold">Catatan: </span>
+                                                {res.special_notes}
+                                            </div>
+                                        )}
+
+                                        {/* Mobile Action Buttons */}
+                                        <div className="flex items-center gap-2 pt-2 border-t border-white/10">
+                                            <button
+                                                onClick={() => handleStatusChange(res.booking_code, 'confirmed')}
+                                                className="flex-1 py-2 rounded-xl bg-emerald-600/80 active:bg-emerald-500 text-white text-xs font-bold transition-all text-center shadow-sm"
+                                            >
+                                                Confirm
+                                            </button>
+                                            <button
+                                                onClick={() => handleStatusChange(res.booking_code, 'cancelled')}
+                                                className="flex-1 py-2 rounded-xl bg-yellow-600/80 active:bg-yellow-500 text-white text-xs font-bold transition-all text-center shadow-sm"
+                                            >
+                                                Cancel
+                                            </button>
+                                            <button
+                                                onClick={() => handleDeleteReservation(res.booking_code)}
+                                                className="py-2 px-3 rounded-xl bg-rose-600/80 active:bg-rose-500 text-white text-xs font-bold transition-all"
+                                                title="Hapus Reservasi"
+                                            >
+                                                Hapus
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))
+                            )}
+                        </div>
+
+                        {/* DESKTOP VIEW: Data Table (hidden sm:block) */}
+                        <div className="hidden sm:block overflow-x-auto">
                             <table className="w-full text-left text-xs text-[#E0E0E0]">
                                 <thead className="bg-[#121212] text-[#FF6B00] uppercase font-bold tracking-wider border-b border-white/10">
                                     <tr>
@@ -267,13 +380,13 @@ export default function ReservationsIndex({ reservations = {}, filters = {} }) {
                             </table>
                         </div>
 
-                        {/* Pagination Links (Limited to 6 Items per Page) */}
+                        {/* Pagination Links */}
                         {paginationLinks.length > 3 && (
                             <div className="p-4 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-3 bg-[#141414]">
                                 <div className="text-xs text-[#E0E0E0]/60">
                                     Menampilkan <span className="font-bold text-white">{reservations.from || 0}</span> - <span className="font-bold text-white">{reservations.to || 0}</span> dari <span className="font-bold text-[#FF6B00]">{reservations.total || 0}</span> reservasi
                                 </div>
-                                <div className="flex items-center gap-1.5 flex-wrap">
+                                <div className="flex items-center gap-1.5 flex-wrap justify-center">
                                     {paginationLinks.map((link, idx) => (
                                         <Link
                                             key={idx}

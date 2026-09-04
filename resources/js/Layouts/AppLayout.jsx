@@ -32,9 +32,6 @@ export default function AppLayout({ children, currentRoute = 'home' }) {
                 {/* Footer */}
                 <Footer />
 
-                {/* Mobile Bottom Navigation Bar & FAB */}
-                <BottomNav onOpenBooking={handleOpenBooking} currentRoute={currentRoute} />
-
                 {/* Hybrid Reservation Bottom Sheet Modal */}
                 <BookingBottomSheet isOpen={isBookingOpen} onClose={handleCloseBooking} />
             </div>

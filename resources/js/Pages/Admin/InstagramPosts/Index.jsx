@@ -119,7 +119,7 @@ export default function InstagramPostsIndex({ posts = {} }) {
         >
             <Head title="Manajemen Instagram Feed | Pintu Dua Admin" />
 
-            <div className="py-8">
+            <div className="pt-6 sm:pt-8 pb-20 sm:pb-24">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                         {/* Left Column: Form Input (4 cols) */}

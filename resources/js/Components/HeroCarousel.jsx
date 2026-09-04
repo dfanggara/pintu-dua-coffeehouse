@@ -71,7 +71,7 @@ export default function HeroCarousel({ items = [] }) {
                 {promoItems.map((item, index) => (
                     <div
                         key={index}
-                        className="w-full shrink-0 flex-none aspect-[16/9] min-h-[440px] sm:min-h-[540px] lg:min-h-[640px] max-h-[90vh] snap-center relative overflow-hidden bg-[#0E0E0E]"
+                        className="w-full shrink-0 flex-none h-screen sm:h-[580px] lg:h-[680px] snap-center relative overflow-hidden bg-[#0E0E0E]"
                     >
                         {/* High-Resolution Absolute Positioning HTML Image for Crisp Sharpness */}
                         <img
@@ -84,11 +84,11 @@ export default function HeroCarousel({ items = [] }) {
                         />
 
                         {/* Subtle Dark Gradient Overlay for High Text Readability & Image Clarity */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-[#121212]/50 to-transparent pointer-events-none" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-[#121212]/70 to-transparent pointer-events-none" />
                         <div className="absolute inset-0 bg-gradient-to-r from-[#121212]/80 via-[#121212]/30 to-transparent pointer-events-none" />
 
                         {/* Content Container (Aligned with Site Grid) */}
-                        <div className="w-full max-w-screen-2xl mx-auto px-6 sm:px-10 md:px-16 h-full flex flex-col justify-end pb-12 sm:pb-16 md:pb-20 relative z-10">
+                        <div className="w-full max-w-screen-2xl mx-auto px-6 sm:px-10 md:px-16 h-full flex flex-col justify-end pb-20 sm:pb-16 md:pb-20 relative z-10">
                             <div className="max-w-xl sm:max-w-2xl space-y-2 sm:space-y-3">
                                 {/* Subtitle Badge with Dash */}
                                 <div className="flex items-center gap-2.5">
@@ -105,7 +105,7 @@ export default function HeroCarousel({ items = [] }) {
 
                                 {/* Subtitle / Description Paragraph */}
                                 {item.subtitle && (
-                                    <p className="text-xs sm:text-sm md:text-base text-[#E0E0E0]/90 leading-relaxed font-light max-w-lg line-clamp-2 sm:line-clamp-none pt-1">
+                                    <p className="text-xs sm:text-sm md:text-base text-[#E0E0E0]/90 leading-relaxed font-light max-w-lg line-clamp-3 sm:line-clamp-none pt-1">
                                         {item.subtitle}
                                     </p>
                                 )}
@@ -126,6 +126,11 @@ export default function HeroCarousel({ items = [] }) {
                         </div>
                     </div>
                 ))}
+            </div>
+
+            {/* Mobile Animated Scroll Down Hint Indicator */}
+            <div className="absolute bottom-2 left-0 right-0 z-20 flex sm:hidden justify-center items-center pointer-events-none opacity-60">
+                <span className="material-symbols-outlined text-[#FF6B00] animate-bounce text-xl">keyboard_arrow_down</span>
             </div>
 
             {/* Pagination Dots Positioned inside Banner Overlay */}
