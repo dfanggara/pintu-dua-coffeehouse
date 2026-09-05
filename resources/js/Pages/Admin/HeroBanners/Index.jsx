@@ -217,6 +217,9 @@ export default function HeroBannersIndex({ heroBanners = {}, banners = {}, filte
                                         )}
                                     </div>
                                     {errors.image && <p className="text-rose-400 text-[10px] mt-1">{errors.image}</p>}
+                                    <p className="text-[10px] text-[#FF6B00] font-medium mt-1.5 flex items-center gap-1">
+                                        <span>💡 Rekomendasi Foto: Rasio 4:5 Portrait (1080x1350 px) tanpa teks poster mati untuk tampilan mobile paling tajam & estetik.</span>
+                                    </p>
                                 </div>
 
                                 <div className="pt-2">
