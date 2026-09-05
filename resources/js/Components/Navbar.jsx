@@ -65,7 +65,7 @@ export default function Navbar({ onOpenBooking, currentRoute = 'home' }) {
                         className="hidden md:inline-flex btn-pd-primary shrink-0"
                     >
                         <span className="material-symbols-outlined text-base">calendar_month</span>
-                        Book a Table
+                        Reservation
                     </button>
 
                     {/* Mobile Top-Right Navigation Trigger Button */}
@@ -146,7 +146,7 @@ export default function Navbar({ onOpenBooking, currentRoute = 'home' }) {
                                 }}
                                 className="btn-pd-primary w-full justify-center py-3.5 tracking-widest font-black uppercase"
                             >
-                                Book a Table
+                                Reservation
                             </button>
                             <p className="text-[10px] text-center text-[#E0E0E0]/50 uppercase tracking-widest">
                                 Open Daily 09.00 - 00.00 WIB

@@ -89,7 +89,7 @@ export default function LocationHours({ onOpenBooking }) {
                             className="btn-pd-primary flex-1 justify-center active:scale-95"
                         >
                             <span className="material-symbols-outlined text-base">event_seat</span>
-                            Book a Table
+                            Reservation
                         </button>
                     </div>
                 </div>

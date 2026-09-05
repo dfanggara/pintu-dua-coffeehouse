@@ -81,7 +81,7 @@ export default function Footer() {
                             Follow Us
                         </h4>
                         <p className="text-xs text-[#E0E0E0]/70 mb-3">
-                            Tetap terhubung dengan sajian terbaru & event menarik kami di media sosial:
+                            Stay connected with our latest offerings & exciting events on social media:
                         </p>
 
                         <div className="flex flex-wrap items-center gap-2.5">

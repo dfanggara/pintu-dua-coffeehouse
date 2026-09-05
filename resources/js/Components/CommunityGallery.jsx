@@ -60,7 +60,7 @@ export default function CommunityGallery({ items = [] }) {
                     <div className="flex items-center gap-3">
                         <div className="section-accent" />
                         <h3 className="section-title">
-                            Cafe Vibe & Atmosphere
+                            The Space
                         </h3>
                     </div>
 
@@ -196,7 +196,7 @@ export default function CommunityGallery({ items = [] }) {
                     <div className="flex items-center gap-3">
                         <div className="section-accent" />
                         <h3 className="section-title">
-                            Community & People
+                            The Crowd
                         </h3>
                     </div>
 

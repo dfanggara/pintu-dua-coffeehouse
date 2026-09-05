@@ -48,15 +48,15 @@ export default function StorySection() {
                 {/* Right Column: Story Text Paragraphs */}
                 <div className="lg:col-span-7 space-y-4 sm:space-y-5 text-[#E0E0E0]/85 text-xs sm:text-base leading-relaxed text-left">
                     <p className="border-l-4 border-[#FF6B00] pl-3.5 sm:pl-6 text-white font-medium text-sm sm:text-lg leading-relaxed">
-                        Born in the neighborhood, perfected in every cup. Pintu Dua is more than just a coffeehouse—it’s an urban sanctuary for bold flavors, raw energy, and authentic connections.
+                        A hideout from the city's noise, a canvas for your stories. Pintu Dua is a space where crafted coffee meets raw, unfiltered atmosphere.
                     </p>
 
                     <p className="text-[#E0E0E0]/80 leading-relaxed text-xs sm:text-base">
-                        Didirikan sebagai ruang temu sederhana, Pintu Dua hadir untuk mereka yang mencari karakter kopi asli dan suasana tanpa kepalsuan. Setiap cangkir diseduh dengan presisi tinggi dari biji kopi pilihan untuk menghadirkan rasa yang tegas dan autentik.
+                        Berawal dari sebuah sudut sederhana, Pintu Dua dirancang sebagai tempat menepi. Tidak ada pretensi, hanya apresiasi murni terhadap racikan kopi berkualitas tinggi dan ruang yang merangkul siapa saja yang datang.
                     </p>
 
                     <p className="text-[#E0E0E0]/80 leading-relaxed text-xs sm:text-base">
-                        Kami percaya bahwa momen terbaik tercipta dari hal sederhana: secangkir kopi nikmat, percakapan jujur, dan ruang yang membuat Anda merasa diterima. Di sinilah Pintu Dua menjadi bagian dari cerita Anda.
+                        Bagi kami, kedai kopi sejati lebih dari sekadar rasa. Ia tentang ruang yang mengizinkan Anda melepas lelah, menemukan kawan baru, atau sekadar merayakan kesendirian di tengah bisingnya kota. Silakan masuk, Pintu Dua selalu terbuka.
                     </p>
                 </div>
             </div>
