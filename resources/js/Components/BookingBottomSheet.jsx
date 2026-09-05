@@ -28,6 +28,7 @@ export default function BookingBottomSheet({ isOpen, onClose }) {
     const [active, setActive] = useState(false);
     const [isTimeDropdownOpen, setIsTimeDropdownOpen] = useState(false);
     const [selectedAreas, setSelectedAreas] = useState([]);
+    const [customNote, setCustomNote] = useState('');
     const timeDropdownRef = useRef(null);
 
     const [formData, setFormData] = useState({
@@ -62,6 +63,13 @@ export default function BookingBottomSheet({ isOpen, onClose }) {
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
+    // Combine Area Preference Chips & Custom Textarea Note cleanly into formData.special_notes
+    useEffect(() => {
+        const areaText = selectedAreas.length > 0 ? `Area: ${selectedAreas.join(', ')}` : '';
+        const fullNote = [areaText, customNote.trim()].filter(Boolean).join(' | ');
+        setFormData(prev => ({ ...prev, special_notes: fullNote }));
+    }, [selectedAreas, customNote]);
+
     if (!rendered) return null;
 
     const resetForm = () => {
@@ -73,6 +81,7 @@ export default function BookingBottomSheet({ isOpen, onClose }) {
             special_notes: '',
         });
         setSelectedAreas([]);
+        setCustomNote('');
         setIsTimeDropdownOpen(false);
     };
 
@@ -93,20 +102,9 @@ export default function BookingBottomSheet({ isOpen, onClose }) {
     };
 
     const toggleAreaPreference = (area) => {
-        let updated = [...selectedAreas];
-        if (updated.includes(area)) {
-            updated = updated.filter(a => a !== area);
-        } else {
-            updated.push(area);
-        }
-        setSelectedAreas(updated);
-
-        // Append selected areas to special_notes
-        const baseNote = formData.special_notes.replace(/Area Preference:.*$/, '').trim();
-        const areaText = updated.length > 0 ? `Area: ${updated.join(', ')}` : '';
-        const finalNote = [baseNote, areaText].filter(Boolean).join(' | ');
-
-        setFormData({ ...formData, special_notes: finalNote });
+        setSelectedAreas(prev =>
+            prev.includes(area) ? prev.filter(a => a !== area) : [...prev, area]
+        );
     };
 
     const handleSubmit = async (e) => {
@@ -180,11 +178,8 @@ export default function BookingBottomSheet({ isOpen, onClose }) {
                 {/* Header */}
                 <div className="flex justify-between items-start mb-5">
                     <div>
-                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#FF6B00]">
+                        <h3 className="font-display text-2xl uppercase tracking-wider text-[#FF6B00]">
                             Table Reservation
-                        </span>
-                        <h3 className="font-display text-2xl uppercase tracking-wider text-white">
-                            Reservation System
                         </h3>
                     </div>
                     <button
@@ -295,7 +290,7 @@ export default function BookingBottomSheet({ isOpen, onClose }) {
                                         className={`py-2 px-1 rounded-xl text-xs font-bold transition-all duration-300 border text-center ${
                                             isSelected
                                                 ? 'bg-[#FF6B00] text-[#121212] border-[#FF6B00] shadow-[0_0_10px_rgba(255,107,0,0.3)]'
-                                                : 'bg-[#121212] text-white/80 border-white/10 hover:border-white/30'
+                                                : 'bg-[#121212] text-white/80 border-white/10 hover:border-white/20'
                                         }`}
                                     >
                                         {opt.label}
@@ -331,16 +326,16 @@ export default function BookingBottomSheet({ isOpen, onClose }) {
                         </div>
                     </div>
 
-                    {/* Special Request */}
+                    {/* Special Request / Custom Note */}
                     <div>
                         <label className="block font-bold text-xs text-[#E0E0E0]/80 mb-1.5 uppercase tracking-wider">
                             Catatan Tambahan (Optional)
                         </label>
                         <textarea
-                            name="special_notes"
+                            name="custom_note"
                             rows="2"
-                            value={formData.special_notes}
-                            onChange={handleChange}
+                            value={customNote}
+                            onChange={(e) => setCustomNote(e.target.value)}
                             placeholder="Contoh: butuh stopkontak untuk laptop, bawa anak kecil..."
                             className="w-full bg-[#121212] border border-white/10 rounded-xl p-3 text-sm text-white focus:border-[#FF6B00] focus:ring-1 focus:ring-[#FF6B00] outline-none transition-colors duration-300"
                         />
