@@ -132,7 +132,7 @@ export default function BookingBottomSheet({ isOpen, onClose }) {
 *Jam:* ${formData.reservation_time} WIB
 *Catatan / Area:* ${formData.special_notes || '-'}`;
 
-            window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(messageText)}`, '_blank');
+            window.location.href = `https://wa.me/${waNumber}?text=${encodeURIComponent(messageText)}`;
             resetForm();
             handleClose();
         } catch (err) {
@@ -148,7 +148,7 @@ export default function BookingBottomSheet({ isOpen, onClose }) {
 *Jam:* ${formData.reservation_time} WIB
 *Catatan / Area:* ${formData.special_notes || '-'}`;
 
-            window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(messageText)}`, '_blank');
+            window.location.href = `https://wa.me/${waNumber}?text=${encodeURIComponent(messageText)}`;
             resetForm();
             handleClose();
         } finally {
