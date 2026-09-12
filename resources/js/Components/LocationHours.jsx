@@ -13,12 +13,7 @@ export default function LocationHours({ onOpenBooking }) {
 
     return (
         <section id="location" className="w-full max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 py-6 sm:py-16 min-h-[calc(100vh-70px)] lg:min-h-0 flex flex-col justify-center relative overflow-hidden my-2 lg:my-8">
-            {/* Outlined Repeating Background Watermark Text
-            <div className="absolute top-2 sm:top-4 left-0 right-0 w-full overflow-hidden select-none pointer-events-none z-0 flex justify-center">
-                <div className="whitespace-nowrap font-display text-4xl sm:text-7xl md:text-8xl lg:text-[9rem] uppercase font-black text-transparent tracking-widest leading-none opacity-15" style={{ WebkitTextStroke: '1px rgba(255,255,255,0.25)' }}>
-                    LOCATION LOCATION LOCATION
-                </div>
-            </div> */}
+
 
             {/* Main Header Title */}
             <div className="flex items-center gap-3 mb-6 relative z-10">
@@ -53,9 +48,7 @@ export default function LocationHours({ onOpenBooking }) {
                                     09.00 - 00.00
                                 </span>
                             </div>
-                            {/* <p className="text-[11px] text-[#E0E0E0]/70 mt-2 leading-relaxed">
-                                Buka Setiap Hari (Every Day) untuk Kopi, Smokehouse, & Outdoor Space.
-                            </p> */}
+
                         </div>
 
                         {/* Address & Contact Box */}

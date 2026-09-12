@@ -26,6 +26,7 @@ class AdminCategoryController extends Controller
             'type' => $validated['type'],
             'description' => $validated['description'] ?? null,
         ]);
+        \App\Models\ActivityLog::record('CREATED', 'Category', "Menambahkan kategori baru: {$validated['name']}");
 
         return redirect()->back()->with('success', 'Kategori baru berhasil ditambahkan!');
     }
@@ -45,6 +46,7 @@ class AdminCategoryController extends Controller
             'type' => $validated['type'],
             'description' => $validated['description'] ?? null,
         ]);
+        \App\Models\ActivityLog::record('UPDATED', 'Category', "Memperbarui kategori: {$category->name}");
 
         return redirect()->back()->with('success', 'Kategori berhasil diperbarui!');
     }
@@ -53,6 +55,7 @@ class AdminCategoryController extends Controller
     {
         $category = Category::findOrFail($slug);
         $category->delete();
+        \App\Models\ActivityLog::record('DELETED', 'Category', "Menghapus kategori: {$category->name}");
 
         return redirect()->back()->with('success', 'Kategori berhasil dihapus!');
     }

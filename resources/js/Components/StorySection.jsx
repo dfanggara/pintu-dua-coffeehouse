@@ -13,9 +13,7 @@ export default function StorySection() {
                         </div>
                     </div>
 
-                    {/* <span className="relative z-10 text-[10px] sm:text-xs font-black uppercase tracking-[0.25em] text-[#FF6B00] block mb-1">
-                        The Sanctuary Story
-                    </span> */}
+
                     <h3 className="relative z-10 font-display text-3xl sm:text-5xl uppercase tracking-wider font-bold text-white">
                         Our <span className="text-[#FF6B00]">Story</span>
                     </h3>
@@ -34,14 +32,7 @@ export default function StorySection() {
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-transparent to-transparent pointer-events-none" />
 
-                        {/* <div className="absolute bottom-4 left-4 right-4 sm:bottom-5 sm:left-5 sm:right-5 z-10 flex justify-between items-center">
-                            <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-[#FF6B00] bg-[#121212]/90 backdrop-blur-md px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full border border-[#FF6B00]/40 shadow-md">
-                                Pintu Dua Coffee
-                            </span>
-                            <span className="text-[10px] sm:text-xs font-bold text-white/80 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-lg border border-white/10">
-                                Est. 2021
-                            </span>
-                        </div> */}
+
                     </div>
                 </div>
 

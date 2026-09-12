@@ -83,6 +83,7 @@ class AdminReservationController extends Controller
 
         $reservation = Reservation::findOrFail($bookingCode);
         $reservation->update(['status' => $validated['status']]);
+        \App\Models\ActivityLog::record('UPDATED', 'Reservation', "Mengubah status reservasi {$bookingCode} menjadi {$validated['status']}");
 
         return redirect()->back()->with('success', 'Status reservasi berhasil diperbarui!');
     }
@@ -94,6 +95,7 @@ class AdminReservationController extends Controller
     {
         $reservation = Reservation::findOrFail($bookingCode);
         $reservation->delete();
+        \App\Models\ActivityLog::record('DELETED', 'Reservation', "Menghapus data reservasi: {$bookingCode}");
 
         return redirect()->back()->with('success', 'Reservasi berhasil dihapus!');
     }

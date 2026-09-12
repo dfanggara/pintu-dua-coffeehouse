@@ -45,12 +45,18 @@ export default function GalleriesIndex({ galleries = {}, filters = {} }) {
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
+            if (imagePreview && imagePreview.startsWith('blob:')) {
+                URL.revokeObjectURL(imagePreview);
+            }
             setData('image', file);
             setImagePreview(URL.createObjectURL(file));
         }
     };
 
     const clearForm = () => {
+        if (imagePreview && imagePreview.startsWith('blob:')) {
+            URL.revokeObjectURL(imagePreview);
+        }
         setEditingGallery(null);
         setImagePreview(null);
         if (fileInputRef.current) {
@@ -70,15 +76,26 @@ export default function GalleriesIndex({ galleries = {}, filters = {} }) {
             is_active: data.is_active ? 1 : 0,
         };
 
+        const currentParams = {
+            search: searchTerm,
+            category: selectedCategory,
+        };
+
         if (editingGallery) {
             if (data.image instanceof File) {
                 payload.image = data.image;
                 payload._method = 'put';
                 router.post(route('admin.galleries.post-update', editingGallery.code), payload, {
+                    data: { ...payload, ...currentParams },
+                    preserveState: true,
+                    preserveScroll: true,
                     onSuccess: () => clearForm(),
                 });
             } else {
                 router.put(route('admin.galleries.update', editingGallery.code), payload, {
+                    data: { ...payload, ...currentParams },
+                    preserveState: true,
+                    preserveScroll: true,
                     onSuccess: () => clearForm(),
                 });
             }
@@ -87,6 +104,9 @@ export default function GalleriesIndex({ galleries = {}, filters = {} }) {
                 payload.image = data.image;
             }
             router.post(route('admin.galleries.store'), payload, {
+                data: { ...payload, ...currentParams },
+                preserveState: true,
+                preserveScroll: true,
                 onSuccess: () => clearForm(),
             });
         }
@@ -177,9 +197,10 @@ export default function GalleriesIndex({ galleries = {}, filters = {} }) {
                                             className="w-full bg-[#121212] border border-white/10 rounded-xl p-2.5 text-white focus:border-[#FF6B00] outline-none font-bold text-[#FF6B00]"
                                             required
                                         >
-                                            <option value="vibe">Cafe Vibe & Suasana</option>
-                                            <option value="community">Community & Kebersamaan</option>
+                                            <option value="vibe">The Space</option>
+                                            <option value="community">The Crowd</option>
                                         </select>
+                                        {errors.category && <p className="text-rose-400 text-[10px] mt-1">{errors.category}</p>}
                                     </div>
                                     <div>
                                         <label className="block font-bold text-[#E0E0E0]/80 mb-1 uppercase">Urutan Tampil</label>
@@ -201,6 +222,7 @@ export default function GalleriesIndex({ galleries = {}, filters = {} }) {
                                         placeholder="Deskripsi singkat mengenai foto"
                                         className="w-full bg-[#121212] border border-white/10 rounded-xl p-2.5 text-white focus:border-[#FF6B00] outline-none"
                                     />
+                                    {errors.description && <p className="text-rose-400 text-[10px] mt-1">{errors.description}</p>}
                                 </div>
 
                                 {/* Upload File Foto */}
@@ -261,8 +283,8 @@ export default function GalleriesIndex({ galleries = {}, filters = {} }) {
                                         className="bg-[#121212] border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:border-[#FF6B00] focus:ring-1 focus:ring-[#FF6B00] font-medium"
                                     >
                                         <option value="">Semua Kategori Galeri</option>
-                                        <option value="vibe">Cafe Vibe & Suasana</option>
-                                        <option value="community">Community & Kebersamaan</option>
+                                        <option value="vibe">The Space</option>
+                                        <option value="community">The Crowd</option>
                                     </select>
 
                                     <input
@@ -331,11 +353,11 @@ export default function GalleriesIndex({ galleries = {}, filters = {} }) {
                                                     <td className="p-3">
                                                         {g.category === 'vibe' ? (
                                                             <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-amber-500/20 text-amber-400 border border-amber-500/30">
-                                                                Cafe Vibe
+                                                                The Space
                                                             </span>
                                                         ) : (
                                                             <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">
-                                                                Community
+                                                                The Crowd
                                                             </span>
                                                         )}
                                                     </td>

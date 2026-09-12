@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import MenuDetailModal from './MenuDetailModal';
 
 export default function FullCatalog({ categories = [] }) {
@@ -7,29 +7,49 @@ export default function FullCatalog({ categories = [] }) {
     const [activeCategorySlug, setActiveCategorySlug] = useState('');
 
     // Format categories & items
-    const categoryGroups = (categories || []).map(cat => {
-        const slug = cat.slug || cat.name.toLowerCase().replace(/\s+/g, '-');
-        const items = (cat.menus || []).map(m => ({
-            name: m.name,
-            note: m.description,
-            price: typeof m.price === 'number' ? `Rp ${m.price.toLocaleString('id-ID')}` : m.price,
-            isSignature: Boolean(m.is_highlight),
-            img: m.image_url || '/images/espresso.png',
-            categoryName: cat.name,
-        }));
+    const categoryGroups = useMemo(() => {
+        return (categories || []).map(cat => {
+            const slug = cat.slug || cat.name.toLowerCase().replace(/\s+/g, '-');
+            const items = (cat.menus || []).map(m => ({
+                name: m.name,
+                note: m.description,
+                price: typeof m.price === 'number' ? `Rp ${m.price.toLocaleString('id-ID')}` : m.price,
+                isSignature: Boolean(m.is_highlight),
+                img: m.image_url || '/images/espresso.png',
+                categoryName: cat.name,
+            }));
 
-        return {
-            id: slug,
-            name: cat.name,
-            items: items,
-        };
-    }).filter(group => group.items.length > 0);
+            return {
+                id: slug,
+                name: cat.name,
+                items: items,
+            };
+        }).filter(group => group.items.length > 0);
+    }, [categories]);
 
-    // Set initial active category
+    // Scroll Spy for active category
     useEffect(() => {
         if (categoryGroups.length > 0 && !activeCategorySlug) {
             setActiveCategorySlug(categoryGroups[0].id);
         }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const slug = entry.target.id.replace('cat-section-', '');
+                    setActiveCategorySlug(slug);
+                }
+            });
+        }, {
+            rootMargin: '-150px 0px -60% 0px',
+        });
+
+        categoryGroups.forEach(group => {
+            const el = document.getElementById(`cat-section-${group.id}`);
+            if (el) observer.observe(el);
+        });
+
+        return () => observer.disconnect();
     }, [categoryGroups]);
 
     const scrollToCategory = (slug) => {
@@ -112,6 +132,7 @@ export default function FullCatalog({ categories = [] }) {
                                             <img
                                                 src={item.img}
                                                 alt={item.name}
+                                                loading="lazy"
                                                 className="w-full h-full object-cover"
                                             />
                                             {item.isSignature && (
@@ -153,6 +174,7 @@ export default function FullCatalog({ categories = [] }) {
                                         <img
                                             src={item.img}
                                             alt={item.name}
+                                            loading="lazy"
                                             className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
                                         />
 

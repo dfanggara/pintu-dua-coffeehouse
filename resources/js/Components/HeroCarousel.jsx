@@ -5,12 +5,9 @@ export default function HeroCarousel({ items = [] }) {
     const [isPaused, setIsPaused] = useState(false);
     const scrollRef = useRef(null);
 
-    // If there are no hero banners in the database, don't render the section
-    if (!items || items.length === 0) {
-        return null;
-    }
 
-    const promoItems = items.map(b => ({
+
+    const promoItems = (items || []).map(b => ({
         badge: b.badge || 'Pintu Dua Coffeehouse',
         title: b.title,
         subtitle: b.subtitle || '',
@@ -31,8 +28,13 @@ export default function HeroCarousel({ items = [] }) {
             });
         }, 4500);
 
-        return () => clearTimeout(interval);
+        return () => clearInterval(interval);
     }, [isPaused, promoItems]);
+
+    // If there are no hero banners in the database, don't render the section
+    if (promoItems.length === 0) {
+        return null;
+    }
 
     const handleScroll = () => {
         if (!scrollRef.current) return;

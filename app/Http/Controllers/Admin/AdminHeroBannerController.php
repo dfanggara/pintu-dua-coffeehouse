@@ -50,6 +50,7 @@ class AdminHeroBannerController extends Controller
         unset($validated['image']);
 
         HeroBanner::create($validated);
+        \App\Models\ActivityLog::record('CREATED', 'Hero Banner', "Menambahkan hero banner baru: {$validated['title']}");
 
         return redirect()->back()->with('success', 'Hero banner baru berhasil ditambahkan!');
     }
@@ -71,6 +72,7 @@ class AdminHeroBannerController extends Controller
         unset($validated['image']);
 
         $heroBanner->update($validated);
+        \App\Models\ActivityLog::record('UPDATED', 'Hero Banner', "Memperbarui hero banner: {$heroBanner->title}");
 
         return redirect()->back()->with('success', 'Hero banner berhasil diperbarui!');
     }
@@ -85,6 +87,7 @@ class AdminHeroBannerController extends Controller
         }
 
         $heroBanner->delete();
+        \App\Models\ActivityLog::record('DELETED', 'Hero Banner', "Menghapus hero banner: {$heroBanner->title}");
 
         return redirect()->back()->with('success', 'Hero banner berhasil dihapus!');
     }
