@@ -59,6 +59,7 @@ class AdminInstagramPostController extends Controller
         $validated['sort_order'] = (int) ($validated['sort_order'] ?? 0);
 
         InstagramPost::create($validated);
+        \App\Models\ActivityLog::record('CREATED', 'Instagram Post', "Menambahkan postingan IG baru: {$validated['code']}");
 
         return redirect()->back()->with('success', 'Postingan Instagram berhasil ditambahkan!');
     }
@@ -83,6 +84,7 @@ class AdminInstagramPostController extends Controller
         $validated['sort_order'] = (int) ($validated['sort_order'] ?? 0);
 
         $post->update($validated);
+        \App\Models\ActivityLog::record('UPDATED', 'Instagram Post', "Memperbarui postingan IG: {$post->code}");
 
         return redirect()->back()->with('success', 'Postingan Instagram berhasil diperbarui!');
     }
@@ -97,6 +99,7 @@ class AdminInstagramPostController extends Controller
         }
 
         $post->delete();
+        \App\Models\ActivityLog::record('DELETED', 'Instagram Post', "Menghapus postingan IG: {$post->code}");
 
         return redirect()->back()->with('success', 'Postingan Instagram berhasil dihapus!');
     }

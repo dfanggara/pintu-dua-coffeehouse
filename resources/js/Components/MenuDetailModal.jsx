@@ -18,14 +18,28 @@ export default function MenuDetailModal({ item, isOpen, onClose }) {
         }
     }, [isOpen, item]);
 
-    if (!rendered || !item) return null;
-
     const handleClose = () => {
         setActive(false);
         setTimeout(() => {
             onClose();
         }, 300);
     };
+
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key === 'Escape') {
+                handleClose();
+            }
+        };
+
+        if (active) {
+            window.addEventListener('keydown', handleKeyDown);
+        }
+
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [active]);
+
+    if (!rendered || !item) return null;
 
     const handleBookTable = () => {
         handleClose();

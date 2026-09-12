@@ -5,8 +5,10 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminGalleryController;
 use App\Http\Controllers\Admin\AdminHeroBannerController;
 use App\Http\Controllers\Admin\AdminInstagramPostController;
+use App\Http\Controllers\Admin\AdminLogController;
 use App\Http\Controllers\Admin\AdminMenuController;
 use App\Http\Controllers\Admin\AdminReservationController;
+use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Category;
 use App\Models\Gallery;
@@ -79,9 +81,20 @@ Route::get('/location', function () {
 })->name('location');
 
 // Dashboard & Admin Management Routes
-Route::get('/dashboard', [AdminDashboardController::class, 'index'])->middleware(['auth', 'verified', 'is_admin'])->name('dashboard');
+Route::get('/dashboard', [AdminDashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'verified', 'is_admin'])->group(function () {
+    // Admin User Management
+    Route::get('/admin/users', [AdminUserController::class, 'index'])->name('admin.users.index');
+    Route::post('/admin/users', [AdminUserController::class, 'store'])->name('admin.users.store');
+    Route::put('/admin/users/{user}', [AdminUserController::class, 'update'])->name('admin.users.update');
+    Route::delete('/admin/users/{user}', [AdminUserController::class, 'destroy'])->name('admin.users.destroy');
+
+    // Admin Activity Logs
+    Route::get('/admin/logs', [AdminLogController::class, 'index'])->name('admin.logs.index');
+});
+
+Route::middleware(['auth', 'verified'])->group(function () {
     // Admin Reservations Management
     Route::get('/admin/reservations', [AdminReservationController::class, 'index'])->name('admin.reservations.index');
     Route::patch('/admin/reservations/{booking_code}/status', [AdminReservationController::class, 'updateStatus'])->name('admin.reservations.update-status');

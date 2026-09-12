@@ -58,6 +58,7 @@ class AdminGalleryController extends Controller
         unset($validated['image']);
 
         Gallery::create($validated);
+        \App\Models\ActivityLog::record('CREATED', 'Gallery', "Menambahkan foto galeri baru: {$validated['title']}");
 
         return redirect()->back()->with('success', 'Foto galeri baru berhasil ditambahkan!');
     }
@@ -79,6 +80,7 @@ class AdminGalleryController extends Controller
         unset($validated['image']);
 
         $gallery->update($validated);
+        \App\Models\ActivityLog::record('UPDATED', 'Gallery', "Memperbarui foto galeri: {$gallery->title}");
 
         return redirect()->back()->with('success', 'Foto galeri berhasil diperbarui!');
     }
@@ -93,6 +95,7 @@ class AdminGalleryController extends Controller
         }
 
         $gallery->delete();
+        \App\Models\ActivityLog::record('DELETED', 'Gallery', "Menghapus foto galeri: {$gallery->title}");
 
         return redirect()->back()->with('success', 'Foto galeri berhasil dihapus!');
     }

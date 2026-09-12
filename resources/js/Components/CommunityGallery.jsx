@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 export default function CommunityGallery({ items = [] }) {
     const [selectedPhoto, setSelectedPhoto] = useState(null);
@@ -7,6 +7,26 @@ export default function CommunityGallery({ items = [] }) {
 
     const vibeScrollRef = useRef(null);
     const communityScrollRef = useRef(null);
+
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key === 'Escape') {
+                setSelectedPhoto(null);
+            }
+        };
+
+        if (selectedPhoto) {
+            document.body.style.overflow = 'hidden';
+            window.addEventListener('keydown', handleKeyDown);
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+
+        return () => {
+            document.body.style.overflow = 'unset';
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [selectedPhoto]);
 
     const vibePhotos = (items || []).filter(i => i.category === 'vibe').map(i => ({
         url: i.image_url,
@@ -54,7 +74,7 @@ export default function CommunityGallery({ items = [] }) {
 
     return (
         <div className="w-full max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 py-6 sm:py-10 space-y-12 sm:space-y-16 mb-12 sm:mb-16">
-            {/* SECTION 1: Cafe Vibe & Atmosphere */}
+            {/* SECTION 1: The Space */}
             <section id="vibe-section">
                 <div className="flex items-center justify-between gap-4 mb-6">
                     <div className="flex items-center gap-3">
@@ -86,7 +106,7 @@ export default function CommunityGallery({ items = [] }) {
 
                 {vibePhotos.length === 0 ? (
                     <div className="p-8 text-center text-[#E0E0E0]/60 italic glass-card rounded-2xl border border-white/10">
-                        Belum ada foto Cafe Vibe di database. Tambahkan foto dari Admin Panel.
+                        Belum ada foto The Space di database. Tambahkan foto dari Admin Panel.
                     </div>
                 ) : (
                     <>
@@ -98,22 +118,17 @@ export default function CommunityGallery({ items = [] }) {
                         >
                             {vibePhotos.map((img, index) => (
                                 <div
-                                    key={index}
+                                    key={img.url}
                                     onClick={() => setSelectedPhoto(img)}
                                     className="flex-none w-[72vw] aspect-[4/5] snap-center rounded-3xl overflow-hidden border border-white/10 bg-[#181818] relative group cursor-pointer shadow-xl active:scale-98 transition-all duration-300"
                                 >
                                     <img
                                         src={img.url}
                                         alt={img.title}
+                                        loading="lazy"
                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-[#121212]/30 to-transparent pointer-events-none" />
-
-                                    {/* <div className="absolute top-3 left-3 z-10">
-                                        <span className="text-[8px] font-black uppercase tracking-widest text-[#FF6B00] bg-[#121212]/80 backdrop-blur-md px-2.5 py-1 rounded-full border border-[#FF6B00]/30 shadow-md">
-                                            Cafe Vibe
-                                        </span>
-                                    </div> */}
 
                                     <div className="absolute bottom-0 left-0 right-0 p-4 z-10 pointer-events-none">
                                         <h4 className="font-display text-lg text-white group-hover:text-[#FF6B00] transition-colors duration-300 mb-1 leading-tight">
@@ -151,7 +166,7 @@ export default function CommunityGallery({ items = [] }) {
                                 const isFeature = index === 0;
                                 return (
                                     <div
-                                        key={index}
+                                        key={img.url}
                                         onClick={() => setSelectedPhoto(img)}
                                         className={`rounded-3xl overflow-hidden border border-white/10 bg-[#181818] relative group cursor-pointer shadow-xl hover:border-[#FF6B00]/60 transition-all duration-500 ${
                                             isFeature
@@ -162,13 +177,14 @@ export default function CommunityGallery({ items = [] }) {
                                         <img
                                             src={img.url}
                                             alt={img.title}
+                                            loading="lazy"
                                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                                         />
                                         <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-[#121212]/30 to-transparent pointer-events-none" />
 
                                         <div className="absolute top-4 left-4 z-10">
                                             <span className="text-[9px] font-black uppercase tracking-widest text-[#FF6B00] bg-[#121212]/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-[#FF6B00]/30 shadow-md">
-                                                Cafe Vibe
+                                                The Space
                                             </span>
                                         </div>
 
@@ -222,7 +238,7 @@ export default function CommunityGallery({ items = [] }) {
 
                 {communityPhotos.length === 0 ? (
                     <div className="p-8 text-center text-[#E0E0E0]/60 italic glass-card rounded-2xl border border-white/10">
-                        Belum ada foto Community & People di database. Tambahkan foto dari Admin Panel.
+                        Belum ada foto The Crowd di database. Tambahkan foto dari Admin Panel.
                     </div>
                 ) : (
                     <>
@@ -234,22 +250,17 @@ export default function CommunityGallery({ items = [] }) {
                         >
                             {communityPhotos.map((img, index) => (
                                 <div
-                                    key={index}
+                                    key={img.url}
                                     onClick={() => setSelectedPhoto(img)}
                                     className="flex-none w-[72vw] aspect-[4/5] snap-center rounded-3xl overflow-hidden border border-white/10 bg-[#181818] relative group cursor-pointer shadow-xl active:scale-98 transition-all duration-300"
                                 >
                                     <img
                                         src={img.url}
                                         alt={img.title}
+                                        loading="lazy"
                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-[#121212]/30 to-transparent pointer-events-none" />
-
-                                    {/* <div className="absolute top-3 left-3 z-10">
-                                        <span className="text-[8px] font-black uppercase tracking-widest text-[#FF6B00] bg-[#121212]/80 backdrop-blur-md px-2.5 py-1 rounded-full border border-[#FF6B00]/30 shadow-md">
-                                            Community
-                                        </span>
-                                    </div> */}
 
                                     <div className="absolute bottom-0 left-0 right-0 p-4 z-10 pointer-events-none">
                                         <h4 className="font-display text-lg text-white group-hover:text-[#FF6B00] transition-colors duration-300 mb-1 leading-tight">
@@ -287,7 +298,7 @@ export default function CommunityGallery({ items = [] }) {
                                 const isFeature = index === 0;
                                 return (
                                     <div
-                                        key={index}
+                                        key={img.url}
                                         onClick={() => setSelectedPhoto(img)}
                                         className={`rounded-3xl overflow-hidden border border-white/10 bg-[#181818] relative group cursor-pointer shadow-xl hover:border-[#FF6B00]/60 transition-all duration-500 ${
                                             isFeature
@@ -298,13 +309,14 @@ export default function CommunityGallery({ items = [] }) {
                                         <img
                                             src={img.url}
                                             alt={img.title}
+                                            loading="lazy"
                                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                                         />
                                         <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-[#121212]/30 to-transparent pointer-events-none" />
 
                                         <div className="absolute top-4 left-4 z-10">
                                             <span className="text-[9px] font-black uppercase tracking-widest text-[#FF6B00] bg-[#121212]/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-[#FF6B00]/30 shadow-md">
-                                                Community
+                                                The Crowd
                                             </span>
                                         </div>
 

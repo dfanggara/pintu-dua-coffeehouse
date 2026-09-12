@@ -109,6 +109,31 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Instagram Feed
                                 </Link>
+
+                                {user.is_admin && (
+                                    <>
+                                        <Link
+                                            href={route('admin.users.index')}
+                                            className={`px-3 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors duration-300 ${
+                                                route().current('admin.users.*')
+                                                    ? 'bg-[#FF6B00] text-[#121212] glow-orange-sm'
+                                                    : 'text-[#E0E0E0]/70 hover:text-white hover:bg-white/5'
+                                            }`}
+                                        >
+                                            Manajemen User
+                                        </Link>
+                                        <Link
+                                            href={route('admin.logs.index')}
+                                            className={`px-3 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors duration-300 ${
+                                                route().current('admin.logs.*')
+                                                    ? 'bg-[#FF6B00] text-[#121212] glow-orange-sm'
+                                                    : 'text-[#E0E0E0]/70 hover:text-white hover:bg-white/5'
+                                            }`}
+                                        >
+                                            Log Aktivitas
+                                        </Link>
+                                    </>
+                                )}
                                 <Link
                                     href="/"
                                     target="_blank"
@@ -208,6 +233,26 @@ export default function AuthenticatedLayout({ header, children }) {
                         >
                             Instagram Feed
                         </Link>
+                        {user.is_admin && (
+                            <>
+                                <Link
+                                    href={route('admin.users.index')}
+                                    className={`block px-3 py-2 rounded-lg text-xs font-bold uppercase ${
+                                        route().current('admin.users.*') ? 'text-white bg-[#FF6B00]' : 'text-[#E0E0E0]/70 hover:text-white'
+                                    }`}
+                                >
+                                    Manajemen User
+                                </Link>
+                                <Link
+                                    href={route('admin.logs.index')}
+                                    className={`block px-3 py-2 rounded-lg text-xs font-bold uppercase ${
+                                        route().current('admin.logs.*') ? 'text-white bg-[#FF6B00]' : 'text-[#E0E0E0]/70 hover:text-white'
+                                    }`}
+                                >
+                                    Log Aktivitas
+                                </Link>
+                            </>
+                        )}
                         <Link
                             href="/"
                             target="_blank"

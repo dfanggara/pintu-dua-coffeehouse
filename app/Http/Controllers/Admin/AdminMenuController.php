@@ -85,6 +85,7 @@ class AdminMenuController extends Controller
         unset($validated['image']);
 
         Menu::create($validated);
+        \App\Models\ActivityLog::record('CREATED', 'Menu', "Menambahkan menu baru: {$validated['name']}");
 
         return redirect()->back()->with('success', 'Menu baru berhasil ditambahkan!');
     }
@@ -107,6 +108,7 @@ class AdminMenuController extends Controller
         unset($validated['image']);
 
         $menu->update($validated);
+        \App\Models\ActivityLog::record('UPDATED', 'Menu', "Memperbarui menu: {$menu->name}");
 
         return redirect()->back()->with('success', 'Data menu berhasil diperbarui!');
     }
@@ -121,6 +123,7 @@ class AdminMenuController extends Controller
         }
 
         $menu->delete();
+        \App\Models\ActivityLog::record('DELETED', 'Menu', "Menghapus menu: {$menu->name}");
 
         return redirect()->back()->with('success', 'Menu berhasil dihapus!');
     }

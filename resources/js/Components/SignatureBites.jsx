@@ -32,17 +32,11 @@ export default function SignatureBites({ items = [] }) {
                         <h3 className="section-title">
                             Signature Highlights
                         </h3>
-                        {/* <p className="text-[10px] sm:text-xs text-[#E0E0E0]/60 uppercase tracking-widest mt-0.5">
-                            Tier 1 Menu & Chef Specials
-                        </p> */}
+
                     </div>
                 </div>
 
-                {/* Mobile Touch Swipe Hint Indicator */}
-                {/* <div className="flex sm:hidden items-center gap-1.5 text-[10px] text-[#FF6B00] uppercase tracking-wider font-bold animate-pulse">
-                    <span>Geser</span>
-                    <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                </div> */}
+
             </div>
 
             {displayItems.length === 0 ? (
@@ -62,6 +56,7 @@ export default function SignatureBites({ items = [] }) {
                             <img
                                 src={item.img}
                                 alt={item.name}
+                                loading="lazy"
                                 className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
                             />
 
