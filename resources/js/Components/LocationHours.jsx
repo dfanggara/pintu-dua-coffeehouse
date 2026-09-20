@@ -56,7 +56,7 @@ export default function LocationHours({ onOpenBooking }) {
                             <div className="flex items-start gap-3">
                                 <span className="material-symbols-outlined text-lg text-[#FF6B00] shrink-0 mt-0.5">location_on</span>
                                 <div className="text-xs text-[#E0E0E0]/90 leading-relaxed">
-                                    <strong className="text-white block mb-0.5">Pintu Dua Coffeehouse</strong>
+                                    <strong className="text-white block mb-0.5">Pintu Dua Coffee House</strong>
                                     Jl. Manunggal XVII No.2, RT.4/RW.11, Lubang Buaya, Cipayung, Jakarta Timur 13810
                                 </div>
                             </div>
