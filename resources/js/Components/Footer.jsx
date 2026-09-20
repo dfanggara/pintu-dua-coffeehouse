@@ -73,6 +73,10 @@ export default function Footer() {
                             <span className="material-symbols-outlined text-base text-[#FF6B00] shrink-0">call</span>
                             <span className="font-semibold text-white">0812-8569-8689</span>
                         </div>
+                        <div className="flex items-center gap-2.5 text-xs text-[#E0E0E0]/80">
+                            <span className="material-symbols-outlined text-base text-[#FF6B00] shrink-0">email</span>
+                            <span className="font-semibold text-white">pintuduacoffee@gmail.com</span>
+                        </div>
                     </div>
 
                     {/* Right Column: Follow Us & Social Media */}
@@ -130,13 +134,13 @@ export default function Footer() {
                 {/* Bottom Bar: Copyright (Left) */}
                 <div className="flex flex-col sm:flex-row justify-between items-center pt-6 gap-4 text-xs text-[#E0E0E0]/60">
                     <div>
-                        © 2026 Pintu Dua Coffeehouse. All rights reserved.
+                        © 2026 Pintu Dua Coffee House. All rights reserved.
                     </div>
-                    <div className="flex gap-4">
+                    {/* <div className="flex gap-4">
                         <a href="#" className="hover:text-[#FF6B00] transition-colors duration-300">Terms & Conditions</a>
                         <span>•</span>
                         <a href="#" className="hover:text-[#FF6B00] transition-colors duration-300">Privacy Policy</a>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </footer>

@@ -6,7 +6,11 @@ import CommunityGallery from '@/Components/CommunityGallery';
 export default function GalleryPage({ galleries = [] }) {
     return (
         <AppLayout currentRoute="gallery">
-            <Head title="Community Gallery & Vibe | Pintu Dua Coffeehouse" />
+            <Head>
+                <title>Community Gallery | Pintu Dua Coffeehouse</title>
+                <meta name="description" content="Intip suasana nyaman dan serunya berkumpul di Pintu Dua Coffeehouse melalui galeri komunitas kami." />
+                <meta name="keywords" content="galeri pintu dua, suasana cafe, komunitas lubang buaya" />
+            </Head>
             <CommunityGallery items={galleries} />
         </AppLayout>
     );
