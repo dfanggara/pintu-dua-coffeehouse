@@ -11,9 +11,7 @@
     <meta property="og:description" content="Tempat ngopi asyik dan modern di Lubang Buaya, Jakarta Timur.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://pintuduacoffee.com">
-    <meta property="og:image" content="https://pintuduacoffee.com/images/story-community.webp">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
+    <meta property="og:image" content="https://pintuduacoffee.com/images/logo.webp">
     <link rel="icon" type="image/webp" href="/images/logo.webp">
 
     <!-- Fonts -->
