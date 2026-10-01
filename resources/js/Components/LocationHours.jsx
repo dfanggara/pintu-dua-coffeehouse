@@ -63,7 +63,7 @@ export default function LocationHours({ onOpenBooking }) {
                             </div>
                             <div className="flex items-center gap-3 text-xs text-[#E0E0E0]/80">
                                 <MaterialIcon name="call" className="text-lg text-[#FF6B00] shrink-0" />
-                                <span>WhatsApp: <strong className="text-white">0812-8569-8689</strong></span>
+                                <span>WhatsApp: <strong className="text-white">0821-2398-0026</strong></span>
                             </div>
                         </div>
                     </div>

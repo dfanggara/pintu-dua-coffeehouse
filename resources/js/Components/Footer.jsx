@@ -72,7 +72,7 @@ export default function Footer() {
                         </a>
                         <div className="flex items-center gap-2.5 text-xs text-[#E0E0E0]/80">
                             <MaterialIcon name="call" className="text-base text-[#FF6B00] shrink-0" />
-                            <span className="font-semibold text-white">0812-8569-8689</span>
+                            <span className="font-semibold text-white">0821-2398-0026</span>
                         </div>
                         <div className="flex items-center gap-2.5 text-xs text-[#E0E0E0]/80">
                             <MaterialIcon name="email" className="text-base text-[#FF6B00] shrink-0" />
@@ -118,7 +118,7 @@ export default function Footer() {
 
                             {/* WhatsApp Button */}
                             <a
-                                href="https://wa.me/6281285698689"
+                                href="https://wa.me/6282123980026"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-white/5 border border-white/10 text-xs font-semibold text-[#E0E0E0]/80 hover:text-white hover:border-[#FF6B00]/50 hover:bg-[#FF6B00]/10 transition-all duration-300 group"
