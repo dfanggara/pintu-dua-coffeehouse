@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import MaterialIcon from '@/Components/MaterialIcon';
 
 export default function HeroCarousel({ items = [] }) {
     const [activeIndex, setActiveIndex] = useState(0);
@@ -100,7 +101,7 @@ export default function HeroCarousel({ items = [] }) {
                                             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#FF6B00] text-[#121212] font-black text-xs uppercase tracking-wider glow-orange-sm hover:scale-105 transition-all"
                                         >
                                             <span>{item.ctaText}</span>
-                                            <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                                            <MaterialIcon name="arrow_forward" className="text-sm" />
                                         </a>
                                     </div>
                                 )}
@@ -138,6 +139,7 @@ export default function HeroCarousel({ items = [] }) {
                                             activeIndex === index ? 'scale-100 opacity-100' : 'scale-105 opacity-90'
                                         }`}
                                         loading={index === 0 ? 'eager' : 'lazy'}
+                                        fetchPriority={index === 0 ? 'high' : 'auto'}
                                     />
                                 </div>
                             </div>
@@ -152,6 +154,7 @@ export default function HeroCarousel({ items = [] }) {
                                     activeIndex === index ? 'scale-100 opacity-100' : 'scale-105 opacity-100'
                                 }`}
                                 loading={index === 0 ? 'eager' : 'lazy'}
+                                fetchPriority={index === 0 ? 'high' : 'auto'}
                             />
 
                             {/* Soft Bottom Gradient Overlay */}
@@ -181,7 +184,7 @@ export default function HeroCarousel({ items = [] }) {
                                                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#FF6B00] text-[#121212] font-black text-xs uppercase tracking-wider glow-orange-sm"
                                             >
                                                 <span>{item.ctaText}</span>
-                                                <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                                                <MaterialIcon name="arrow_forward" className="text-sm" />
                                             </a>
                                         </div>
                                     )}
@@ -194,7 +197,7 @@ export default function HeroCarousel({ items = [] }) {
 
             {/* Mobile Animated Scroll Down Hint Indicator */}
             <div className="absolute bottom-2 left-0 right-0 z-20 flex sm:hidden justify-center items-center pointer-events-none opacity-60">
-                <span className="material-symbols-outlined text-[#FF6B00] animate-bounce text-xl">keyboard_arrow_down</span>
+                <MaterialIcon name="keyboard_arrow_down" className="text-[#FF6B00] animate-bounce text-xl" />
             </div>
 
             {/* Mobile Pagination Dots */}

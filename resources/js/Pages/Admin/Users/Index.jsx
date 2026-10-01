@@ -27,6 +27,7 @@ export default function UsersIndex({ users = {} }) {
     };
 
     const handleEditClick = (user) => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         setEditingUser(user);
         setData({
             name: user.name,
@@ -182,6 +183,16 @@ export default function UsersIndex({ users = {} }) {
                                     >
                                         {editingUser ? 'Simpan Perubahan Akun' : 'Tambah Akun Baru'}
                                     </button>
+                                    
+                                    {editingUser && (
+                                        <button
+                                            type="button"
+                                            onClick={() => { setEditingUser(null); reset(); clearErrors(); }}
+                                            className="w-full mt-2 py-3 rounded-xl border border-white/20 text-white font-black text-xs uppercase tracking-wider hover:bg-white/5 transition-colors duration-200"
+                                        >
+                                            Batal Edit
+                                        </button>
+                                    )}
                                 </div>
                             </form>
                         </div>

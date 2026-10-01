@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import MaterialIcon from '@/Components/MaterialIcon';
 
 const TIME_SLOTS = [
     '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
@@ -185,7 +186,7 @@ export default function BookingBottomSheet({ isOpen, onClose }) {
                         onClick={handleClose}
                         className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-white/70 hover:text-white transition-colors"
                     >
-                        <span className="material-symbols-outlined text-sm">close</span>
+                        <MaterialIcon name="close" className="text-sm" />
                     </button>
                 </div>
 
@@ -240,9 +241,7 @@ export default function BookingBottomSheet({ isOpen, onClose }) {
                                 <span className={formData.reservation_time ? 'font-bold text-white' : 'text-white/40'}>
                                     {formData.reservation_time ? `${formData.reservation_time} WIB` : 'Pilih Jam...'}
                                 </span>
-                                <span className={`material-symbols-outlined text-sm text-white/50 transition-transform duration-200 ${isTimeDropdownOpen ? 'rotate-180 text-[#FF6B00]' : ''}`}>
-                                    expand_more
-                                </span>
+                                <MaterialIcon name="expand_more" className={`text-sm text-white/50 transition-transform duration-200 ${isTimeDropdownOpen ? 'rotate-180 text-[#FF6B00]' : ''}`} />
                             </button>
 
                             {/* Scrollable Time Menu */}
@@ -263,7 +262,7 @@ export default function BookingBottomSheet({ isOpen, onClose }) {
                                             >
                                                 <span>{slot} WIB</span>
                                                 {isSelected && (
-                                                    <span className="material-symbols-outlined text-xs">check</span>
+                                                    <MaterialIcon name="check" className="text-xs" />
                                                 )}
                                             </button>
                                         );

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Head, Link, router } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import ConfirmDeleteModal from '@/Components/ConfirmDeleteModal';
+import MaterialIcon from '@/Components/MaterialIcon';
 
 export default function ReservationsIndex({ reservations = {}, filters = {} }) {
     const items = Array.isArray(reservations) ? reservations : (reservations?.data || []);
@@ -118,7 +119,7 @@ export default function ReservationsIndex({ reservations = {}, filters = {} }) {
                         <form onSubmit={handleFilterSubmit} className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
                             {/* Text Search Input */}
                             <div className="sm:col-span-3 relative">
-                                <span className="material-symbols-outlined absolute left-3.5 top-2.5 text-[#E0E0E0]/50 text-base">search</span>
+                                <MaterialIcon name="search" className="absolute left-3.5 top-2.5 text-[#E0E0E0]/50 text-base" />
                                 <input
                                     type="text"
                                     placeholder="Cari nama, kode, catatan..."

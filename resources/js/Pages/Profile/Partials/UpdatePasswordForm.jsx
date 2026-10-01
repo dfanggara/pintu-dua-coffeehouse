@@ -1,6 +1,7 @@
 import { Transition } from '@headlessui/react';
 import { useForm } from '@inertiajs/react';
 import { useRef } from 'react';
+import MaterialIcon from '@/Components/MaterialIcon';
 
 export default function UpdatePasswordForm({ className = '' }) {
     const passwordInput = useRef();
@@ -44,7 +45,7 @@ export default function UpdatePasswordForm({ className = '' }) {
         <section className={className}>
             <header className="pb-4 mb-6 border-b border-white/10">
                 <h2 className="text-base font-bold text-[#FF6B00] uppercase tracking-wider flex items-center gap-2">
-                    <span className="material-symbols-outlined text-xl">lock</span>
+                    <MaterialIcon name="lock" className="text-xl" />
                     <span>Perbarui Kata Sandi</span>
                 </h2>
 
@@ -130,7 +131,7 @@ export default function UpdatePasswordForm({ className = '' }) {
                         leaveTo="opacity-0"
                     >
                         <p className="text-xs text-emerald-400 font-bold flex items-center gap-1">
-                            <span className="material-symbols-outlined text-sm">check_circle</span>
+                            <MaterialIcon name="check_circle" className="text-sm" />
                             <span>Kata Sandi Berhasil Diperbarui!</span>
                         </p>
                     </Transition>

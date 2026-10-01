@@ -6,11 +6,9 @@ export default function LoadingScreen() {
     const [fading, setFading] = useState(false);
 
     useEffect(() => {
-        // Initial Visit Page Load Timer
-        const timer = setTimeout(() => {
-            setFading(true);
-            setTimeout(() => setLoading(false), 500);
-        }, 700);
+        // Remove artificial delay for initial load so Lighthouse can paint LCP immediately
+        setFading(true);
+        setLoading(false);
 
         // Inertia Page Navigation Listeners
         const unbindStart = router.on('start', () => {
@@ -20,11 +18,10 @@ export default function LoadingScreen() {
 
         const unbindFinish = router.on('finish', () => {
             setFading(true);
-            setTimeout(() => setLoading(false), 400);
+            setTimeout(() => setLoading(false), 200); // Only small delay for page transitions
         });
 
         return () => {
-            clearTimeout(timer);
             unbindStart();
             unbindFinish();
         };
@@ -45,7 +42,7 @@ export default function LoadingScreen() {
             <div className="relative z-10 flex flex-col items-center">
                 <div className="relative mb-6">
                     <img
-                        src="/images/logo.png"
+                        src="/images/logo.webp"
                         alt="Pintu Dua Coffeehouse Loading"
                         className="h-20 sm:h-24 w-auto object-contain rounded-2xl shadow-[0_0_40px_rgba(255,107,0,0.5)] animate-bounce duration-1000"
                     />

@@ -1,4 +1,5 @@
 import React from 'react';
+import MaterialIcon from '@/Components/MaterialIcon';
 import { useBooking } from '@/Layouts/AppLayout';
 
 export default function LocationHours({ onOpenBooking }) {
@@ -34,7 +35,7 @@ export default function LocationHours({ onOpenBooking }) {
                 <div className="lg:col-span-5 bg-[#181818] p-5 sm:p-8 rounded-2xl flex flex-col justify-between border border-white/5 space-y-5">
                     <div>
                         <div className="flex items-center gap-2 text-[#FF6B00] mb-3 sm:mb-4">
-                            <span className="material-symbols-outlined text-xl">schedule</span>
+                            <MaterialIcon name="schedule" className="text-xl" />
                             <h4 className="font-bold text-xs uppercase tracking-wider">
                                 Hours of Operation
                             </h4>
@@ -54,14 +55,14 @@ export default function LocationHours({ onOpenBooking }) {
                         {/* Address & Contact Box */}
                         <div className="space-y-3">
                             <div className="flex items-start gap-3">
-                                <span className="material-symbols-outlined text-lg text-[#FF6B00] shrink-0 mt-0.5">location_on</span>
+                                <MaterialIcon name="location_on" className="text-lg text-[#FF6B00] shrink-0 mt-0.5" />
                                 <div className="text-xs text-[#E0E0E0]/90 leading-relaxed">
                                     <strong className="text-white block mb-0.5">Pintu Dua Coffee House</strong>
                                     Jl. Manunggal XVII No.2, RT.4/RW.11, Lubang Buaya, Cipayung, Jakarta Timur 13810
                                 </div>
                             </div>
                             <div className="flex items-center gap-3 text-xs text-[#E0E0E0]/80">
-                                <span className="material-symbols-outlined text-lg text-[#FF6B00] shrink-0">call</span>
+                                <MaterialIcon name="call" className="text-lg text-[#FF6B00] shrink-0" />
                                 <span>WhatsApp: <strong className="text-white">0812-8569-8689</strong></span>
                             </div>
                         </div>
@@ -73,7 +74,7 @@ export default function LocationHours({ onOpenBooking }) {
                             onClick={handleOpenMaps}
                             className="flex-1 px-4 py-3 rounded-xl bg-white/5 border border-white/10 hover:border-[#FF6B00]/50 hover:bg-[#FF6B00]/10 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all duration-300 shadow-md active:scale-95"
                         >
-                            <span className="material-symbols-outlined text-base text-[#FF6B00]">map</span>
+                            <MaterialIcon name="map" className="text-base text-[#FF6B00]" />
                             Google Maps
                         </button>
 
@@ -81,7 +82,7 @@ export default function LocationHours({ onOpenBooking }) {
                             onClick={handleBooking}
                             className="btn-pd-primary flex-1 justify-center active:scale-95"
                         >
-                            <span className="material-symbols-outlined text-base">event_seat</span>
+                            <MaterialIcon name="event_seat" className="text-base" />
                             Reservation
                         </button>
                     </div>
@@ -111,7 +112,7 @@ export default function LocationHours({ onOpenBooking }) {
                     {/* Top Right Floating Badge */}
                     <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-10 pointer-events-none">
                         <span className="flex items-center gap-1.5 bg-[#FF6B00] text-[#121212] font-black text-[9px] sm:text-[10px] uppercase tracking-widest px-3 py-1.5 rounded-full shadow-[0_0_15px_rgba(255,107,0,0.5)]">
-                            <span className="material-symbols-outlined text-sm">near_me</span>
+                            <MaterialIcon name="near_me" className="text-sm" />
                             Direct Maps
                         </span>
                     </div>
@@ -120,7 +121,7 @@ export default function LocationHours({ onOpenBooking }) {
                     <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 z-10 bg-[#181818]/90 backdrop-blur-md p-3.5 sm:p-4 rounded-xl border border-white/10 flex items-center justify-between pointer-events-none group-hover:border-[#FF6B00]/60 transition-colors duration-300 shadow-lg">
                         <div className="flex items-center gap-3">
                             <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-[#FF6B00]/20 border border-[#FF6B00]/40 flex items-center justify-center text-[#FF6B00] shrink-0">
-                                <span className="material-symbols-outlined text-base sm:text-lg">location_on</span>
+                                <MaterialIcon name="location_on" className="text-base sm:text-lg" />
                             </div>
                             <div>
                                 <h5 className="font-bold text-xs text-white uppercase tracking-wider">
@@ -132,7 +133,7 @@ export default function LocationHours({ onOpenBooking }) {
                             </div>
                         </div>
                         <span className="text-[11px] sm:text-xs font-bold text-[#FF6B00] group-hover:translate-x-1 transition-transform duration-300 flex items-center gap-1">
-                            Directions <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                            Directions <MaterialIcon name="arrow_forward" className="text-sm" />
                         </span>
                     </div>
                 </div>

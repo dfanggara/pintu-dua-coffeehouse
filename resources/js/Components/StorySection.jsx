@@ -26,8 +26,11 @@ export default function StorySection() {
                 <div className="lg:col-span-5">
                     <div className="relative group pd-card rounded-t-[70px] lg:rounded-t-[80px] lg:rounded-br-[80px] rounded-b-2xl lg:rounded-bl-2xl overflow-hidden border border-white/10 shadow-2xl h-[300px] sm:h-[360px] lg:h-[430px] bg-[#181818]">
                         <img
-                            src="/images/ourstory.png"
+                            src="/images/ourstory.webp"
                             alt="Pintu Dua Community & Friends"
+                            loading="lazy"
+                            width="600"
+                            height="430"
                             className="pd-card-img object-cover w-full h-full object-center group-hover:scale-105 transition-transform duration-700"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-transparent to-transparent pointer-events-none" />

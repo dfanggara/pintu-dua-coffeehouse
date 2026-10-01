@@ -1,4 +1,5 @@
 import React from 'react';
+import MaterialIcon from '@/Components/MaterialIcon';
 import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react';
 
 export default function ConfirmDeleteModal({
@@ -44,7 +45,7 @@ export default function ConfirmDeleteModal({
 
                         <div className="flex items-start gap-4">
                             <div className="w-12 h-12 rounded-2xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-500 shrink-0">
-                                <span className="material-symbols-outlined text-2xl">delete_forever</span>
+                                <MaterialIcon name="delete_forever" className="text-2xl" />
                             </div>
 
                             <div className="space-y-1.5 flex-1">

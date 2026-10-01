@@ -151,6 +151,7 @@ export default function MenusIndex({ menus = {}, categories = [], filters = {} }
     };
 
     const handleMenuEdit = (menu) => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         setEditingMenu(menu);
         setImagePreview(menu.image_url || null);
         if (fileInputRef.current) {
@@ -194,6 +195,7 @@ export default function MenusIndex({ menus = {}, categories = [], filters = {} }
     };
 
     const handleEditCategoryClick = (cat) => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         setEditingCategory(cat);
         setCatData({
             slug: cat.slug,
@@ -416,6 +418,16 @@ export default function MenusIndex({ menus = {}, categories = [], filters = {} }
                                         >
                                             {editingMenu ? 'Simpan Perubahan' : 'Upload & Tambah Menu'}
                                         </button>
+                                        
+                                        {editingMenu && (
+                                            <button
+                                                type="button"
+                                                onClick={() => { setEditingMenu(null); menuReset(); menuClearErrors(); }}
+                                                className="w-full mt-2 py-3 rounded-xl border border-white/20 text-white font-black text-xs uppercase tracking-wider hover:bg-white/5 transition-colors duration-200"
+                                            >
+                                                Batal Edit
+                                            </button>
+                                        )}
                                     </div>
                                 </form>
                             </div>
@@ -646,6 +658,16 @@ export default function MenusIndex({ menus = {}, categories = [], filters = {} }
                                         >
                                             {editingCategory ? 'Simpan Perubahan Kategori' : 'Tambah Kategori Ke Database'}
                                         </button>
+                                        
+                                        {editingCategory && (
+                                            <button
+                                                type="button"
+                                                onClick={() => { setEditingCategory(null); catReset(); catClearErrors(); }}
+                                                className="w-full mt-2 py-3 rounded-xl border border-white/20 text-white font-black text-xs uppercase tracking-wider hover:bg-white/5 transition-colors duration-200"
+                                            >
+                                                Batal Edit
+                                            </button>
+                                        )}
                                     </div>
                                 </form>
                             </div>

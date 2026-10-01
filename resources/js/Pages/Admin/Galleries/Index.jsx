@@ -113,6 +113,7 @@ export default function GalleriesIndex({ galleries = {}, filters = {} }) {
     };
 
     const handleEditClick = (g) => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         setEditingGallery(g);
         setImagePreview(g.image_url || null);
         if (fileInputRef.current) {
@@ -268,6 +269,16 @@ export default function GalleriesIndex({ galleries = {}, filters = {} }) {
                                     >
                                         {editingGallery ? 'Simpan Perubahan Foto' : 'Upload & Tambah Foto Galeri'}
                                     </button>
+                                    
+                                    {editingGallery && (
+                                        <button
+                                            type="button"
+                                            onClick={() => { setEditingGallery(null); reset(); clearErrors(); }}
+                                            className="w-full mt-2 py-3 rounded-xl border border-white/20 text-white font-black text-xs uppercase tracking-wider hover:bg-white/5 transition-colors duration-200"
+                                        >
+                                            Batal Edit
+                                        </button>
+                                    )}
                                 </div>
                             </form>
                         </div>
