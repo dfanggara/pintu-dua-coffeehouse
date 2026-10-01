@@ -56,7 +56,10 @@ Route::get('/', function () {
 Route::get('/menu', function () {
     $categories = Category::with(['menus' => function ($query) {
         $query->where('is_active', true);
-    }])->get();
+    }])
+    ->orderBy('type', 'asc')
+    ->orderBy('slug', 'asc')
+    ->get();
 
     return Inertia::render('Menu', [
         'categories' => $categories,
