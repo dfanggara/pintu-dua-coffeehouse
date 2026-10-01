@@ -42,15 +42,15 @@ export default function StorySection() {
                 {/* Right Column: Story Text Paragraphs */}
                 <div className="lg:col-span-7 space-y-4 sm:space-y-5 text-[#E0E0E0]/85 text-xs sm:text-base leading-relaxed text-left">
                     <p className="border-l-4 border-[#FF6B00] pl-3.5 sm:pl-6 text-white font-medium text-sm sm:text-lg leading-relaxed">
-                        A hideout from the city's noise, a canvas for your stories. Pintu Dua is a space where crafted coffee meets raw, unfiltered atmosphere.
+                        Crafted for connection, brewed for the stories. Pintu Dua is your neighborhood living room where every cup sparks a conversation.
                     </p>
 
                     <p className="text-[#E0E0E0]/80 leading-relaxed text-xs sm:text-base">
-                        Berawal dari sebuah sudut sederhana, Pintu Dua dirancang sebagai tempat menepi. Tidak ada pretensi, hanya apresiasi murni terhadap racikan kopi berkualitas tinggi dan ruang yang merangkul siapa saja yang datang.
+                        Lebih dari sekadar menyajikan kopi, Pintu Dua didirikan untuk menjadi titik kumpul sosial yang nyata. Kami membangun ruang ini tanpa pretensi, memastikan siapa pun yang datang selalu merasa diterima layaknya kembali ke rumah sendiri.
                     </p>
 
                     <p className="text-[#E0E0E0]/80 leading-relaxed text-xs sm:text-base">
-                        Bagi kami, kedai kopi sejati lebih dari sekadar rasa. Ia tentang ruang yang mengizinkan Anda melepas lelah, menemukan kawan baru, atau sekadar merayakan kesendirian di tengah bisingnya kota. Silakan masuk, Pintu Dua selalu terbuka.
+                        Kami percaya bahwa cerita-cerita terbaik sering kali mengalir perlahan di meja bar kami. Entah kamu datang untuk bernostalgia bersama kawan lama atau mencari obrolan baru, ruang ini selalu siap mendengarkan. Datang sebagai tamu, pulang sebagai kawan.
                     </p>
                 </div>
             </div>
