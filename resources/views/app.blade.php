@@ -5,12 +5,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title inertia>Pintu Dua Coffee House</title>
-    <meta name="description" inertia content="Tempat ngopi asyik dan modern di Lubang Buaya, Jakarta Timur. Nikmati kopi signature, suasana nyaman, dan pesan tempatmu secara instan di Pintu Dua Coffeehouse.">
-    <meta property="og:title" inertia content="Pintu Dua Coffeehouse | Modern Urban Sanctuary">
-    <meta property="og:description" inertia content="Tempat ngopi asyik dan modern di Lubang Buaya, Jakarta Timur.">
+    <title inertia>Pintu Dua Coffeehouse</title>
+    <meta name="description" content="Tempat ngopi asyik dan modern di Lubang Buaya, Jakarta Timur. Nikmati kopi signature, suasana nyaman, dan pesan tempatmu secara instan di Pintu Dua Coffeehouse.">
+    <meta property="og:title" content="Pintu Dua Coffeehouse | Modern Urban Sanctuary">
+    <meta property="og:description" content="Tempat ngopi asyik dan modern di Lubang Buaya, Jakarta Timur.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://pintuduacoffee.com">
+    <meta property="og:image" content="https://pintuduacoffee.com/images/story-community.webp">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <link rel="icon" type="image/webp" href="/images/logo.webp">
 
     <!-- Fonts -->
