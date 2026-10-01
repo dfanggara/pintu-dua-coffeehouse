@@ -117,7 +117,7 @@ export default function BookingBottomSheet({ isOpen, onClose }) {
 
         setLoading(true);
 
-        const waNumber = '6281285698689';
+        const waNumber = '6282123980026';
 
         try {
             const response = await axios.post('/api/reservations', formData);
