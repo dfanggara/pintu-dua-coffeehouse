@@ -1,6 +1,7 @@
 import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
+import MaterialIcon from '@/Components/MaterialIcon';
 import { Link, usePage } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
 
@@ -33,7 +34,7 @@ export default function AuthenticatedLayout({ header, children }) {
                             {/* Brand Logo */}
                             <Link href="/" className="flex items-center gap-3">
                                 <img
-                                    src="/images/logo.png"
+                                    src="/images/logo.webp"
                                     alt="Pintu Dua Logo"
                                     className="h-9 w-auto object-contain rounded-lg glow-orange-sm"
                                 />
@@ -140,7 +141,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                     className="px-3 py-2 rounded-xl text-xs font-bold uppercase tracking-wider text-[#E0E0E0]/60 hover:text-white hover:bg-white/5 flex items-center gap-1"
                                 >
                                     <span>Lihat Website</span>
-                                    <span className="material-symbols-outlined text-sm">open_in_new</span>
+                                    <MaterialIcon name="open_in_new" className="text-sm" />
                                 </Link>
                             </div>
                         </div>
@@ -156,7 +157,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                         >
                                             <span className="w-2 h-2 rounded-full bg-[#FF6B00] animate-pulse" />
                                             <span>{user.name}</span>
-                                            <span className="material-symbols-outlined text-base text-[#E0E0E0]/70">expand_more</span>
+                                            <MaterialIcon name="expand_more" className="text-base text-[#E0E0E0]/70" />
                                         </button>
                                     </Dropdown.Trigger>
 
@@ -182,9 +183,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                 onClick={() => setShowingNavigationDropdown(prev => !prev)}
                                 className="inline-flex items-center justify-center rounded-xl p-2 text-[#E0E0E0]/70 hover:bg-white/5 hover:text-white focus:outline-none"
                             >
-                                <span className="material-symbols-outlined text-2xl">
-                                    {showingNavigationDropdown ? 'close' : 'menu'}
-                                </span>
+                                <MaterialIcon name={showingNavigationDropdown ? 'close' : 'menu'} className="text-2xl" />
                             </button>
                         </div>
                     </div>
@@ -298,7 +297,7 @@ export default function AuthenticatedLayout({ header, children }) {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center space-y-2">
                     <Link href="/" className="flex items-center gap-2.5 opacity-80 hover:opacity-100 transition-opacity">
                         <img
-                            src="/images/logo.png"
+                            src="/images/logo.webp"
                             alt="Pintu Dua Coffeehouse Logo"
                             className="h-8 sm:h-9 w-auto object-contain rounded-lg glow-orange-sm"
                         />
@@ -319,11 +318,11 @@ export default function AuthenticatedLayout({ header, children }) {
                 <div className="fixed top-20 right-4 sm:right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-2xl shadow-2xl border backdrop-blur-md transition-all duration-300 animate-bounce-once font-bold text-xs uppercase tracking-wider bg-[#181818] border-white/10 text-white glow-orange-sm">
                     {toast.type === 'success' ? (
                         <div className="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center shrink-0">
-                            <span className="material-symbols-outlined text-lg">check_circle</span>
+                            <MaterialIcon name="check_circle" className="text-lg" />
                         </div>
                     ) : (
                         <div className="w-8 h-8 rounded-xl bg-rose-500/20 text-rose-400 border border-rose-500/30 flex items-center justify-center shrink-0">
-                            <span className="material-symbols-outlined text-lg">error</span>
+                            <MaterialIcon name="error" className="text-lg" />
                         </div>
                     )}
                     <div>
@@ -335,7 +334,7 @@ export default function AuthenticatedLayout({ header, children }) {
                         onClick={() => setToast(null)}
                         className="ml-3 text-white/40 hover:text-white p-1 rounded-lg hover:bg-white/10 transition-colors"
                     >
-                        <span className="material-symbols-outlined text-base">close</span>
+                        <MaterialIcon name="close" className="text-base" />
                     </button>
                 </div>
             )}

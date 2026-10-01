@@ -86,6 +86,7 @@ export default function HeroBannersIndex({ heroBanners = {}, banners = {}, filte
     };
 
     const handleEditClick = (banner) => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         setEditingBanner(banner);
         setImagePreview(banner.image_url || null);
         if (fileInputRef.current) {
@@ -242,6 +243,16 @@ export default function HeroBannersIndex({ heroBanners = {}, banners = {}, filte
                                     >
                                         {editingBanner ? 'Simpan Perubahan Banner' : 'Upload & Tambah Hero Banner'}
                                     </button>
+                                    
+                                    {editingBanner && (
+                                        <button
+                                            type="button"
+                                            onClick={() => { setEditingBanner(null); reset(); clearErrors(); }}
+                                            className="w-full mt-2 py-3 rounded-xl border border-white/20 text-white font-black text-xs uppercase tracking-wider hover:bg-white/5 transition-colors duration-200"
+                                        >
+                                            Batal Edit
+                                        </button>
+                                    )}
                                 </div>
                             </form>
                         </div>

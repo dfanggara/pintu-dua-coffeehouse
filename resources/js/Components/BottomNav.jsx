@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from '@inertiajs/react';
+import MaterialIcon from '@/Components/MaterialIcon';
 
 export default function BottomNav({ onOpenBooking, currentRoute = 'home' }) {
     return (
@@ -11,7 +12,7 @@ export default function BottomNav({ onOpenBooking, currentRoute = 'home' }) {
                         currentRoute === 'home' ? 'text-[#FF6B00]' : 'text-[#E0E0E0]/70 hover:text-[#FF6B00]'
                     }`}
                 >
-                    <span className="material-symbols-outlined text-xl">grid_view</span>
+                    <MaterialIcon name="grid_view" className="text-xl" />
                     <span className="text-[9px] uppercase tracking-widest font-semibold mt-0.5">Home</span>
                 </Link>
 
@@ -21,7 +22,7 @@ export default function BottomNav({ onOpenBooking, currentRoute = 'home' }) {
                         currentRoute === 'menu' ? 'text-[#FF6B00]' : 'text-[#E0E0E0]/70 hover:text-[#FF6B00]'
                     }`}
                 >
-                    <span className="material-symbols-outlined text-xl">restaurant_menu</span>
+                    <MaterialIcon name="restaurant_menu" className="text-xl" />
                     <span className="text-[9px] uppercase tracking-widest font-semibold mt-0.5">Menu</span>
                 </Link>
 
@@ -32,9 +33,7 @@ export default function BottomNav({ onOpenBooking, currentRoute = 'home' }) {
                         className="bg-gradient-to-tr from-[#FF6B00] to-[#ff944d] text-[#121212] p-4 rounded-2xl glow-orange active:scale-90 transition-all duration-300 border-4 border-[#121212] flex items-center justify-center shadow-xl group hover:brightness-110"
                         aria-label="Book Table"
                     >
-                        <span className="material-symbols-outlined text-2xl font-black group-hover:rotate-12 transition-transform duration-300">
-                            event_seat
-                        </span>
+                        <MaterialIcon name="event_seat" className="text-2xl font-black group-hover:rotate-12 transition-transform duration-300" />
                     </button>
                 </div>
 
@@ -44,7 +43,7 @@ export default function BottomNav({ onOpenBooking, currentRoute = 'home' }) {
                         currentRoute === 'gallery' ? 'text-[#FF6B00]' : 'text-[#E0E0E0]/70 hover:text-[#FF6B00]'
                     }`}
                 >
-                    <span className="material-symbols-outlined text-xl">photo_library</span>
+                    <MaterialIcon name="photo_library" className="text-xl" />
                     <span className="text-[9px] uppercase tracking-widest font-semibold mt-0.5">Gallery</span>
                 </Link>
 
@@ -54,7 +53,7 @@ export default function BottomNav({ onOpenBooking, currentRoute = 'home' }) {
                         currentRoute === 'location' ? 'text-[#FF6B00]' : 'text-[#E0E0E0]/70 hover:text-[#FF6B00]'
                     }`}
                 >
-                    <span className="material-symbols-outlined text-xl">near_me</span>
+                    <MaterialIcon name="near_me" className="text-xl" />
                     <span className="text-[9px] uppercase tracking-widest font-semibold mt-0.5">Location</span>
                 </Link>
             </div>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Head, Link, router } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import ConfirmDeleteModal from '@/Components/ConfirmDeleteModal';
+import MaterialIcon from '@/Components/MaterialIcon';
 
 export default function Dashboard({ auth = {}, stats = {}, latestReservations = [] }) {
     const adminName = auth?.user?.name || 'Admin Pintu Dua';
@@ -38,14 +39,14 @@ export default function Dashboard({ auth = {}, stats = {}, latestReservations = 
                             className="flex-1 sm:flex-none px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-white font-bold text-xs uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-1.5"
                         >
                             <span>Live Site</span>
-                            <span className="material-symbols-outlined text-sm">open_in_new</span>
+                            <MaterialIcon name="open_in_new" className="text-sm" />
                         </a>
 
                         <Link
                             href={route('admin.reservations.index')}
                             className="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-[#FF6B00] text-[#121212] font-bold text-xs uppercase tracking-wider glow-orange-sm hover:scale-105 transition-transform duration-300 flex items-center justify-center gap-1.5"
                         >
-                            <span className="material-symbols-outlined text-sm">table_restaurant</span>
+                            <MaterialIcon name="table_restaurant" className="text-sm" />
                             <span>Reservasi</span>
                         </Link>
                     </div>
@@ -97,7 +98,7 @@ export default function Dashboard({ auth = {}, stats = {}, latestReservations = 
                                 </p>
                             </div>
                             <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#FF6B00]/10 border border-[#FF6B00]/30 flex items-center justify-center text-[#FF6B00] group-hover:scale-110 transition-transform duration-300 shrink-0">
-                                <span className="material-symbols-outlined text-xl sm:text-2xl">today</span>
+                                <MaterialIcon name="today" className="text-xl sm:text-2xl" />
                             </div>
                         </div>
 
@@ -111,7 +112,7 @@ export default function Dashboard({ auth = {}, stats = {}, latestReservations = 
                                 </p>
                             </div>
                             <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-yellow-400/10 border border-yellow-400/30 flex items-center justify-center text-yellow-400 group-hover:scale-110 transition-transform duration-300 shrink-0">
-                                <span className="material-symbols-outlined text-xl sm:text-2xl">pending_actions</span>
+                                <MaterialIcon name="pending_actions" className="text-xl sm:text-2xl" />
                             </div>
                         </div>
 
@@ -125,7 +126,7 @@ export default function Dashboard({ auth = {}, stats = {}, latestReservations = 
                                 </p>
                             </div>
                             <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-emerald-400/10 border border-emerald-400/30 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform duration-300 shrink-0">
-                                <span className="material-symbols-outlined text-xl sm:text-2xl">check_circle</span>
+                                <MaterialIcon name="check_circle" className="text-xl sm:text-2xl" />
                             </div>
                         </div>
 
@@ -139,7 +140,7 @@ export default function Dashboard({ auth = {}, stats = {}, latestReservations = 
                                 </p>
                             </div>
                             <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300 shrink-0">
-                                <span className="material-symbols-outlined text-xl sm:text-2xl">restaurant_menu</span>
+                                <MaterialIcon name="restaurant_menu" className="text-xl sm:text-2xl" />
                             </div>
                         </div>
                     </div>
@@ -162,11 +163,9 @@ export default function Dashboard({ auth = {}, stats = {}, latestReservations = 
                                 <div className="space-y-2 sm:space-y-3">
                                     <div className="flex items-center justify-between">
                                         <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#FF6B00]/10 border border-[#FF6B00]/30 flex items-center justify-center text-[#FF6B00]">
-                                            <span className="material-symbols-outlined text-lg sm:text-xl">restaurant</span>
+                                            <MaterialIcon name="restaurant" className="text-lg sm:text-xl" />
                                         </div>
-                                        <span className="material-symbols-outlined text-lg sm:text-xl text-white/30 group-hover:text-[#FF6B00] group-hover:translate-x-1 transition-all">
-                                            arrow_forward
-                                        </span>
+                                                                                <MaterialIcon name="arrow_forward" className="text-lg sm:text-xl text-white/30 group-hover:text-[#FF6B00] group-hover:translate-x-1 transition-all" />
                                     </div>
                                     <div>
                                         <h4 className="font-bold text-sm sm:text-base text-white group-hover:text-[#FF6B00] transition-colors">
@@ -191,11 +190,9 @@ export default function Dashboard({ auth = {}, stats = {}, latestReservations = 
                                 <div className="space-y-2 sm:space-y-3">
                                     <div className="flex items-center justify-between">
                                         <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400">
-                                            <span className="material-symbols-outlined text-lg sm:text-xl">view_carousel</span>
+                                            <MaterialIcon name="view_carousel" className="text-lg sm:text-xl" />
                                         </div>
-                                        <span className="material-symbols-outlined text-lg sm:text-xl text-white/30 group-hover:text-[#FF6B00] group-hover:translate-x-1 transition-all">
-                                            arrow_forward
-                                        </span>
+                                                                                <MaterialIcon name="arrow_forward" className="text-lg sm:text-xl text-white/30 group-hover:text-[#FF6B00] group-hover:translate-x-1 transition-all" />
                                     </div>
                                     <div>
                                         <h4 className="font-bold text-sm sm:text-base text-white group-hover:text-[#FF6B00] transition-colors">
@@ -220,11 +217,9 @@ export default function Dashboard({ auth = {}, stats = {}, latestReservations = 
                                 <div className="space-y-2 sm:space-y-3">
                                     <div className="flex items-center justify-between">
                                         <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
-                                            <span className="material-symbols-outlined text-lg sm:text-xl">photo_library</span>
+                                            <MaterialIcon name="photo_library" className="text-lg sm:text-xl" />
                                         </div>
-                                        <span className="material-symbols-outlined text-lg sm:text-xl text-white/30 group-hover:text-[#FF6B00] group-hover:translate-x-1 transition-all">
-                                            arrow_forward
-                                        </span>
+                                                                                <MaterialIcon name="arrow_forward" className="text-lg sm:text-xl text-white/30 group-hover:text-[#FF6B00] group-hover:translate-x-1 transition-all" />
                                     </div>
                                     <div>
                                         <h4 className="font-bold text-sm sm:text-base text-white group-hover:text-[#FF6B00] transition-colors">
@@ -249,11 +244,9 @@ export default function Dashboard({ auth = {}, stats = {}, latestReservations = 
                                 <div className="space-y-2 sm:space-y-3">
                                     <div className="flex items-center justify-between">
                                         <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400">
-                                            <span className="material-symbols-outlined text-lg sm:text-xl">camera_alt</span>
+                                            <MaterialIcon name="camera_alt" className="text-lg sm:text-xl" />
                                         </div>
-                                        <span className="material-symbols-outlined text-lg sm:text-xl text-white/30 group-hover:text-[#FF6B00] group-hover:translate-x-1 transition-all">
-                                            arrow_forward
-                                        </span>
+                                                                                <MaterialIcon name="arrow_forward" className="text-lg sm:text-xl text-white/30 group-hover:text-[#FF6B00] group-hover:translate-x-1 transition-all" />
                                     </div>
                                     <div>
                                         <h4 className="font-bold text-sm sm:text-base text-white group-hover:text-[#FF6B00] transition-colors">
@@ -277,7 +270,7 @@ export default function Dashboard({ auth = {}, stats = {}, latestReservations = 
                         <div className="p-4 sm:p-5 border-b border-white/10 flex flex-row justify-between items-center gap-3 bg-[#141414]">
                             <div>
                                 <h3 className="font-bold text-xs sm:text-sm text-white uppercase tracking-wider flex items-center gap-2">
-                                    <span className="material-symbols-outlined text-[#FF6B00] text-base">history</span>
+                                    <MaterialIcon name="history" className="text-[#FF6B00] text-base" />
                                     <span>Reservasi Masuk</span>
                                 </h3>
                                 <p className="text-[10px] sm:text-[11px] text-[#E0E0E0]/60">5 pemesanan meja paling akhir</p>
@@ -288,7 +281,7 @@ export default function Dashboard({ auth = {}, stats = {}, latestReservations = 
                                 className="text-xs text-[#FF6B00] font-bold hover:underline flex items-center gap-1 shrink-0"
                             >
                                 <span>Lihat Semua</span>
-                                <span className="material-symbols-outlined text-sm">&rarr;</span>
+                                <MaterialIcon name="arrow_forward" className="text-sm" />
                             </Link>
                         </div>
 

@@ -1,6 +1,7 @@
 import Modal from '@/Components/Modal';
 import { useForm } from '@inertiajs/react';
 import { useRef, useState } from 'react';
+import MaterialIcon from '@/Components/MaterialIcon';
 
 export default function DeleteUserForm({ className = '' }) {
     const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
@@ -43,7 +44,7 @@ export default function DeleteUserForm({ className = '' }) {
         <section className={`space-y-6 ${className}`}>
             <header className="pb-4 border-b border-white/10">
                 <h2 className="text-base font-bold text-rose-400 uppercase tracking-wider flex items-center gap-2">
-                    <span className="material-symbols-outlined text-xl">delete_forever</span>
+                    <MaterialIcon name="delete_forever" className="text-xl" />
                     <span>Hapus Akun Administrator</span>
                 </h2>
 
@@ -63,7 +64,7 @@ export default function DeleteUserForm({ className = '' }) {
             <Modal show={confirmingUserDeletion} onClose={closeModal}>
                 <form onSubmit={deleteUser} className="p-6 bg-[#181818] border border-white/10 text-xs space-y-4">
                     <div className="flex items-center gap-3 text-rose-400">
-                        <span className="material-symbols-outlined text-3xl">warning</span>
+                        <MaterialIcon name="warning" className="text-3xl" />
                         <h2 className="text-base font-bold uppercase tracking-wider text-white">
                             Apakah Anda yakin ingin menghapus akun?
                         </h2>

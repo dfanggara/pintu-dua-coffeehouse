@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useBooking } from '@/Layouts/AppLayout';
+import MaterialIcon from '@/Components/MaterialIcon';
 
 export default function MenuDetailModal({ item, isOpen, onClose }) {
     const [rendered, setRendered] = useState(false);
@@ -74,7 +75,7 @@ export default function MenuDetailModal({ item, isOpen, onClose }) {
                     className="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-black/60 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/80 hover:text-white hover:bg-black/90 transition-colors duration-300"
                     aria-label="Close detail"
                 >
-                    <span className="material-symbols-outlined text-lg">close</span>
+                    <MaterialIcon name="close" className="text-lg" />
                 </button>
 
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-0">

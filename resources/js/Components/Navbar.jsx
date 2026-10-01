@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from '@inertiajs/react';
+import MaterialIcon from '@/Components/MaterialIcon';
 
 export default function Navbar({ onOpenBooking, currentRoute = 'home' }) {
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
 
     const navLinks = [
         { id: 'home', label: 'Home', href: '/', icon: 'home' },
@@ -22,7 +23,7 @@ export default function Navbar({ onOpenBooking, currentRoute = 'home' }) {
                     {/* Brand Official Logo */}
                     <Link className="flex items-center gap-3 group shrink-0" href="/">
                         <img
-                            src="/images/logo.png"
+                            src="/images/logo.webp"
                             alt="Pintu Dua Coffeehouse Logo"
                             className="h-9 sm:h-12 w-auto object-contain rounded-xl glow-orange-sm group-hover:scale-105 transition-all duration-300"
                         />
@@ -64,7 +65,7 @@ export default function Navbar({ onOpenBooking, currentRoute = 'home' }) {
                         onClick={onOpenBooking}
                         className="hidden md:inline-flex btn-pd-primary shrink-0"
                     >
-                        <span className="material-symbols-outlined text-base">calendar_month</span>
+                        <MaterialIcon name="calendar_month" className="text-base" />
                         Reservation
                     </button>
 
@@ -74,9 +75,7 @@ export default function Navbar({ onOpenBooking, currentRoute = 'home' }) {
                         className="md:hidden flex items-center justify-center p-2 rounded-xl bg-white/5 border border-white/10 text-white hover:text-[#FF6B00] hover:border-[#FF6B00]/40 transition-all duration-300"
                         aria-label="Toggle navigation menu"
                     >
-                        <span className="material-symbols-outlined text-2xl">
-                            {isMobileMenuOpen ? 'close' : 'menu'}
-                        </span>
+                        <MaterialIcon name={isMobileMenuOpen ? 'close' : 'menu'} className="text-2xl" />
                     </button>
                 </div>
             </nav>
@@ -88,7 +87,7 @@ export default function Navbar({ onOpenBooking, currentRoute = 'home' }) {
                     <div className="flex justify-between items-center px-4 py-4 border-b border-white/10">
                         <Link onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3" href="/">
                             <img
-                                src="/images/logo.png"
+                                src="/images/logo.webp"
                                 alt="Pintu Dua Coffeehouse Logo"
                                 className="h-9 w-auto object-contain rounded-xl"
                             />
@@ -106,7 +105,7 @@ export default function Navbar({ onOpenBooking, currentRoute = 'home' }) {
                             onClick={() => setIsMobileMenuOpen(false)}
                             className="p-2 rounded-full bg-white/10 border border-white/10 text-white"
                         >
-                            <span className="material-symbols-outlined text-xl">close</span>
+                            <MaterialIcon name="close" className="text-xl" />
                         </button>
                     </div>
 

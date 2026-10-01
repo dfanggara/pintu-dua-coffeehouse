@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import MaterialIcon from '@/Components/MaterialIcon';
 
 export default function Footer() {
     const [clickCount, setClickCount] = useState(0);
@@ -23,7 +24,7 @@ export default function Footer() {
         <footer className="bg-[#0A0A0A] border-t border-white/10 pt-10 pb-28 md:pb-12 text-[#E0E0E0] relative overflow-hidden">
             {/* Watermark Logo Background Graphic */}
             <div className="absolute top-1/2 -left-10 -translate-y-1/2 w-64 h-64 opacity-5 pointer-events-none select-none">
-                <img src="/images/logo.png" alt="Watermark" className="w-full h-full object-contain filter grayscale" />
+                <img src="/images/logo.webp" alt="Watermark" className="w-full h-full object-contain filter grayscale" />
             </div>
 
             <div className="w-full max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 relative z-10">
@@ -37,7 +38,7 @@ export default function Footer() {
                             title="Pintu Dua Coffeehouse"
                         >
                             <img
-                                src="/images/logo.png"
+                                src="/images/logo.webp"
                                 alt="Pintu Dua Coffeehouse Logo"
                                 className="h-12 w-auto object-contain rounded-xl glow-orange-sm group-hover:scale-105 transition-transform duration-300"
                             />
@@ -66,15 +67,15 @@ export default function Footer() {
                             rel="noopener noreferrer"
                             className="flex items-start gap-2.5 text-xs text-[#E0E0E0]/80 hover:text-white transition-colors group"
                         >
-                            <span className="material-symbols-outlined text-base text-[#FF6B00] shrink-0 mt-0.5 group-hover:scale-110 transition-transform">location_on</span>
+                            <MaterialIcon name="location_on" className="text-base text-[#FF6B00] shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
                             <span className="group-hover:underline">Jl. Manunggal XVII No.2, RT.4/RW.11, Lubang Buaya, Kec. Cipayung, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13810</span>
                         </a>
                         <div className="flex items-center gap-2.5 text-xs text-[#E0E0E0]/80">
-                            <span className="material-symbols-outlined text-base text-[#FF6B00] shrink-0">call</span>
+                            <MaterialIcon name="call" className="text-base text-[#FF6B00] shrink-0" />
                             <span className="font-semibold text-white">0812-8569-8689</span>
                         </div>
                         <div className="flex items-center gap-2.5 text-xs text-[#E0E0E0]/80">
-                            <span className="material-symbols-outlined text-base text-[#FF6B00] shrink-0">email</span>
+                            <MaterialIcon name="email" className="text-base text-[#FF6B00] shrink-0" />
                             <span className="font-semibold text-white">pintuduacoffee@gmail.com</span>
                         </div>
                     </div>

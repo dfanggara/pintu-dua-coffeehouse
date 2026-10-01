@@ -1,5 +1,6 @@
 import { Transition } from '@headlessui/react';
 import { Link, useForm, usePage } from '@inertiajs/react';
+import MaterialIcon from '@/Components/MaterialIcon';
 
 export default function UpdateProfileInformation({
     mustVerifyEmail,
@@ -23,7 +24,7 @@ export default function UpdateProfileInformation({
         <section className={className}>
             <header className="pb-4 mb-6 border-b border-white/10">
                 <h2 className="text-base font-bold text-[#FF6B00] uppercase tracking-wider flex items-center gap-2">
-                    <span className="material-symbols-outlined text-xl">person</span>
+                    <MaterialIcon name="person" className="text-xl" />
                     <span>Informasi Profil Admin</span>
                 </h2>
 
@@ -112,7 +113,7 @@ export default function UpdateProfileInformation({
                         leaveTo="opacity-0"
                     >
                         <p className="text-xs text-emerald-400 font-bold flex items-center gap-1">
-                            <span className="material-symbols-outlined text-sm">check_circle</span>
+                            <MaterialIcon name="check_circle" className="text-sm" />
                             <span>Berhasil Disimpan!</span>
                         </p>
                     </Transition>

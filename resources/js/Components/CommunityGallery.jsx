@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import MaterialIcon from '@/Components/MaterialIcon';
 
 export default function CommunityGallery({ items = [] }) {
     const [selectedPhoto, setSelectedPhoto] = useState(null);
@@ -91,14 +92,14 @@ export default function CommunityGallery({ items = [] }) {
                                 className="w-10 h-10 rounded-full bg-[#1C1C1C] border border-white/10 flex items-center justify-center text-white/80 hover:text-[#FF6B00] hover:bg-white/5 hover:border-[#FF6B00]/40 transition-all duration-300 shadow-md"
                                 aria-label="Previous Vibe Photo"
                             >
-                                <span className="material-symbols-outlined text-xl">chevron_left</span>
+                                <MaterialIcon name="chevron_left" className="text-xl" />
                             </button>
                             <button
                                 onClick={() => scrollContainer(vibeScrollRef, 'next')}
                                 className="w-10 h-10 rounded-full bg-[#1C1C1C] border border-white/10 flex items-center justify-center text-white/80 hover:text-[#FF6B00] hover:bg-white/5 hover:border-[#FF6B00]/40 transition-all duration-300 shadow-md"
                                 aria-label="Next Vibe Photo"
                             >
-                                <span className="material-symbols-outlined text-xl">chevron_right</span>
+                                <MaterialIcon name="chevron_right" className="text-xl" />
                             </button>
                         </div>
                     )}
@@ -223,14 +224,14 @@ export default function CommunityGallery({ items = [] }) {
                                 className="w-10 h-10 rounded-full bg-[#1C1C1C] border border-white/10 flex items-center justify-center text-white/80 hover:text-[#FF6B00] hover:bg-white/5 hover:border-[#FF6B00]/40 transition-all duration-300 shadow-md"
                                 aria-label="Previous Community Photo"
                             >
-                                <span className="material-symbols-outlined text-xl">chevron_left</span>
+                                <MaterialIcon name="chevron_left" className="text-xl" />
                             </button>
                             <button
                                 onClick={() => scrollContainer(communityScrollRef, 'next')}
                                 className="w-10 h-10 rounded-full bg-[#1C1C1C] border border-white/10 flex items-center justify-center text-white/80 hover:text-[#FF6B00] hover:bg-white/5 hover:border-[#FF6B00]/40 transition-all duration-300 shadow-md"
                                 aria-label="Next Community Photo"
                             >
-                                <span className="material-symbols-outlined text-xl">chevron_right</span>
+                                <MaterialIcon name="chevron_right" className="text-xl" />
                             </button>
                         </div>
                     )}
@@ -346,7 +347,7 @@ export default function CommunityGallery({ items = [] }) {
                             onClick={() => setSelectedPhoto(null)}
                             className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-black/70 border border-white/20 flex items-center justify-center text-white hover:bg-[#FF6B00] hover:text-[#121212] transition-colors duration-300"
                         >
-                            <span className="material-symbols-outlined text-lg">close</span>
+                            <MaterialIcon name="close" className="text-lg" />
                         </button>
                         <div className="aspect-[4/5] relative overflow-hidden rounded-2xl">
                             <img src={selectedPhoto.url} alt={selectedPhoto.title} className="w-full h-full object-cover" />

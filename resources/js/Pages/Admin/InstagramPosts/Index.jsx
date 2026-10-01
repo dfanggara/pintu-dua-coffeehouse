@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Head, Link, useForm, router } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import ConfirmDeleteModal from '@/Components/ConfirmDeleteModal';
+import MaterialIcon from '@/Components/MaterialIcon';
 
 export default function InstagramPostsIndex({ posts = {} }) {
     const postItems = Array.isArray(posts) ? posts : (posts?.data || []);
@@ -81,6 +82,7 @@ export default function InstagramPostsIndex({ posts = {} }) {
     };
 
     const handleEdit = (post) => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         setEditingPost(post);
         setImagePreview(post.thumbnail_url || null);
         if (fileInputRef.current) {
@@ -252,14 +254,25 @@ export default function InstagramPostsIndex({ posts = {} }) {
                                             <span className="font-bold text-white uppercase text-[11px]">Tampilkan (Aktif)</span>
                                         </label>
 
-                                        <button
-                                            type="submit"
-                                            disabled={processing}
-                                            className="px-5 py-2.5 rounded-xl bg-[#FF6B00] text-[#121212] font-black text-xs uppercase tracking-wider glow-orange-sm hover:scale-[1.02] transition-all flex items-center justify-center gap-2 disabled:opacity-50"
-                                        >
-                                            {processing && <span className="material-symbols-outlined text-sm animate-spin">progress_activity</span>}
-                                            <span>{processing ? 'Menyimpan...' : (editingPost ? 'Simpan Edit' : 'Tambah Post')}</span>
-                                        </button>
+                                        <div className="flex items-center gap-2">
+                                            {editingPost && (
+                                                <button
+                                                    type="button"
+                                                    onClick={() => { setEditingPost(null); reset(); clearErrors(); }}
+                                                    className="px-4 py-2.5 rounded-xl border border-white/20 text-white font-black text-xs uppercase tracking-wider hover:bg-white/5 transition-colors"
+                                                >
+                                                    Batal
+                                                </button>
+                                            )}
+                                            <button
+                                                type="submit"
+                                                disabled={processing}
+                                                className="px-5 py-2.5 rounded-xl bg-[#FF6B00] text-[#121212] font-black text-xs uppercase tracking-wider glow-orange-sm hover:scale-[1.02] transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                                            >
+                                                {processing && <MaterialIcon name="progress_activity" className="text-sm animate-spin" />}
+                                                <span>{processing ? 'Menyimpan...' : (editingPost ? 'Simpan Edit' : 'Tambah Post')}</span>
+                                            </button>
+                                        </div>
                                     </div>
                                 </form>
                             </div>
@@ -310,7 +323,7 @@ export default function InstagramPostsIndex({ posts = {} }) {
                                                                 className="text-[10px] text-[#FF6B00] hover:underline flex items-center gap-1 mt-0.5"
                                                             >
                                                                 <span>Link Post</span>
-                                                                <span className="material-symbols-outlined text-[10px]">open_in_new</span>
+                                                                <MaterialIcon name="open_in_new" className="text-[10px]" />
                                                             </a>
                                                         </td>
                                                         <td className="p-3 font-bold text-white">{post.sort_order}</td>

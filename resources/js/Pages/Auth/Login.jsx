@@ -1,4 +1,5 @@
 import React from 'react';
+import MaterialIcon from '@/Components/MaterialIcon';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 
@@ -43,7 +44,7 @@ export default function Login({ status, canResetPassword }) {
                     </label>
 
                     <div className="relative">
-                        <span className="material-symbols-outlined absolute left-3.5 top-3 text-[#E0E0E0]/40 text-lg">mail</span>
+                        <MaterialIcon name="mail" className="absolute left-3.5 top-3 text-[#E0E0E0]/40 text-lg" />
                         <input
                             id="email"
                             type="email"
@@ -80,7 +81,7 @@ export default function Login({ status, canResetPassword }) {
                     </div>
 
                     <div className="relative">
-                        <span className="material-symbols-outlined absolute left-3.5 top-3 text-[#E0E0E0]/40 text-lg">lock</span>
+                        <MaterialIcon name="lock" className="absolute left-3.5 top-3 text-[#E0E0E0]/40 text-lg" />
                         <input
                             id="password"
                             type="password"
@@ -123,7 +124,7 @@ export default function Login({ status, canResetPassword }) {
                         className="w-full py-3.5 rounded-xl bg-[#FF6B00] text-[#121212] font-black text-xs uppercase tracking-wider glow-orange-sm hover:scale-[1.02] active:scale-95 transition-all duration-200 flex items-center justify-center gap-2"
                     >
                         <span>Masuk Portal Admin</span>
-                        <span className="material-symbols-outlined text-base">login</span>
+                        <MaterialIcon name="login" className="text-base" />
                     </button>
                 </div>
             </form>

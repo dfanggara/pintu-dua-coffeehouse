@@ -1,4 +1,5 @@
 import React from 'react';
+import MaterialIcon from '@/Components/MaterialIcon';
 
 export default function InstagramFeedSection({ items = [] }) {
     // If there are no Instagram posts in the database, don't render the section
@@ -58,19 +59,19 @@ export default function InstagramFeedSection({ items = [] }) {
                             {/* Top-Right Badge Icon (Video or Carousel) */}
                             {post.post_type === 'video' && (
                                 <div className="absolute top-2 right-2 z-10 w-6 h-6 rounded-full bg-black/60 backdrop-blur-md border border-white/20 flex items-center justify-center text-white shadow-md">
-                                    <span className="material-symbols-outlined text-xs">play_arrow</span>
+                                    <MaterialIcon name="play_arrow" className="text-xs" />
                                 </div>
                             )}
                             {post.post_type === 'carousel' && (
                                 <div className="absolute top-2 right-2 z-10 w-6 h-6 rounded-full bg-black/60 backdrop-blur-md border border-white/20 flex items-center justify-center text-white shadow-md">
-                                    <span className="material-symbols-outlined text-xs">filter_none</span>
+                                    <MaterialIcon name="filter_none" className="text-xs" />
                                 </div>
                             )}
 
                             {/* Hover / Touch Overlay */}
                             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-2.5 z-20">
                                 <div className="flex justify-end">
-                                    <span className="material-symbols-outlined text-white/80 text-sm">open_in_new</span>
+                                    <MaterialIcon name="open_in_new" className="text-white/80 text-sm" />
                                 </div>
 
                                 <div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from '@inertiajs/react';
+import MaterialIcon from '@/Components/MaterialIcon';
 
 export default function GuestLayout({ children }) {
     return (
@@ -15,7 +16,7 @@ export default function GuestLayout({ children }) {
                     <Link href="/" className="group flex flex-col items-center transition-transform duration-300 hover:scale-105">
                         <div className="p-3 bg-[#181818] rounded-2xl border border-white/10 shadow-2xl glow-orange-sm mb-2">
                             <img
-                                src="/images/logo.png"
+                                src="/images/logo.webp"
                                 alt="Pintu Dua Coffeehouse Logo"
                                 className="h-14 w-auto object-contain"
                             />
@@ -40,7 +41,7 @@ export default function GuestLayout({ children }) {
                         href="/"
                         className="inline-flex items-center gap-1.5 text-xs text-[#E0E0E0]/60 hover:text-[#FF6B00] font-semibold transition-colors duration-200"
                     >
-                        <span className="material-symbols-outlined text-sm">arrow_back</span>
+                        <MaterialIcon name="arrow_back" className="text-sm" />
                         <span>Kembali ke Website Publik</span>
                     </Link>
                 </div>
